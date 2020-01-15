@@ -4,7 +4,9 @@
   "description": "Team One's Grace Shopper App for 1909-Flex",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-dev": "npm run build-watch & npm run start-server",
+    "start-server": "nodemon index.js -e html,js,css --ignore public",
+    "build-watch": "webpack -w"
   },
   "repository": {
     "type": "git",
