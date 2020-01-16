@@ -9,7 +9,7 @@ const ShoppingCart = ({ products }) => {
     <div className="shopping-cart">
       <Link>BACK</Link>
       <div>SHOPPING CART</div>
-      <div className="shoppint-cart-product-listing">
+      <div className="shopping-cart-product-listing">
         {products.map(_product => (
           <CartItem product={_product} />
         ))}
