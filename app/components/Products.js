@@ -1,8 +1,9 @@
 import React from 'react';
 import Product from './Product.js';
-import Pagination from 'react-bootstrap/Pagination';
+import PageSelect from './PageSelect.js';
 
 const Products = ({ products }) => {
+  const PRODUCTS_PER_PAGE = 10;
   return (
     <div>
       <div className="product-search-and-pagination">
@@ -18,18 +19,16 @@ const Products = ({ products }) => {
             <option value="option 2">Option 2</option>
           </select>
         </div>
-        <Pagination>
-          <Pagination.Prev />
-          <Pagination.Item>{1}</Pagination.Item>
-          <Pagination.Item>{1}</Pagination.Item>
-          <Pagination.Next />
-        </Pagination>
+        <PageSelect pages={products.length / PRODUCTS_PER_PAGE} />
       </div>
-      {products.length === 0
-        ? 'No products'
-        : products.map(_product => (
-            <Product key={`product-${_product.id}`} product={_product} />
-          ))}
+      <div className="all-products-container">
+        {products.length === 0
+          ? 'No products'
+          : products.map(_product => (
+              <Product key={`product-${_product.id}`} product={_product} />
+            ))}
+      </div>
+      <PageSelect pages={products.length / PRODUCTS_PER_PAGE} />
     </div>
   );
 };
