@@ -6,7 +6,7 @@ import Button from "react-bootstrap";
 const Confirmation = ({ orderDetails }) => {
   return (
     <div className="confirmation-page">
-      <div>CAR - PAYMENT - CONFIRMATION</div>
+      <div>CART - PAYMENT - CONFIRMATION</div>
       <Link>BACK</Link>
       <div>Confirmation</div>
       <div>This is the billing confirmation</div>
