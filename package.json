@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start-dev": "npm run build-watch & npm run start-server",
-    "start-server": "nodemon index.js -e html,js,css --ignore public",
+    "start-server": "nodemon ./server/index.js -e html,js,css --ignore public",
     "build-watch": "webpack -w"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/1909-FLEX-GRACE-SHOPPER/TEAM-ONE.git"
   },
-  "author": "Nicolas, Cissy, Raymond, Shell",
+  "author": "Nicolas, Cissy, Raymond, Shel",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/1909-FLEX-GRACE-SHOPPER/TEAM-ONE/issues"
