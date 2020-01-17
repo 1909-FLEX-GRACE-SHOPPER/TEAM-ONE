@@ -162,6 +162,11 @@ router.get('/:userId/orders', (req, res, next) => {
 			},
 		],
 	})
+	.then(user => res.send(user))
+	.catch(e => {
+		res.status(404);
+		next(e);
+	})
 })
 
 //Creates a new order for a specific User.
