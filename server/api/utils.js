@@ -1,5 +1,3 @@
-const router = require("express").Router();
-
 //Pagination middleware. 
 const paginate = (model) => {
 	return (req, res, next) => {
@@ -15,4 +13,4 @@ const paginate = (model) => {
 	}
 }
 
-module.exports = router
+module.exports = paginate

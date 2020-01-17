@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const paginate = require("./utils");
 
-// const { User, Order } = require('../db/index.js');
+const { User, Order, Cart } = require('../db/index.js');
 
 //Finds, counts and serves all users
-router.get('/', paginate(User), (req, res, next) => {
-	res.send(paginate(res.paginate))
+router.get('/', (req, res, next) => {
+	User.findAll()
+	.then(users => res.send(users))
 	.catch(e => {
 		res.status(404);
 		next(e);
@@ -13,15 +13,8 @@ router.get('/', paginate(User), (req, res, next) => {
 })
 
 //Finds and serves a single user based on a primary key.
-//Eager loads associated orders.
-router.get('/:id', (req, res, next) => {
-	User.findByPk(req.params.id, {
-		include: [
-			{
-				model: Order,
-			},
-		],
-	})
+router.get('/:userId', (req, res, next) => {
+	User.findByPk(req.params.userId)
 	.then(user => res.send(user))
 	.catch(e => {
 		res.status(404);
@@ -29,7 +22,7 @@ router.get('/:id', (req, res, next) => {
 	})
 })
 
-//Creates a new user.
+//Creates a new user/signs a user up
 //Sets falsy fields in req.body that are allowed to be null to null
 router.post('/', (req, res, next) => {
 	const {
@@ -68,6 +61,38 @@ router.post('/', (req, res, next) => {
 	.then(() => res.status(201))
 	.catch(e => {
 		res.status(400);
+		next(e);
+	})
+})
+
+//Logs in a User
+router.post('/login', (req, res, next) => {
+	const { email, password } = req.body;
+	User.update({
+		loggedIn: true,
+	},
+	{
+		where: { email, password }, returning: true
+	})
+	.then(() => res.status(201))
+	.catch(e => {
+		res.status(401);
+		next(e);
+	})
+})
+
+//Logs out a User
+router.post('/logout', (req, res, next) => {
+	const { email, password } = req.body;
+	User.update({
+		loggedIn: false,
+	},
+	{
+		where: { email, password }, returning: true
+	})
+	.then(() => res.status(201))
+	.catch(e => {
+		res.status(401);
 		next(e);
 	})
 })
@@ -119,6 +144,71 @@ router.put('/:id', (req, res, next) => {
 		billingCity: billingCity || user.billingCity,
 		billingState: billingState || user.billingState,
 		billingZip: billingZip || user.billingZip,
+	}))
+	.then(() => res.status(202))
+	.catch(e => {
+		res.status(304);
+		next(e);
+	})
+})
+
+//Finds and serves a single user based on a primary key.
+//Eager loads associated orders.
+router.get('/:userId/orders', (req, res, next) => {
+	User.findByPk(req.params.userId, {
+		include: [
+			{
+				model: Order,
+			},
+		],
+	})
+})
+
+//Creates a new order for a specific User.
+router.post('/:userId/orders', (req, res, next) => {
+	const {
+		shippingAddress,
+		orderCost,
+	} = req.body
+
+	const { userId } = req.params
+
+	Order.create({
+		userId,
+		shippingAddress,
+		orderCost: (orderCost * 1).toFixed(2),
+	})
+	.then(() => res.status(201))
+	.catch(e => {
+		res.status(400);
+		next(e);
+	})
+})
+
+//Deletes an order based on a primary key.
+router.delete('/:userId/order/:orderId', (req, res, next) => {
+	Order.findByPk(req.params.orderId)
+	.then(order => order.destroy())
+	.then(() => res.status(202))
+	.catch(e => {
+		res.status(404)
+		next(e)
+	})
+})
+
+//Updates an order based on a primary key.
+//Falsy fields in req.body are set to the current values.
+//No need to update a userId
+router.put('/:userId/orders/:orderId', (req, res, next) => {
+	const {
+		shippingAddress,
+		orderCost,
+	} = req.body
+
+	Order.findByPk(req.params.orderid)
+	.then(order => order.update({
+		shippingAddress: shippingAddress || user.shippingAddress,
+		orderCost: (orderCost * 1).toFixed(2) || user.orderCost,
 	}))
 	.then(() => res.status(202))
 	.catch(e => {

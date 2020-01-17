@@ -1,10 +1,10 @@
 const router = require("express").Router();
 
-// const { Order, User } = require("../db/index.js");
+const { Order, User } = require("../db/index.js");
 
 //Finds and servers all orders
 router.get('/', (req, res, next) => {
-	Order.findAll()
+	Order.findAllAndCount()
 	.then(orders => res.send(orders))
 	.catch(e => {
 		res.status(404);
@@ -29,18 +29,33 @@ router.get('/:id', (req, res, next) => {
 	})
 })
 
-//Creates a new order.
-router.post('/', (req, res, next) => {
-	const {
-		userId,
-		shippingAddress,
-		orderCost,
-	} = req.body
+//Finds and serves a single user based on a primary key.
+//Eager loads associated cart.
+router.get('/:orderId/cart', (req, res, next) => {
+	User.findByPk(req.params.orderId, {
+		include: [
+			{
+				model: Cart,
+			},
+		],
+	})
+	.then((user) => res.send(user))
+	.catch(e => {
+		res.status(404);
+		next(e);
+	})
+})
 
-	Order.create({
-		userId,
-		shippingAddress,
-		orderCost,
+//Adds a new item to the cart
+router.post('/:orderId/cart', (req, res, next) => {
+	const { productId, productQuantity, productCost } = req.body;
+	const { orderId } = req.params;
+
+	Cart.create({
+		orderId: orderId * 1,
+		productId: productId * 1,
+		productQuantity: productQuantity * 1,
+		productCost: (productCost * 1).toFixed(2),
 	})
 	.then(() => res.status(201))
 	.catch(e => {
@@ -49,30 +64,34 @@ router.post('/', (req, res, next) => {
 	})
 })
 
-//Deletes an order based on a primary key.
-router.delete('/:id', (req, res, next) => {
-	Order.findByPk(req.params.id)
-	.then(order => order.destroy())
+//Deletes an item from a cart
+router.delete('/:orderId/cart/:cartId', (req, res, next) => {
+	const { cartId } = req.params;
+
+	Cart.findByPk(cartId)
+	.then(cart => cart.destroy())
 	.then(() => res.status(202))
 	.catch(e => {
-		res.status(404)
-		next(e)
+		res.status(404);
+		next(e);
 	})
 })
 
-//Updates an order based on a primary key.
-//Falsy fields in req.body are set to the current values.
-//No need to update a userId
-router.put('/:id', (req, res, next) => {
-	const {
-		shippingAddress,
-		orderCost,
-	} = req.body
+//Updates an existing item in the cart
+router.put('/:orderId/cart/:cartId', (req, res, next) => {
+	const { 
+		productId,
+		productQuantity,
+		productCost
+	} = req.body;
+	const { orderId, cartId } = req.params;
 
-	Order.findByPk(req.params.id)
-	.then(order => order.update({
-		shippingAddress: shippingAddress || user.shippingAddress,
-		orderCost: orderCost || user.orderCost,
+	Cart.findByPk(cartId)
+	.then(cart => cart.update({
+		orderId: orderId * 1,
+		productId: productId * 1 || cart.productId,
+		productQuantity: productQuantity * 1 || cart.productQuantity,
+		productCost: productCost * 1 || cart.productCost
 	}))
 	.then(() => res.status(202))
 	.catch(e => {

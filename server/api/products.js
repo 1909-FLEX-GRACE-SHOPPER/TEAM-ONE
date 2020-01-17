@@ -1,13 +1,12 @@
 const router = require("express").Router();
 
-// const { Product } = require("../db/index.js");
-
+const { Product } = require("../db/index.js");
 
 router.get('/', (req, res, next) => {
-	Product.findAndCountAll()
+	Product.findAll()
 	.then(products => res.send(products))
 	.catch(e => {
-		res.status(404)
+		res.status(404);
 		next(e);
 	})
 })
@@ -35,8 +34,8 @@ router.post('/', (req, res, next) => {
 	Product.create({
 		productName,
 		productDescription: productDescription || null,
-		unitPrice,
-		inventory: inventory || 0,
+		unitPrice: (unitPrice * 1).toFixed(2),
+		inventory: inventory * 1 || 0,
 	})
 	.then(() => res.status(201))
 	.catch(e => {
@@ -70,8 +69,8 @@ router.put('/:id', (req, res, next) => {
 	.then(product => product.update({
 		productName: productName || product.productName,
 		productDescription: productDescription || product.productDescription,
-		unitPrice: unitPrice || product.unitPrice,
-		inventory: inventory || product.inventory,
+		unitPrice: (unitPrice * 1).toFixed(2) || product.unitPrice,
+		inventory: inventory * 1 || product.inventory,
 	}))
 })
 
