@@ -4,7 +4,7 @@ const { Product } = require("../db/index.js");
 
 router.get('/', (req, res, next) => {
 	Product.findAll()
-	.then(products => res.send(products))
+	.then(products => res.status(200).send(products))
 	.catch(e => {
 		res.status(404);
 		next(e);
@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/:id', (req, res, next) => {
 	Product.findByPk(req.params.id)
-	.then(product => res.send(product))
+	.then(product => res.status(200).send(product))
 	.catch(e => {
 		res.status(404);
 		next(e);
@@ -33,7 +33,7 @@ router.post('/', (req, res, next) => {
 
 	Product.create({
 		productName,
-		productDescription: productDescription || null,
+		productDescription,
 		unitPrice: (unitPrice * 1).toFixed(2),
 		inventory: inventory * 1 || 0,
 	})

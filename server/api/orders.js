@@ -5,7 +5,7 @@ const { Order, User } = require("../db/index.js");
 //Finds and servers all orders
 router.get('/', (req, res, next) => {
 	Order.findAllAndCount()
-	.then(orders => res.send(orders))
+	.then(orders => res.status(200).send(orders))
 	.catch(e => {
 		res.status(404);
 		next(e);
@@ -22,7 +22,7 @@ router.get('/:id', (req, res, next) => {
 			},
 		],
 	})
-	.then(order => res.send(order))
+	.then(order => res.status(200).send(order))
 	.catch(e => {
 		res.status(404);
 		next(e);
@@ -39,7 +39,7 @@ router.get('/:orderId/cart', (req, res, next) => {
 			},
 		],
 	})
-	.then((user) => res.send(user))
+	.then((user) => res.status(200).send(user))
 	.catch(e => {
 		res.status(404);
 		next(e);

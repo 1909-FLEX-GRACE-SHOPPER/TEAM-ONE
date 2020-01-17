@@ -4,8 +4,8 @@ const { User, Order } = require('../db/index.js');
 
 //Finds, counts and serves all users
 router.get('/', (req, res, next) => {
-	User.findAll()
-	.then(users => res.send(users))
+	User.findAndCountAll()
+	.then(users => res.status(200).send(users))
 	.catch(e => {
 		res.status(404);
 		next(e);
@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
 //Finds and serves a single user based on a primary key.
 router.get('/:userId', (req, res, next) => {
 	User.findByPk(req.params.userId)
-	.then(user => res.send(user))
+	.then(user => res.status(200).send(user))
 	.catch(e => {
 		res.status(404);
 		next(e);
@@ -162,7 +162,7 @@ router.get('/:userId/orders', (req, res, next) => {
 			},
 		],
 	})
-	.then(user => res.send(user))
+	.then(user => res.status(200).send(user))
 	.catch(e => {
 		res.status(404);
 		next(e);
@@ -212,8 +212,8 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
 
 	Order.findByPk(req.params.orderid)
 	.then(order => order.update({
-		shippingAddress: shippingAddress || user.shippingAddress,
-		orderCost: (orderCost * 1).toFixed(2) || user.orderCost,
+		shippingAddress: shippingAddress || order.shippingAddress,
+		orderCost: (orderCost * 1).toFixed(2) || order.orderCost,
 	}))
 	.then(() => res.status(202))
 	.catch(e => {
