@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const {
+  db,
+  models,
+} = require('./db/index.js')
+
 app.use(express.static(path.join("__dirname", "..", "/public")));
 
 const PORT = process.env.PORT || 3000;
@@ -14,5 +19,10 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`App is listening at localhost:${PORT}`);
 });
+
+db.sync({ force: true })
+  .then(() => {
+    console.log('db synced')
+  })
 
 module.exports = app
