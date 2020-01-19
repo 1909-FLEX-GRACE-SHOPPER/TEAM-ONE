@@ -22,6 +22,7 @@ const Users = db.define('users', {
     },
     loggedIn: {
         type: BOOLEAN,
+        defaultValue: false,
     },
     email: {
         type: STRING,
