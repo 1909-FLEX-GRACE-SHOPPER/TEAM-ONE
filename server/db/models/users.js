@@ -88,6 +88,7 @@ const Users = db.define('users', {
                 msg: 'Phone number should only contain numbers',
             },
             len: {
+                //we may want to change the length when we want to pursue internationalization
                 arg: 10,
             }
         }
