@@ -34,6 +34,7 @@ const Products = db.define('products', {
     inventory: {
         type: INTEGER,
         allowNull: false,
+        defaultValue: 0,
     },
     productImage: {
         type: STRING,
