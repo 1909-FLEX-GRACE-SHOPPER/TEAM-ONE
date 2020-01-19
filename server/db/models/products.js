@@ -1,6 +1,6 @@
 //define Products model here
 const Sequelize = require('sequelize');
-const { db } = require('./../database.js');
+const db = require('./../database.js');
 
 const { UUID, UUIDV4, STRING, DECIMAL, TEXT, INTEGER } = Sequelize;
 
