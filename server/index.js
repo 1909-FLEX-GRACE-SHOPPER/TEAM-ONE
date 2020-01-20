@@ -26,7 +26,7 @@ app.use('/', (err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`App is listening at localhost:${PORT}`);
 });
-
+//May add conditions to { force: true } later to avoid delating the entire database in the deployed app
 db.sync({ force: true })
   .then(() => {
     console.log('db synced')

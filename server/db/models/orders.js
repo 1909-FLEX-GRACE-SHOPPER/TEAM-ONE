@@ -4,7 +4,7 @@ const db = require('./../database.js');
 
 const { UUID, UUIDV4, STRING, DECIMAL } = Sequelize;
 
-const Orders = db.define('orders', {
+const Order = db.define('orders', {
     id: {
         primaryKey: true,
         type: UUID,
@@ -21,4 +21,4 @@ const Orders = db.define('orders', {
     }
 });
 
-module.exports = Orders;
+module.exports = Order;

@@ -1,14 +1,14 @@
 //collect all models here and export at once
-const Users = require('./users');
-const Orders = require('./orders');
-const OrderDetails = require('./order-details');
-const Products = require('./products');
+const User = require('./users');
+const Order = require('./orders');
+const OrderDetail = require('./order-details');
+const Product = require('./products');
 const Wishlist = require('./wishlist');
 
 module.exports = {
-    Users,
-    Orders,
-    OrderDetails,
-    Products,
+    User,
+    Order,
+    OrderDetail,
+    Product,
     Wishlist,
 }
