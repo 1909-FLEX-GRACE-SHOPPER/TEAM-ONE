@@ -2,7 +2,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../database.js');
 
-const { UUID, UUIDV4, STRING, DECIMAL } = Sequelize;
+const { UUID, UUIDV4, STRING, DECIMAL, INTEGER } = Sequelize;
 
 const Order = db.define('orders', {
     id: {
@@ -11,14 +11,43 @@ const Order = db.define('orders', {
         defaultValue: UUIDV4,
     },
     orderCost: {
-        //how to make order cost as the sum
-        //of product cost?
+        //TODO: make order cost as the sum of product cost
         type: DECIMAL(10, 2),
+        allowNull: false,
+    },
+    firstName: {
+        type: STRING,
+        allowNull: false,
+    },
+    lastName: {
+        type: STRING,
         allowNull: false,
     },
     shippingAddress: {
         type: STRING,
-    }
+        allowNull: false,
+    },
+    shippingCity: {
+        type: STRING,
+        allowNull: false,
+    },
+    shippingState: {
+        type: STRING,
+        allowNull: false,
+    },
+    shippingZip: {
+        type: INTEGER,
+        allowNull: false,
+        validate: {
+            isNumeric: {
+                args: true,
+                msg: 'Shipping zip code should only contain numbers',
+            },
+            len: {
+                arg: 5,
+            }
+        }
+    },
 });
 
 module.exports = Order;

@@ -15,8 +15,8 @@ const OrderDetail = db.define('orderDetails', {
         allowNull: false,
     },
     productCost: {
-        //how to make product cost as the product
-        //of product price and product quantity?
+        //TODO: make product cost as the product
+        //of product price and product quantity
         type: DECIMAL(10, 2),
         allowNull: false,
     },
