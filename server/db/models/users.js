@@ -45,6 +45,8 @@ const Users = db.define('users', {
         //password is not required to guest, but required to admin and existing customer
         //need to figure out how to make it notNull when userType is "Admin" or "Existing Customer"
         type: STRING,
+        allowNull: true,
+        unique: true,
         validate: {
             customValidator(value) {
                 if (value === null && this.userType !== 'Guest') {
