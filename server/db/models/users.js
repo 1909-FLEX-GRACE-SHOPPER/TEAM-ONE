@@ -1,11 +1,11 @@
 //define Users model here
 const Sequelize = require('sequelize');
-const { db } = require('./../database.js');
+const db = require('./../database.js');
 
 const { UUID, UUIDV4, STRING, BOOLEAN, INTEGER, DATEONLY } = Sequelize;
 
 const Users = db.define('users', {
-    userId: {
+    id: {
         primaryKey: true,
         type: UUID,
         defaultValue: UUIDV4,
@@ -22,24 +22,23 @@ const Users = db.define('users', {
     },
     loggedIn: {
         type: BOOLEAN,
+        defaultValue: false,
     },
     email: {
         type: STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true,
         validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Email address cannot be empty',
-            },
-            notNull: {
-                arg: true,
-                msg: 'Email address cannot be null',
+            customValidator(value) {
+                if (value === null && this.userType !== 'Guest') {
+                    throw new Error('Email address cannot be null unless user type is guest')
+                };
             },
             isEmail: {
                 arg: true,
                 msg: 'Email address must be valid',
             }
+
         },
     },
     password: {
@@ -47,6 +46,11 @@ const Users = db.define('users', {
         //need to figure out how to make it notNull when userType is "Admin" or "Existing Customer"
         type: STRING,
         validate: {
+            customValidator(value) {
+                if (value === null && this.userType !== 'Guest') {
+                    throw new Error('Password cannot be null unless user type is guest')
+                };
+            },
             len: {
                 arg: 6,
             }
@@ -54,31 +58,9 @@ const Users = db.define('users', {
     },
     firstName: {
         type: STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'First name cannot be empty',
-            },
-            notNull: {
-                arg: true,
-                msg: 'First name cannot be null',
-            },
-        },
     },
     lastName: {
         type: STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Last name cannot be empty',
-            },
-            notNull: {
-                arg: true,
-                msg: 'Last name cannot be null',
-            },
-        },
     },
     phone: {
         type: INTEGER,
@@ -94,45 +76,12 @@ const Users = db.define('users', {
     },
     shippingAddress: {
         type: STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Shipping address cannot be empty',
-            },
-            notNull: {
-                args: true,
-                msg: 'Shipping address cannot be null',
-            },
-        }
     },
     shippingCity: {
         type: STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Shipping city cannot be empty',
-            },
-            notNull: {
-                args: true,
-                msg: 'Shipping city cannot be null',
-            },
-        },
     },
     shippingState: {
         type: STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Shipping state cannot be empty',
-            },
-            notNull: {
-                args: true,
-                msg: 'Shipping state cannot be null',
-            },
-        },
     },
     shippingZip: {
         type: INTEGER,
@@ -160,31 +109,9 @@ const Users = db.define('users', {
     },
     cardholder: {
         type: STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Cardholder cannot be empty',
-            },
-            notNull: {
-                arg: true,
-                msg: 'Cardholder cannot be null',
-            },
-        },
     },
     expirationDate: {
         type: DATEONLY,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Expiration date cannot be empty',
-            },
-            notNull: {
-                arg: true,
-                msg: 'Expiration date cannot be null',
-            },
-        },
     },
     securityCode: {
         type: INTEGER,
@@ -200,45 +127,12 @@ const Users = db.define('users', {
     },
     billingAddress: {
         type: STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Billing address cannot be empty',
-            },
-            notNull: {
-                args: true,
-                msg: 'Billing address cannot be null',
-            },
-        }
     },
     billingCity: {
         type: STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Billing city cannot be empty',
-            },
-            notNull: {
-                args: true,
-                msg: 'Billing city cannot be null',
-            },
-        },
     },
     billingState: {
         type: STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Billing state cannot be empty',
-            },
-            notNull: {
-                args: true,
-                msg: 'Billing state cannot be null',
-            },
-        },
     },
     billingZip: {
         type: INTEGER,

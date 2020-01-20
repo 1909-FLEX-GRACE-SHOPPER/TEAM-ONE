@@ -3,7 +3,18 @@
 const db = require('./database');
 const { Users, Orders, OrderDetails, Products, Wishlist } = require('./models/index');
 
-//set up foreign keys here, i.e. connect models
+//set up associations here
+//Wishlist gets the association key as userId
+Users.hasOne(Wishlist);
+//Wishlist gets the association key as productId
+Products.hasMany(Wishlist);
+//Orders gets the association key as userId
+Users.hasMany(Orders);
+//OrderDetails gets the association key as orderId
+Orders.hasOne(OrderDetails);
+//OrderDetails gets the association key as productId
+Products.hasMany(OrderDetails);
+
 
 module.exports = {
     db,

@@ -1,14 +1,14 @@
 // define OrderDetails model here
 const Sequelize = require('sequelize');
-const { db } = require('./../database.js');
+const db = require('./../database.js');
 
 const { UUID, UUIDV4, DECIMAL, INTEGER } = Sequelize;
 
 const OrderDetails = db.define('orderDetails', {
-    orderDetailsId: {
-        //how to define the orderDetailsId as concat(orderId, productId)?
+    id: {
         primaryKey: true,
         type: UUID,
+        defaultValue: UUIDV4,
     },
     productQuantity: {
         type: INTEGER,

@@ -1,11 +1,11 @@
 //define Wishlist model here
 const Sequelize = require('sequelize');
-const { db } = require('./../database.js');
+const db = require('./../database.js');
 
 const { UUID, UUIDV4 } = Sequelize;
 
 const Wishlist = db.define('wishlist', {
-    wishlistId: {
+    id: {
         primaryKey: true,
         type: UUID,
         defaultValue: UUIDV4,

@@ -1,11 +1,11 @@
 //define Products model here
 const Sequelize = require('sequelize');
-const { db } = require('./../database.js');
+const db = require('./../database.js');
 
 const { UUID, UUIDV4, STRING, DECIMAL, TEXT, INTEGER } = Sequelize;
 
 const Products = db.define('products', {
-    productId: {
+    id: {
         primaryKey: true,
         type: UUID,
         defaultValue: UUIDV4,
@@ -34,6 +34,7 @@ const Products = db.define('products', {
     inventory: {
         type: INTEGER,
         allowNull: false,
+        defaultValue: 0,
     },
     productImage: {
         type: STRING,
