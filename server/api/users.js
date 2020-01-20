@@ -58,7 +58,7 @@ router.post('/', (req, res, next) => {
 		billingState: billingState || null,
 		billingZip: billingZip || null,
 	})
-	.then(() => res.status(201))
+	.then(user => res.status(201).send(user))
 	.catch(e => {
 		res.status(400);
 		next(e);
@@ -74,7 +74,7 @@ router.post('/login', (req, res, next) => {
 	{
 		where: { email, password }, returning: true
 	})
-	.then(() => res.status(201))
+	.then(user => res.status(201).send(user))
 	.catch(e => {
 		res.status(401);
 		next(e);
@@ -145,7 +145,7 @@ router.put('/:id', (req, res, next) => {
 		billingState: billingState || user.billingState,
 		billingZip: billingZip || user.billingZip,
 	}))
-	.then(() => res.status(202))
+	.then(user => res.status(202).send(user))
 	.catch(e => {
 		res.status(304);
 		next(e);

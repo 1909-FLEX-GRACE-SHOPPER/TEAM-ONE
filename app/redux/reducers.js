@@ -1,0 +1,42 @@
+import {
+    SET_PRODUCTS,
+    SET_SINGLE_PRODUCT,
+    SET_USER,
+    SET_ORDERS,
+ } from './constants';
+
+export const products = (state = [], action) => {
+    switch(action.type) {
+        case SET_PRODUCTS:
+            return action.products;
+        default:
+            return state;
+    }
+}
+
+export const singleProduct = (state = {}, action) => {
+    switch(action.type) {
+        case SET_SINGLE_PRODUCT:
+            return action.user;
+        default: 
+            return state;
+    }
+}
+
+export const user = (state = {}, action) => {
+    switch(action.type) {
+        case SET_USER:
+            return action.user;
+        default:
+            return state;
+    }
+}
+
+export const orders = (state = [], action) => {
+    switch(action.type) {
+        case SET_ORDERS:
+            return action.orders;
+        default:
+            return state;
+    }
+}
