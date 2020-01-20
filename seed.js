@@ -1,5 +1,5 @@
 const { users, products } = require('./seed-data.js');
-const { User, Product } = require('./db/models/index.js');
+const { User, Product } = require('./server/db/models/index.js');
 
 const seedUsers = () => {
   return Promise.all(users.map(_u => User.create(_u)));

@@ -4,34 +4,35 @@ const db = require('./database');
 const {
   User,
   Order,
-  OrderDetail,
+  //OrderDetail,
   Product,
   Wishlist
 } = require('./models/index');
 
-//set up associations here
-//Wishlist gets the association key as userId
-User.hasMany(Wishlist);
-Wishlist.hasOne(User);
-//Wishlist gets the association key as productId
-Product.hasMany(Wishlist);
-Wishlist.hasMany(Product);
-//Orders gets the association key as userId
+//MODEL ASSOCIATIONS
+
+//WISHLIST
+Product.belongsToMany(User, { through: Wishlist });
+// User.hasOne(Wishlist);
+// Wishlist.belongsTo(User);
+//Wishlist.hasMany(Product);
+
+//ORDERS
 User.hasMany(Order);
-Order.hasOne(User);
-//OrderDetails gets the association key as orderId
-Order.hasMany(OrderDetail);
-OrderDetail.hasOne(Order);
-//OrderDetails gets the association key as productId
-Product.hasMany(OrderDetail);
-OrderDetail.hasMany(Product);
+Order.belongsTo(User);
+
+//ORDER DETAILS
+Product.belongsToMany(Order, { through: 'orderDetails' });
+// Order.hasMany(OrderDetail);
+// OrderDetail.belongsTo(Order);
+//OrderDetail.hasMany(Product);
 
 module.exports = {
   db,
   models: {
     User,
     Order,
-    OrderDetail,
+    //OrderDetail,
     Product,
     Wishlist
   }
