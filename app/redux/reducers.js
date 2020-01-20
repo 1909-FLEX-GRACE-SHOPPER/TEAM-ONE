@@ -40,3 +40,12 @@ export const orders = (state = [], action) => {
             return state;
     }
 }
+
+export const orderDetails = (state = [], action) => {
+    switch(action.type) {
+        case SET_ORDER_DETAILS:
+            return action.orderDetails;
+        default: 
+            return state;
+    }
+}

@@ -7,8 +7,8 @@ import rootReducer from './redux/index';
 
 export default createStore(
     rootReducer,
-    applyMiddleware([
+    applyMiddleware(
         thunkMiddleware.withExtraArgument({ axios }),
         createLogger({ collapsed: true }),
-    ])
+    )
 )

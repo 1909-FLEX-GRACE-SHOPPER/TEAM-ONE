@@ -5,3 +5,5 @@ export const SET_SINGLE_PRODUCT = "SET_SINGLE_PRODUCT";
 export const SET_USER = "SET_USER";
 
 export const SET_ORDERS = "SET_ORDERS";
+
+export const SET_ORDER_DETAILS = "SET_ORDER_DETAILS";

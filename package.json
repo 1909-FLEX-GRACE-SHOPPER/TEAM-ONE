@@ -6,10 +6,10 @@
   "scripts": {
     "start-dev": "npm run build-watch & npm run start-server",
     "start-server": "nodemon ./server/index.js -e html,js,css --ignore public",
-    "build-watch": "webpack -w", 
+    "build-watch": "webpack -w",
     "start": "NODE_ENV=production node server/index.js",
     "start:server-dev": "./node_modules/.bin/nodemon -q --watch server/index.js",
-    "start:client-dev": "./node_modules/.bin/webpack --mode=\"development\" --watch", 
+    "start:client-dev": "./node_modules/.bin/webpack --mode=\"development\" --watch",
     "build": "./node_modules/.bin/webpack --mode=\"production\""
   },
   "repository": {
