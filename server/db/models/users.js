@@ -26,21 +26,19 @@ const Users = db.define('users', {
     },
     email: {
         type: STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true,
         validate: {
-            notEmpty: {
-                args: true,
-                msg: 'Email address cannot be empty',
-            },
-            notNull: {
-                arg: true,
-                msg: 'Email address cannot be null',
+            customValidator(value) {
+                if (value === null && this.userType !== 'Guest') {
+                    throw new Error('Email address cannot be null unless user type is guest')
+                };
             },
             isEmail: {
                 arg: true,
                 msg: 'Email address must be valid',
             }
+
         },
     },
     password: {
@@ -48,6 +46,11 @@ const Users = db.define('users', {
         //need to figure out how to make it notNull when userType is "Admin" or "Existing Customer"
         type: STRING,
         validate: {
+            customValidator(value) {
+                if (value === null && this.userType !== 'Guest') {
+                    throw new Error('Password cannot be null unless user type is guest')
+                };
+            },
             len: {
                 arg: 6,
             }
