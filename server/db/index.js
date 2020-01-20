@@ -4,7 +4,7 @@ const db = require('./database');
 const {
   User,
   Order,
-  //OrderDetail,
+  OrderDetail,
   Product,
   Wishlist
 } = require('./models/index');
@@ -28,7 +28,7 @@ module.exports = {
   models: {
     User,
     Order,
-    //OrderDetail,
+    OrderDetail,
     Product,
     Wishlist
   }
