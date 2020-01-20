@@ -1,28 +1,35 @@
 //collect all models and db connection
 //export everything in the database from here
 const db = require('./database');
-const { User, Order, OrderDetail, Product, Wishlist } = require('./models/index');
+const {
+  User,
+  Order,
+  OrderDetail,
+  Product,
+  Wishlist
+} = require('./models/index');
 
-//set up associations here
-//Wishlist gets the association key as userId
-User.hasMany(Wishlist);
-//Wishlist gets the association key as productId
-Product.hasMany(Wishlist);
-//Orders gets the association key as userId
+//MODEL ASSOCIATIONS
+
+//WISHLISTS
+Product.belongsToMany(User, { through: Wishlist });
+User.hasMany(Product);
+
+//ORDERS
 User.hasMany(Order);
-//OrderDetails gets the association key as orderId
-Order.hasMany(OrderDetail);
-//OrderDetails gets the association key as productId
-Product.hasMany(OrderDetail);
+Order.belongsTo(User);
 
+//ORDER DETAILS
+Product.belongsToMany(Order, { through: OrderDetail });
+Order.belongsToMany(Product, { through: OrderDetail });
 
 module.exports = {
-    db,
-    models: {
-        User,
-        Order,
-        OrderDetail,
-        Product,
-        Wishlist,
-    }
-}
+  db,
+  models: {
+    User,
+    Order,
+    OrderDetail,
+    Product,
+    Wishlist
+  }
+};
