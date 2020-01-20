@@ -11,11 +11,9 @@ const {
 
 //MODEL ASSOCIATIONS
 
-//WISHLIST
+//WISHLISTS
 Product.belongsToMany(User, { through: Wishlist });
-// User.hasOne(Wishlist);
-// Wishlist.belongsTo(User);
-//Wishlist.hasMany(Product);
+User.hasMany(Product);
 
 //ORDERS
 User.hasMany(Order);
@@ -23,9 +21,7 @@ Order.belongsTo(User);
 
 //ORDER DETAILS
 Product.belongsToMany(Order, { through: 'orderDetails' });
-// Order.hasMany(OrderDetail);
-// OrderDetail.belongsTo(Order);
-//OrderDetail.hasMany(Product);
+Order.belongsToMany(Product, { through: 'orderDetails' });
 
 module.exports = {
   db,
