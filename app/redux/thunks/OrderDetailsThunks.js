@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { setOrderDetails } from '../actions';
 
+//TODO: Render error component when thunks fail
+
 //Thunk to fetch orderDetails from an order.
 export const fetchOrderDetails = orderId => {
     return dispatch => {

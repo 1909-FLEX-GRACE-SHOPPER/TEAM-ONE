@@ -3,6 +3,7 @@ import {
     SET_SINGLE_PRODUCT,
     SET_USER,
     SET_ORDERS,
+    SET_ORDER_DETAILS,
  } from './constants';
 
 export const products = (state = [], action) => {

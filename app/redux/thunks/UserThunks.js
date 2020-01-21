@@ -2,6 +2,8 @@ import axios from 'axios';
 
 import { setUser } from '../actions';
 
+//TODO: Render error component when thunks fail
+
 //Thunk for fetching a user
 export const fetchUser = (userId = null) => {
     return dispatch => {

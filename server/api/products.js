@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
-const { Product } = require("../db/index.js");
+const { models } = require("../db/index");
+const { Product } = models;
 
 router.get('/', (req, res, next) => {
 	Product.findAll()

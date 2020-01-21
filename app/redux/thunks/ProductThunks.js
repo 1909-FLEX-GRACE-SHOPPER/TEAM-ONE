@@ -5,6 +5,8 @@ import {
     setSingleProduct,
 } from '../actions';
 
+//TODO: Render error component when thunks fail
+
 //Thunk for fetching all products. 
 //Do you think we could initialize id to null, and reuse this thunk to make a call for a single product?
 export const fetchProducts = () => {

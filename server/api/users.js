@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
-const { User, Order } = require('../db/index.js');
+const { models } = require('../db/index.js');
+const { User, Order } = models;
 
 //Finds, counts and serves all users
 router.get('/', (req, res, next) => {
