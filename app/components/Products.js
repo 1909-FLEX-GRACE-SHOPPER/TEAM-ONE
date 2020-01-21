@@ -1,11 +1,13 @@
 import React from 'react';
 import Product from './Product.js';
 import PageSelect from './PageSelect.js';
+import AddProductForm from './AddProductForm';
 
 const Products = ({ products }) => {
   const PRODUCTS_PER_PAGE = 10;
   return (
     <div>
+      <AddProductForm/>
       <div className="product-search-and-pagination">
         <div className="filter-and-sort">
           <select id="filter-by">
