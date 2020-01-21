@@ -18,7 +18,7 @@ export const products = (state = [], action) => {
 export const singleProduct = (state = {}, action) => {
     switch(action.type) {
         case SET_SINGLE_PRODUCT:
-            return action.user;
+            return action.product;
         default: 
             return state;
     }
