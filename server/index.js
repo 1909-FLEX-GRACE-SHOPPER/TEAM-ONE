@@ -12,9 +12,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use('/api', require('./api'));
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
-});
+}); // Send index.html for any other requests , "*" -will send our react application
 
 //Error-handling endware
 app.use('/', (err, req, res, next) => {
