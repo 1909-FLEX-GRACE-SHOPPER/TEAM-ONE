@@ -18,6 +18,8 @@ import WishList from "./Wishlist";
 
 import AddProductForm from './AddProductForm';
 
+import AddProductForm from './AddProductForm';
+
 const Root = () => {
 	return (
 		<Router>
