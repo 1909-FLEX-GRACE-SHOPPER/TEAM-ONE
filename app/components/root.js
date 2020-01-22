@@ -16,32 +16,29 @@ import Checkout from "./Checkout";
 import Confirmation from "./Confirmation";
 import WishList from "./Wishlist";
 
+import AddProductForm from './AddProductForm';
+
 const Root = () => {
-  return (
-    <Router>
-      <div>
-        <Navigation />
-        <Switch>
-          <Route exact path="/" component={WelcomeMessage} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route exact path="/products" /*component={Products}*/ />
-          <Route path="/products/:id" /*component={Product}*/ />
-          <Route
-            path="/orders/:orderId/shoppingcart/:userId?" /*component={ShoppingCart} */
-          />
-          <Route
-            path="/orders/:orderId/checkout/:userId?" /*component={Checkout} */
-          />
-          <Route
-            path="/orders/:orderId/confirmation/:userId?" /*component={Confirmation} */
-          />
-          <Route path="/wishlist/:userId" /*component={WishList} */ />
-          <Redirect to="/" />
-        </Switch>
-      </div>
-    </Router>
-  );
+	return (
+		<Router>
+			<div>
+				<Navigation />
+				<AddProductForm/>
+				<Switch>
+					<Route exact path='/' component={WelcomeMessage} />
+					<Route path='/login' component={Login} />
+					<Route path='/signup' component={Signup} />
+					<Route exact path='/products' /*component={Products}*/ />
+					<Route path='/products/:id' /*component={Product}*/ />
+					<Route path='/orders/:orderId/shoppingcart/:userId?' /*component={ShoppingCart} *//>
+					<Route path='/orders/:orderId/checkout/:userId?' /*component={Checkout} *//>
+          <Route path='/orders/:orderId/confirmation/:userId?' /*component={Confirmation} *//>
+          <Route path='/wishlist/:userId' /*component={WishList} *//> 
+					<Redirect to='/'/>
+				</Switch>
+			</div>
+		</Router>
+	);
 };
 
 export default Root;
