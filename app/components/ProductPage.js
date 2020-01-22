@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Button from "react-bootstrap";
-import product from "./Product.js";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap';
+import Product from './Product.js';
 
 const ProductPage = ({ product, similarProducts }) => {
   return (
@@ -29,7 +29,7 @@ const ProductPage = ({ product, similarProducts }) => {
         </div>
         <div className="similar-products-container">
           {similarProducts.map(_sp => (
-            <Product product={_sp} />
+            <Product key={`product-${_sp.id}`} product={_sp} />
           ))}
         </div>
       </div>

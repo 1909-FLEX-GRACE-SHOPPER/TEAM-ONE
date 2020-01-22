@@ -1,20 +1,20 @@
-import React from "react";
-import WelcomeMessage from "./WelcomeMessage.js";
-import Navigation from "./Navigation.js";
+import React from 'react';
+import WelcomeMessage from './WelcomeMessage.js';
+import Navigation from './Navigation.js';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect
-} from "react-router-dom";
-import Login from "./Login";
-import Signup from "./Signup";
-import Products from "./Products";
-import Product from "./Product";
-import ShoppingCart from "./ShoppingCart";
-import Checkout from "./Checkout";
-import Confirmation from "./Confirmation";
-import WishList from "./Wishlist";
+} from 'react-router-dom';
+import Login from './Login';
+import Signup from './Signup';
+import Products from './Products';
+import Product from './Product';
+import ShoppingCart from './ShoppingCart';
+import Checkout from './Checkout';
+import Confirmation from './Confirmation';
+import WishList from './Wishlist';
 
 const Root = () => {
   return (
@@ -25,7 +25,7 @@ const Root = () => {
           <Route exact path="/" component={WelcomeMessage} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
-          <Route exact path="/products" /*component={Products}*/ />
+          <Route exact path="/products" component={Products} />
           <Route path="/products/:id" /*component={Product}*/ />
           <Route
             path="/orders/:orderId/shoppingcart/:userId?" /*component={ShoppingCart} */
