@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
-const { Product } = require("../db/index.js");
+const { models } = require("../db/index");
+const { Product } = models;
 
 router.get('/', (req, res, next) => {
 	Product.findAll()
@@ -72,6 +73,11 @@ router.put('/:id', (req, res, next) => {
 		unitPrice: (unitPrice * 1).toFixed(2) || product.unitPrice,
 		inventory: inventory * 1 || product.inventory,
 	}))
+	.then(product => res.status(202).send(product))
+	.catch(e => {
+		res.status(304);
+		next(e);
+	})
 })
 
 module.exports = router
