@@ -1,6 +1,5 @@
 import React from "react";
-import Form from "react-bootstrap";
-import Button from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
@@ -36,7 +35,7 @@ const Signup = () => {
           <Form.Control type="password" />
         </Form.Group>
         <div>
-          Already a user? <Link>Login</Link>
+          Already a user? <Link to={'/login'}>Login</Link>
         </div>
         <Button variant="primary" type="submit">
           SIGN UP

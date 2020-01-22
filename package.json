@@ -12,6 +12,7 @@
     "start:client-dev": "./node_modules/.bin/webpack --mode=\"development\" --watch",
     "build": "./node_modules/.bin/webpack --mode=\"production\"",
     "test": "mocha -- ./tests/order-testing.js"
+
   },
   "repository": {
     "type": "git",
