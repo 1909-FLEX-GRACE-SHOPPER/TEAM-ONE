@@ -1,5 +1,5 @@
-import React from 'react';
-import Card from 'react-bootstrap/card';
+import React from "react";
+import Card from "react-bootstrap/Card";
 
 const Product = ({ product }) => {
   return (
