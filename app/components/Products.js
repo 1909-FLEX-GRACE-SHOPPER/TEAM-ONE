@@ -7,7 +7,6 @@ import Form from 'react-bootstrap/form';
 
 class Products extends React.Component {
   componentDidMount() {
-    console.log(this.props);
     this.props.fetchProducts();
   }
   render() {

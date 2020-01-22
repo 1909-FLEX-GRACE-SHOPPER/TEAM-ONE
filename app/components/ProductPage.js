@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap';
+import Button from 'react-bootstrap/button';
 import Product from './Product.js';
 
 const ProductPage = ({ product, similarProducts }) => {
