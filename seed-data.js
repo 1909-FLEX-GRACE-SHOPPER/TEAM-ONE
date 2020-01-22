@@ -56,15 +56,6 @@ const products = [
     unitPrice: 15.99
   },
   {
-    productName: 'CLASSIC TOBACCO',
-    productDescription:
-      'Familiar, robust tobacco flavor coupled with aromatic notes.\nEach JUULpod contains ~0.7mL with 5 % nicotine by weight.',
-    productImage:
-      'https://assets.juul.com/ctf/images/dtbhzmanuqgb/6PhsT5q4mWSIYCaksQQaqg/911d65c4f157dd3598f7adc8fee880e1/US_EN_Classic_Tobacco_-_Product_Page_Header_v1.5_-_4_Pods_4x.png?w=860&h=860&fit=pad&bg=rgb:ffffff&fm=jpg',
-    inventory: 100,
-    unitPrice: 15.99
-  },
-  {
     productName: 'MENTHOL',
     productDescription:
       'Traditional menthol flavor with a brisk finish.\nEach JUULpod contains ~0.7mL with 5 % nicotine by weight.',
