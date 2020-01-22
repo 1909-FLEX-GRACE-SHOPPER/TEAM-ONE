@@ -11,7 +11,7 @@
     "start:server-dev": "./node_modules/.bin/nodemon -q --watch server/index.js",
     "start:client-dev": "./node_modules/.bin/webpack --mode=\"development\" --watch",
     "build": "./node_modules/.bin/webpack --mode=\"production\"",
-    "test": "mocha -- express-testing/order.js"
+    "test": "mocha -- ./tests/order-testing.js"
   },
   "repository": {
     "type": "git",
