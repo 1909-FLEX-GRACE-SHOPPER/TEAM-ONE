@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { postProduct } from '../redux/thunks/ProductThunks';
 
 //TODO: add state and input for file upload
+//TODO: add tagging system
 
 class AddProductForm extends Component {
 	constructor() {
@@ -27,13 +28,19 @@ class AddProductForm extends Component {
 	handleOnSubmit = e => {
 		e.preventDefault();
 		this.props.postProduct(this.state);
+		this.setState({
+			productName: '',
+			productDescription: '',
+			unitPrice: 0,
+			inventory: 0,
+		})
 	}
 
 	render() {
 		const { productName, productDescription, unitPrice, inventory } = this.state;
 		return (
 			<div>
-				<Form>
+				<Form style={{ padding: '3rem'}}>
 					<Group controlId='productName'>
 						<Label>Product Name</Label>
 						<Control placeholder='Product Name' value={ productName } name='productName' onChange={ this.handleOnChange }/>
@@ -56,7 +63,7 @@ class AddProductForm extends Component {
 						</Group>
 					</Row>
 
-					<Button onClick={ this.handleOnSubmit }>Submit</Button>
+					<Button disabled={ !productName || !unitPrice ? true : false } onClick={ this.handleOnSubmit }>Create Product</Button>
 				</Form>
 			</div>
 		)
