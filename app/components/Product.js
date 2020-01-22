@@ -1,14 +1,14 @@
 import React from 'react';
-import Card from 'react-bootstrap';
+import Card from 'react-bootstrap/card';
 
 const Product = ({ product }) => {
   return (
     <Card>
       <Card.Header>
-        <div>{product.name}</div>
-        <div>${product.price}</div>
+        <div>{product.productName}</div>
+        <div>${product.unitPrice}</div>
       </Card.Header>
-      <Card.Img variant="bottom" src={product.image} />
+      <Card.Img variant="bottom" src={product.productImage} />
     </Card>
   );
 };
