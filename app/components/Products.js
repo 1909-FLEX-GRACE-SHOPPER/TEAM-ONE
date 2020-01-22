@@ -7,7 +7,6 @@ const Products = ({ products }) => {
   const PRODUCTS_PER_PAGE = 10;
   return (
     <div>
-      <AddProductForm/>
       <div className="product-search-and-pagination">
         <div className="filter-and-sort">
           <select id="filter-by">

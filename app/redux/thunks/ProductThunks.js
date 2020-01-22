@@ -30,7 +30,11 @@ export const fetchSingleProduct = productId => {
 //Refetches products after creating.
 export const postProduct = product => {
     return dispatch => {
-        return axios.post(`/api/products`, product)
+        return axios.post(`/api/products`, product, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
         .then(() => dispatch(fetchProducts()))
         .catch(e => console.error('Error creating product', e))
     }
