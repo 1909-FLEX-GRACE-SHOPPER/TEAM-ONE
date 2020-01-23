@@ -9,6 +9,12 @@ import Button from 'react-bootstrap/Button';
 import Product from './Product.js';
 
 class ProductPage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      quantity: 0
+    };
+  }
   componentDidMount() {
     this.props.fetchSingleProduct(this.props.match.params.id);
     this.props.fetchProducts();
@@ -24,13 +30,29 @@ class ProductPage extends React.Component {
             <Link to="/products">Back</Link>
             <div className="product-page">
               <div className="product-hero">
-                <div className="product-image-large"></div>
+                <img
+                  className="product-image-small"
+                  src={singleProduct.productImage}
+                />
                 <div className="product-details">
                   <div className="product-name">{singleProduct.name}</div>
                   <div className="product-price">{singleProduct.price}</div>
                   <div className="product-quantity-select-container">
-                    <input type="number" className="product-quantity-select" />
-                    <div className="product-sub-total">SUBTOTAL</div>
+                    <input
+                      type="number"
+                      className="product-quantity-select"
+                      max={singleProduct.inventory}
+                      value={this.state.quantity}
+                      onChange={e => {
+                        this.setState({ quantity: e.target.value });
+                      }}
+                    />
+                    <div className="product-sub-total">
+                      SUBTOTAL{' '}
+                      {`$${(
+                        this.state.quantity * singleProduct.unitPrice
+                      ).toFixed(2)}`}
+                    </div>
                   </div>
                   <Button>ADD TO CART</Button>
                   <Button>ADD TO WISHLIST</Button>
@@ -59,6 +81,9 @@ class ProductPage extends React.Component {
 }
 
 //TODO: This should fetch similar products not just all products
+//TODO: Add wishlist thunk
+//TODO: Add cart thunk
+
 const mapState = ({ singleProduct, products }) => ({ singleProduct, products });
 const mapDispatch = dispatch => {
   return {
