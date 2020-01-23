@@ -13,7 +13,10 @@ const Navigation = () => {
       </Nav>
       <Nav>
         <Nav.Link href="/login">Login</Nav.Link>
-        <Nav.Link href="/orders/:orderId/shoppingcart/:userId?">Cart</Nav.Link> {/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
+        <Nav.Link href="/orders/:orderId/shoppingcart/:userId?">
+          Cart
+        </Nav.Link>{' '}
+        {/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
       </Nav>
     </Navbar>
   );
