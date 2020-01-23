@@ -10,6 +10,7 @@ import {
 import Login from './Login';
 import Signup from './Signup';
 import Products from './Products';
+import ProductPage from './ProductPage';
 import Product from './Product';
 import ShoppingCart from './ShoppingCart';
 import Checkout from './Checkout';
@@ -26,7 +27,7 @@ const Root = () => {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route exact path="/products" component={Products} />
-          <Route path="/products/:id" /*component={Product}*/ />
+          <Route path="/products/:id" component={ProductPage} />
           <Route
             path="/orders/:orderId/shoppingcart/:userId?" /*component={ShoppingCart} */
           />
