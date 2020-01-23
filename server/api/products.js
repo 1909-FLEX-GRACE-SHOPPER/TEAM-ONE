@@ -33,29 +33,24 @@ router.post('/', (req, res, next) => {
 		inventory,
 	} = req.body
 
-	console.log(req)
-
 	const imageFile = req.files.productImage
+	console.log(path.join('__dirname', '..', '/public', '/uploads', `/${ imageFile.name.split(' ').join('-') }`))
 
-	imageFile.mv(path.join('__dirname', '..', '/public', '/uploads', `/${ imageFile.name }`), err => {
-		if(err) {
-			return res.status(500).send(err);
-		}
-
-		Product.create({
-			productName,
-			productDescription,
-			unitPrice: (unitPrice * 1).toFixed(2),
-			inventory: inventory * 1 || 0,
-			productImage: imageFile.name,
+	imageFile.mv(path.join('__dirname', '..', '/public', '/uploads', `/${ imageFile.name.split(' ').join('-') }`))
+		.then(() => {
+			Product.create({
+				productName,
+				productDescription,
+				unitPrice: (unitPrice * 1).toFixed(2),
+				inventory: inventory * 1 || 0,
+				productImage: `/uploads/${ imageFile.name.split(' ').join('-') }`,
+			})
 		})
-	})
-	.then(() => res.status(201))
-	.catch(e => {
-		res.status(400);
-		next(e);
-	})
-
+		.then(() => res.status(201))
+		.catch(e => {
+			res.status(400);
+			next(e);
+		})
 })
 
 //Deletes a product based on a primary key.

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ImageUploader from 'react-images-upload'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 const { Row, Group, Label, Control, Col } = Form
@@ -34,7 +33,6 @@ class AddProductForm extends Component {
 	}
 
 	handleBrowse = e => {
-		console.log(e)
 		this.setState({
 			file: e.target.files[0],
 			fileName: e.target.files[0].name,
@@ -46,9 +44,11 @@ class AddProductForm extends Component {
 		const formData = new FormData();
 		formData.append('productImage', this.state.file)
 
-		const product = { ...this.state, formData }
+		Object.keys(this.state).forEach(key => {
+			formData.append(`${ [key] }`, this.state[key])
+		})
 
-		this.props.postProduct( product );
+		this.props.postProduct( formData );
 		this.setState({
 			productName: '',
 			productDescription: '',

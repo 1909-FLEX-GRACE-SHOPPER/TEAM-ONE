@@ -29,7 +29,6 @@ export const fetchSingleProduct = productId => {
 //Thunk for creating a product.
 //Refetches products after creating.
 export const postProduct = product => {
-<<<<<<< HEAD
     return dispatch => {
         return axios.post(`/api/products`, product, {
             headers: {
@@ -40,15 +39,6 @@ export const postProduct = product => {
         .catch(e => console.error('Error creating product', e))
     }
 }
-=======
-  return dispatch => {
-    return axios
-      .post(`/api/products`, product)
-      .then(() => dispatch(fetchProducts()))
-      .catch(e => console.error('Error creating product', e));
-  };
-};
->>>>>>> 6618b0ed82f9c9309905047bad00a56299771fbe
 
 //Thunk for deleting a product.
 //Refetches products after deleting.

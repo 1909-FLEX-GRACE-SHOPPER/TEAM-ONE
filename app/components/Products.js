@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-import React from 'react';
-import Product from './Product.js';
-import PageSelect from './PageSelect.js';
-import AddProductForm from './AddProductForm';
-=======
 import React from "react";
 import Product from "./Product.js";
 import PageSelect from "./PageSelect.js";
 import { connect } from "react-redux";
 import { fetchProducts } from "../redux/thunks/ProductThunks.js";
 import Form from "react-bootstrap/Form";
->>>>>>> 6618b0ed82f9c9309905047bad00a56299771fbe
 
 class Products extends React.Component {
   componentDidMount() {
