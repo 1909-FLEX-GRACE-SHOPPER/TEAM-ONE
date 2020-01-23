@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 const router = require("express").Router();
 const path = require('path')
-=======
-const router = require('express').Router();
->>>>>>> fc1c67154afb7f9e8802eb7da88c1444082d7d66
 
 const { models } = require('../db/index');
 const { Product } = models;
@@ -34,7 +30,6 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const { productName, productDescription, unitPrice, inventory } = req.body;
 
-<<<<<<< HEAD
 	const imageFile = req.files.productImage
 	console.log(path.join('__dirname', '..', '/public', '/uploads', `/${ imageFile.name.split(' ').join('-') }`))
 
@@ -54,20 +49,6 @@ router.post('/', (req, res, next) => {
 			next(e);
 		})
 })
-=======
-  Product.create({
-    productName,
-    productDescription,
-    unitPrice: (unitPrice * 1).toFixed(2),
-    inventory: inventory * 1 || 0
-  })
-    .then(() => res.status(201))
-    .catch(e => {
-      res.status(400);
-      next(e);
-    });
-});
->>>>>>> fc1c67154afb7f9e8802eb7da88c1444082d7d66
 
 //Deletes a product based on a primary key.
 router.delete('/:id', (req, res, next) => {

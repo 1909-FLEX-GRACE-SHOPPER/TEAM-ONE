@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { postProduct } from '../redux/thunks/ProductThunks';
 
-//TODO: add file upload for image
+//TODO: error-handling
 //TODO: add tagging system
 
 class AddProductForm extends Component {

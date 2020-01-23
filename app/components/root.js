@@ -24,7 +24,6 @@ const Root = () => {
     <Router>
       <div>
         <Navigation />
-        <AddProductForm />
         <Switch>
           <Route exact path="/" component={WelcomeMessage} />
           <Route path="/login" component={Login} />
