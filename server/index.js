@@ -1,10 +1,15 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const fileUpload = require('express-fileupload')
 const { db, models } = require('./db/index.js');
 const { seedUsers, seedProducts } = require('../seed.js');
 
 app.use(express.json());
+
+app.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 }
+}))
 
 app.use(express.static(path.join('__dirname', '..', '/public')));
 

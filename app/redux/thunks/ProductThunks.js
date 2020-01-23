@@ -29,13 +29,16 @@ export const fetchSingleProduct = productId => {
 //Thunk for creating a product.
 //Refetches products after creating.
 export const postProduct = product => {
-  return dispatch => {
-    return axios
-      .post(`/api/products`, product)
-      .then(() => dispatch(fetchProducts()))
-      .catch(e => console.error('Error creating product', e));
-  };
-};
+    return dispatch => {
+        return axios.post(`/api/products`, product, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(() => dispatch(fetchProducts()))
+        .catch(e => console.error('Error creating product', e))
+    }
+}
 
 //Thunk for deleting a product.
 //Refetches products after deleting.
