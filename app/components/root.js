@@ -17,6 +17,8 @@ import Checkout from './Checkout';
 import Confirmation from './Confirmation';
 import WishList from './Wishlist';
 
+import AddProductForm from './AddProductForm';
+
 const Root = () => {
   return (
     <Router>
