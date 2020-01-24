@@ -29,6 +29,7 @@ const Root = () => {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route exact path="/products" component={Products} />
+          <Route exact path="/products/add" component={AddProductForm} />
           <Route path="/products/:id" component={ProductPage} />
           <Route
             path="/orders/:orderId/shoppingcart/:userId?" /*component={ShoppingCart} */
