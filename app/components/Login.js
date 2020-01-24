@@ -1,32 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Form , Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { logInUser } from '../redux/thunks/UserThunks';
 
-const Login = () => {
-	return (
-		<div className='login-page'>
-			<Link to={'/'}>BACK</Link>
-			<div className='logo-medium'></div>
+class Login extends Component {
+	state = {
+		email: '',
+		password: '',
+		errors: {},
+		isLoading: false
+	};
+	handleChange = event => {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+	};
+	onSubmit = (e) => {
+		e.preventDefault()
+		this.props.logInUser(this.state);
+	};
+	render() {
+		const { email, password, errors, isLoading } = this.state;
+		return (
 			<Form>
-				<Form.Group>
-					<Form.Label>USER NAME OR EMAIL</Form.Label>
-					<Form.Control type='text' />
+				<Form.Group controlId='formGroupEmail'>
+					<Form.Label>Email address</Form.Label>
+					<Form.Control
+						type='email'
+						placeholder='Enter email'
+						onChange={this.handleChange}
+					/>
 				</Form.Group>
-				<Form.Group>
-					<Form.Label>PASSWORD</Form.Label>
-					<Form.Control type='password' />
+				<Form.Group controlId='formGroupPassword'>
+					<Form.Label>Password</Form.Label>
+					<Form.Control
+						type='password'
+						placeholder='Password'
+						onChange={this.handleChange}
+					/>
 				</Form.Group>
-				<div>SIGN IN WITH GOOGLE</div>
-				<div>SIGN IN WITH FACEBOOK</div>
-				<div>
-					NOT A USER? <Link to={'/signup'}>SIGN UP</Link>
-				</div>
-				<Button variant='primary' type='submit'>
-					LOG IN
-				</Button>
+				<Button onClick={this.onSubmit}> Log In! </Button>
 			</Form>
-		</div>
-	);
+		);
+	}
+}
+
+const mapDispatchToProps = dispatch => {
+	return {
+		logInUser: data => dispatch(logInUser(data))
+	};
 };
 
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
