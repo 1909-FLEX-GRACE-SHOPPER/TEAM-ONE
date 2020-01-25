@@ -4,6 +4,8 @@ import {
     SET_USER,
     SET_ORDERS,
     SET_ORDER_DETAILS,
+    LOGIN_SUCCCESS,
+    LOGIN_ERROR
  } from './constants';
 
 export const products = (state = [], action) => {
@@ -48,5 +50,24 @@ export const orderDetails = (state = [], action) => {
             return action.orderDetails;
         default: 
             return state;
+    }
+}
+
+export const authentication = (state = {authError:null, logInStatus: null } , action ) => {
+    switch(action.type){
+        case LOGIN_ERROR:
+            return {
+                ...state, 
+                authError: 'Login Failed',
+                logInStatus: false
+            }
+        case LOGIN_SUCCCESS:
+            return {
+                ...state,
+                authError:null,
+                logInStatus: true
+            }
+            default:
+                return state
     }
 }
