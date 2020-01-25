@@ -53,17 +53,19 @@ export const orderDetails = (state = [], action) => {
     }
 }
 
-export const authenticationError = (state = {authError:null} , action ) => {
+export const authentication = (state = {authError:null, logInStatus: null } , action ) => {
     switch(action.type){
         case LOGIN_ERROR:
             return {
                 ...state, 
-                authError: 'Login Failed'
+                authError: 'Login Failed',
+                logInStatus: false
             }
         case LOGIN_SUCCCESS:
             return {
                 ...state,
-                authError:null
+                authError:null,
+                logInStatus: true
             }
             default:
                 return state

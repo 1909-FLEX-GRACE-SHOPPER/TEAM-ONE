@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, Button } from 'react-bootstrap';
 import axios from 'axios';
-import SignedInLinks from './SignedInLinks';
-import SignedOutLinks from './SignedOutLinks';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
-	state = {
-		firstName: '',
-		lastName: '',
-		loggedIn: false
-	};
-	// componentDidMount(){
-	//   axios.get('')
-	// }
 	render() {
-		const { loggedIn } = this.state;
 		return (
 			<Navbar bg='dark' variant='dark'>
 				<Navbar.Brand>Logo</Navbar.Brand>
@@ -29,8 +18,8 @@ class Navigation extends Component {
 						Cart
 					</Nav.Link>{' '}
 					{/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
-					<SignedInLinks />
-					<SignedOutLinks />
+					<Nav.Link to='/signup' href='/signup'> Sign Up </Nav.Link>
+					<Nav.Link to='/login' href='/login'> Login </Nav.Link>
 				</Nav>
 			</Navbar>
 		);
@@ -38,8 +27,8 @@ class Navigation extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    
-  }
-}
-export default connect (mapStateToProps) (Navigation)
+	return {
+		userLoggedIn: state.authentication
+	};
+};
+export default connect(mapStateToProps)(Navigation);
