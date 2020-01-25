@@ -6,6 +6,7 @@ import {
     user,
     orders,
     orderDetails,
+    authenticationError,
 } from './reducers';
 
 export default combineReducers({
@@ -14,5 +15,5 @@ export default combineReducers({
     user,
     orders,
     orderDetails,
-    authReducer
+    authenticationError,
 });

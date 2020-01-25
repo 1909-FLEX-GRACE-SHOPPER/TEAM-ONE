@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, Button } from 'react-bootstrap'
+import { Nav, Navbar, Button } from 'react-bootstrap';
 import axios from 'axios';
+import SignedInLinks from './SignedInLinks';
+import SignedOutLinks from './SignedOutLinks';
+import { connect } from 'react-redux';
 
 class Navigation extends Component {
 	state = {
@@ -26,11 +29,17 @@ class Navigation extends Component {
 						Cart
 					</Nav.Link>{' '}
 					{/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
-
+					<SignedInLinks />
+					<SignedOutLinks />
 				</Nav>
 			</Navbar>
 		);
 	}
 }
 
-export default Navigation;
+const mapStateToProps = state => {
+  return {
+    
+  }
+}
+export default connect (mapStateToProps) (Navigation)
