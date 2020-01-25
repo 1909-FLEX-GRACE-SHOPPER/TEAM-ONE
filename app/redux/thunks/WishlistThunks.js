@@ -3,13 +3,14 @@ import axios from 'axios';
 import { setWishlist } from '../actions';
 
 //TODO: Render error component when thunks fail
-
-//Thunk for fetch all orders from a user
 export const fetchWishlist = userId => {
   return dispatch => {
     return axios
       .get(`/api/wishlist/items/${userId}`)
-      .then(res => dispatch(setWishlist(res.data)))
+      .then(res => {
+        dispatch(setWishlist(res.data));
+        console.log('WISHLIST ', res.data);
+      })
       .catch(e => console.error('Error fetching WL', e));
   };
 };
