@@ -14,4 +14,5 @@ export default combineReducers({
     user,
     orders,
     orderDetails,
+    authReducer
 });

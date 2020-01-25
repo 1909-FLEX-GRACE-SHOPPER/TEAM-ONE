@@ -25,13 +25,13 @@ export const createUser = user => {
 
 //Thunk for logging in a user.
 //Sets the user to the logged in user after logging in.
-export const logInUser = ({ email, password }) => {
-    return dispatch => {
-        return axios.post(`/api/users/login`, { email, password })
-        .then(res => dispatch(setUser(res.data)))
-        .catch(e => console.error('Error logging user in', e))
-    }
-}
+// export const logInUser = ({ email, password }) => {
+//     return dispatch => {
+//         return axios.post(`/api/users/login`, { email, password })
+//         .then(res => dispatch(setUser(res.data)))
+//         .catch(e => console.error('Error logging user in', e))
+//     }
+// }
 
 //Thunk for logging out a user.
 //Sets the user to null after logging out.

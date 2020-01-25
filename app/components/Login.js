@@ -11,10 +11,7 @@ import {
   } from 'react-router-dom';
 import { logInUser } from '../redux/thunks/UserThunks';
 
-const location = {
-	pathname: '/somewhere',
-	state: { fromDashboard: true }
-  }
+
   
 class Login extends Component {
 	state = {
@@ -22,6 +19,8 @@ class Login extends Component {
 		password: '',
 		loggedInStatus: false,
 		logInError: false,
+		firstName: '',
+		lastName: ''
 	};
 	handleChange = event => {
 		this.setState({
@@ -36,10 +35,11 @@ class Login extends Component {
 			.post(`/api/users/login`, this.state)
 			.then((res) => {
 				this.setState({
-					loggedInStatus:true
+					loggedInStatus:true,
+					firstName: res.data.firstName,
+					lastName: res.data.lastName
 				})
-				console.log(res)
-			})
+			}) 
 			.catch(() => {
 				this.setState({
 					logInError: true
@@ -47,7 +47,7 @@ class Login extends Component {
 			});
 	};
 	render() {
-		const { email, password, loggedIn, logInError, welcomeMessage } = this.state;
+		const { email, password, loggedIn, logInError, firstName, lastName } = this.state;
 		return (
 		<Fragment> 
 		{ !this.state.loggedInStatus ? (
@@ -79,7 +79,7 @@ class Login extends Component {
 				<Button onClick={this.onSubmit}> Log In! </Button>
 			</Form>
 		) : (
-			<h2> Welcome to our store ! </h2>
+			<h2> {`Welcome to the Juul Store ${firstName} ${lastName}`} !</h2>
 		)
 		}
 		</Fragment>

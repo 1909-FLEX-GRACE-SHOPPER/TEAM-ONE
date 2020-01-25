@@ -84,12 +84,15 @@ router.post('/login', (req, res, next) => {
                   {
                       where: { email, password },
                       returning: true
-                  }
+                  },
+                  res.cookie('uuid', userOrNull.id, {
+                    path: '/',
+                    expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+                  })
               )
-              res.status(202).send(userOrNull); //this will send the user back to the component
-          }else {
+              return res.status(202).send(userOrNull); //this will send the user back to the component
+          }
       res.status(401).send('Failure!')
-    }
       })
       .catch(e => {
           res.status(500).send('Internal Error')
