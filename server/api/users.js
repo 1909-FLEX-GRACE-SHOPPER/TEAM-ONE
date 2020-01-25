@@ -68,21 +68,33 @@ router.post('/', (req, res, next) => {
 
 //Logs in a User
 router.post('/login', (req, res, next) => {
-  const { email, password } = req.body;
-  User.update(
-    {
-      loggedIn: true
-    },
-    {
-      where: { email, password },
-      returning: true
+  const { email, password, loggedIn } = req.body;
+  User.findOne({
+      where: {
+          email,
+          password
+      }
+  })
+      .then(userOrNull => {
+          if (userOrNull) {
+              User.update(
+                  {
+                      loggedIn: true
+                  },
+                  {
+                      where: { email, password },
+                      returning: true
+                  }
+              )
+              res.status(202).send(userOrNull); //this will send the user back to the component
+          }else {
+      res.status(401).send('Failure!')
     }
-  )
-    .then(user => res.status(201).send(user))
-    .catch(e => {
-      res.status(401);
-      next(e);
-    });
+      })
+      .catch(e => {
+          res.status(500).send('Internal Error')
+          next(e);
+      });
 });
 
 //Logs out a User
