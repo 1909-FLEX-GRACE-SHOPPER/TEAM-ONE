@@ -9,19 +9,6 @@ const cookieParser = require('cookie-parser');
 app.use(express.json());
 app.use(cookieParser())
 
-// app.use((req,res,next) => {
-//   if(req.cookies.uuid){
-//     User.findbyPk(req.cookies.uuid).then(userOrNull=> {
-//       if(userOrNull){
-//         req.loggedIn = true;
-//         next()
-//       }else{
-//         next()
-//       }
-//     })
-//   }
-// })
-
 app.use(fileUpload({
   limits: { fileSize: 50 * 1024 * 1024 }
 }))

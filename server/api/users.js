@@ -66,9 +66,9 @@ router.post('/', (req, res, next) => {
     });
 });
 
-//Logs in a User
+//Finds the User in the table and attaches the cookie
 router.post('/login', (req, res, next) => {
-  const { email, password, loggedIn } = req.body;
+  const { email, password } = req.body;
   User.findOne({
       where: {
           email,
@@ -90,7 +90,7 @@ router.post('/login', (req, res, next) => {
                     expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
                   })
               )
-              return res.status(202).send(userOrNull); //this will send the user back to the component
+              return res.status(202).send(userOrNull); 
           }
       res.status(401).send('Failure!')
       })

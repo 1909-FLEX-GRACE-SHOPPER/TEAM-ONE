@@ -22,8 +22,6 @@ class Login extends Component {
 	render() {
 		const { authError } = this.props.errorMessage;
 		const { logInStatus } = this.props.userLoginStatus;
-
-		console.log('status', logInStatus);
 		return (
 			<Fragment>
 			{ !logInStatus ? (

@@ -58,6 +58,8 @@ export const updateUser = (userId, user) => {
 	};
 };
 
+//Thunk for logging in a user.
+//Sets the User to true, if the credentials are wrong. it will be caught in the catch/error statement
 export const logInUser = ({ email, password }) => {
 	return dispatch => {
 		return axios.post(`/api/users/login`, { email, password }).then(() => {
