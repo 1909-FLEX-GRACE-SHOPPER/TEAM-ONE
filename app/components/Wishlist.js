@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import fetchWishlist from '../redux/thunks/WishlistThunks';
+import { fetchWishlist } from '../redux/thunks/WishlistThunks';
 import WishlistItem from './WishlistItem.js';
 
 class Wishlist extends React.Component {
