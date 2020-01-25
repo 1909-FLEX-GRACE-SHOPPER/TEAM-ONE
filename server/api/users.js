@@ -3,14 +3,15 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { User, Order } = models;
 
+const paginate = require('./utils');
+
 //Finds, counts and serves all users
-router.get('/', (req, res, next) => {
-  User.findAndCountAll()
-    .then(users => res.status(200).send(users))
-    .catch(e => {
-      res.status(404);
-      next(e);
-    });
+router.get('/', paginate(User), (req, res, next) => {
+  res.status(200).send(res.foundModels)
+  .catch(e => {
+    res.status(404);
+    next(e);
+  });
 });
 
 //Finds and serves a single user based on a primary key.

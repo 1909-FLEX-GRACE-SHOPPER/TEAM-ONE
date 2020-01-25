@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Toast from 'react-bootstrap/Toast';
 const { Row, Group, Label, Control, Col } = Form
 
 import { connect } from 'react-redux';
@@ -24,7 +25,8 @@ class AddProductForm extends Component {
 				productName: '',
 				unitPrice: '',
 				inventory: '',
-			}
+			},
+			showToast: false,
 		}
 	}
 
@@ -48,23 +50,32 @@ class AddProductForm extends Component {
 			formData.append(`${ [key] }`, this.state[key])
 		})
 
-		this.props.postProduct( formData );
+		this.props.postProduct( formData )
 		this.setState({
 			productName: '',
 			productDescription: '',
 			unitPrice: '',
 			inventory: '',
 			file: [],
-			fileName: ''
+			fileName: '',
+			showToast: true,
 		})
 	}
 
+	closeToast = () => {
+		this.setState({ showToast: false })
+	}
+
 	render() {
-				console.log(this.state.productImage)
-				console.log(this.state)
 		const { productName, productDescription, unitPrice, inventory, file, fileName } = this.state;
 		return (
 			<div className='container mt-4'>
+				<Toast show={ this.state.showToast } onClose={ this.closeToast } >
+					<Toast.Header className='bg-success'>
+						<strong className="mr-auto text-white">Success!</strong>
+					</Toast.Header>
+					<Toast.Body className="text-success">Your new product has been added to the shop.</Toast.Body>
+				</Toast>
 				<Form encType="multipart/form-data">
 					<Group controlId='productName'>
 						<Label>Product Name</Label>

@@ -4,13 +4,14 @@ const path = require('path')
 const { models } = require('../db/index');
 const { Product } = models;
 
-router.get('/', (req, res, next) => {
-  Product.findAll()
-    .then(products => res.status(200).send(products))
-    .catch(e => {
-      res.status(404);
-      next(e);
-    });
+const paginate = require('./utils');
+
+router.get('/', paginate(Product), (req, res, next) => {
+  res.send(res.foundModels)
+  .catch(e => {
+    res.status(404);
+    next(e);
+  });
 });
 
 router.get('/:id', (req, res, next) => {
