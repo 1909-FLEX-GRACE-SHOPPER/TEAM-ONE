@@ -1,16 +1,18 @@
-import React from "react";
-import Product from "./Product.js";
-import PageSelect from "./PageSelect.js";
-import { connect } from "react-redux";
-import { fetchProducts } from "../redux/thunks/ProductThunks.js";
-import Form from "react-bootstrap/Form";
+import React from 'react';
+import Product from './Product.js';
+import PageSelect from './PageSelect.js';
+import { connect } from 'react-redux';
+import { fetchProducts } from '../redux/thunks/ProductThunks.js';
+import Form from 'react-bootstrap/Form';
 
 class Products extends React.Component {
   componentDidMount() {
     this.props.fetchProducts();
   }
   render() {
-    const { products } = this.props;
+    let { products } = this.props;
+    products = products.rows || [];
+    console.log(products);
     const PRODUCTS_PER_PAGE = 10;
     return (
       <div>
@@ -31,7 +33,7 @@ class Products extends React.Component {
         </div>
         <div className="all-products-container">
           {products.length === 0
-            ? "No products"
+            ? 'No products'
             : products.map(_product => (
                 <Product key={`product-${_product.id}`} product={_product} />
               ))}
