@@ -25,7 +25,6 @@ class Root extends React.Component {
   componentDidMount() {
     const { fetchUser, createUser } = this.props;
     const userId = document.cookie.replace(/uuid=/, '');
-    console.log('USER ID = ', userId);
     if (!userId) {
       createUser({ userType: 'Guest', loggedIn: false });
     } else {
@@ -33,7 +32,6 @@ class Root extends React.Component {
     }
   }
   render() {
-    console.log('USER IS ', this.props.user);
     return (
       <Router>
         <div>
