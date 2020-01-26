@@ -15,6 +15,7 @@ const { Order } = models
 const app = require('../server/index');
 const agent = require('supertest')(app);
 
+// TO DO: fix enzyme import issue
 // Order Component
 // import { shallow } from 'enzyme';
 // import Adapter from 'enzyme-adapter-react-16';

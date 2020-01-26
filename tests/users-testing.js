@@ -15,10 +15,12 @@ const app = require('../server/index');
 const agent = require('supertest')(app)
 
 // User Component
-// import enzyme, { shallow } from 'enzyme';
+// TO DO: fix syntax error here: babel is not recognized.
+// import { shallow, mount } from 'enzyme';
 // import Adapter from 'enzyme-adapter-react-16';
 // enzyme.configure({ adapter: new Adapter() });
 // import React from 'react';
+// import Login from '../app/components/Login';
 
 // Redux
 
@@ -77,7 +79,7 @@ describe('User Routes', () => {
         storedUsers = createdUsers.map(user => user.dataValues);
     })
 
-    describe('GET `/api/users`', () => {
+    xdescribe('GET `/api/users`', () => {
         it('should get all users', async () => {
             const response = await agent
                 .get('/api/users')
@@ -88,3 +90,10 @@ describe('User Routes', () => {
         })
     })
 })
+
+// xdescribe('Login Component', () => {
+//     it('should have a button', () => {
+//         const wrapper = shallow(<Login />);
+//         expect(wrapper.find('button')).to.have.length(1);
+//     })
+// })
