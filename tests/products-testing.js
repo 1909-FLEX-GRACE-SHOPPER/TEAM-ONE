@@ -1,9 +1,8 @@
 'use strict';
 
 // Assertions
-const chai = require('chai');
-const expect = chai.expect;
-const chaiThings = require('chai-things');
+import chai, { expect } from 'chai';
+import chaiThings from 'chai-things';
 chai.use(chaiThings);
 
 // Product Model
@@ -14,14 +13,15 @@ const { Product } = models
 const app = require('../server/index');
 const agent = require('supertest')(app);
 
-// TO DO: fix enzyme import issue
 // Product Component
-// import enzyme, { shallow } from 'enzyme';
-// import Adapter from 'enzyme-adapter-react-16';
-// enzyme.configure({ adapter: new Adapter() });
-// import React from 'react';
+import enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+enzyme.configure({ adapter: new Adapter() });
+import React from 'react';
 
 // Redux
+
+//TO DO: write tests about frontend or backend if necessary
 
 describe('Product Model', () => {
     describe('Validations', () => {
