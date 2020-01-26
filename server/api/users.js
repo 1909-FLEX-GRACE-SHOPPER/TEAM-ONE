@@ -18,6 +18,7 @@ router.get('/', paginate(User), (req, res, next) => {
 
 //Finds and serves a single user based on a primary key.
 router.get('/id/:userId', (req, res, next) => {
+  console.log('SEARCHING FOR USER ID ', req.params.userId);
   User.findByPk(req.params.userId)
     .then(user => res.status(200).send(user))
     .catch(e => {
@@ -101,7 +102,6 @@ router.post('/login', (req, res, next) => {
       res.status(500).send('Internal Error');
       next(e);
     });
-
 });
 
 //Logs out a User

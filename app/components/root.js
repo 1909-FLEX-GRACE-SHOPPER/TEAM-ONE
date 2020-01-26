@@ -27,6 +27,7 @@ class Root extends React.Component {
     this.props.fetchUser(userId);
   }
   render() {
+    console.log('USER IS ', this.props.user);
     return (
       <Router>
         <div>
