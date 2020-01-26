@@ -189,6 +189,6 @@ class AddProductForm extends Component {
 	}
 }
 
-const mapDispatch = dispatch => ({ postProduct: state => dispatch(postProduct(state)) })
+const mapDispatch = dispatch => ({ postProduct: form => dispatch(postProduct(form)) })
 
 export default connect(null, mapDispatch)(AddProductForm);
