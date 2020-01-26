@@ -101,6 +101,7 @@ router.post('/login', (req, res, next) => {
       res.status(500).send('Internal Error');
       next(e);
     });
+
 });
 
 //Logs out a User
