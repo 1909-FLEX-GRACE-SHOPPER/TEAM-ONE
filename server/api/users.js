@@ -20,19 +20,17 @@ router.get('/', paginate(User), (req, res, next) => {
 router.get('/id/:userId', (req, res, next) => {
   User.findByPk(req.params.userId)
     .then(user => {
-      return user
-        ? res.status(200).send(user)
-        : User.create({ userType: 'Guest', loggedIn: false });
+      if (user) return res.status(200).send(user);
+      User.create({ userType: 'Guest', loggedIn: false }).then(guest =>
+        res
+          .cookie('uuid', guest.id, {
+            path: '/',
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+          })
+          .status(201)
+          .send(guest)
+      );
     })
-    .then(guest =>
-      res
-        .status(201)
-        .cookie('uuid', guest.id, {
-          path: '/',
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
-        })
-        .send(guest)
-    )
     .catch(e => {
       res.status(404);
       next(e);
