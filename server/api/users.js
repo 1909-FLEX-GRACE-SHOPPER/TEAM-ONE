@@ -75,7 +75,15 @@ router.post('/', (req, res, next) => {
     billingState: billingState || null,
     billingZip: billingZip || null
   })
-    .then(user => res.status(201).send(user))
+    .then(user =>
+      res
+        .status(201)
+        .cookie('uuid', user.id, {
+          path: '/',
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+        })
+        .send(user)
+    )
     .catch(e => {
       res.status(400);
       next(e);
