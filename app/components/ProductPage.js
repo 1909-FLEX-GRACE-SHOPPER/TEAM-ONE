@@ -17,6 +17,7 @@ class ProductPage extends React.Component {
   }
   render() {
     const { singleProduct, postWishlist, user } = this.props;
+    conole.log('USER IS ', user);
     return (
       <div>
         {!singleProduct ? (

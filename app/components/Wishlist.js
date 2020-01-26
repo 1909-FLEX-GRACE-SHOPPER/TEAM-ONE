@@ -6,7 +6,7 @@ import WishlistItem from './WishlistItem.js';
 
 class Wishlist extends React.Component {
   componentDidMount() {
-    this.props.fetchWishlist(this.props.match.params.id);
+    this.props.fetchWishlist(this.props.match.params.userId);
   }
   render() {
     const { wishlist } = this.props;
@@ -29,7 +29,7 @@ class Wishlist extends React.Component {
   }
 }
 
-const mapState = ({ wishlist }) => ({ wishlist });
+const mapState = ({ wishlist, user }) => ({ wishlist, user });
 const mapDispatch = dispatch => {
   return {
     fetchWishlist: userId => dispatch(fetchWishlist(userId))
