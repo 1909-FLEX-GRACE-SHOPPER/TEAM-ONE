@@ -16,10 +16,23 @@ router.get('/', paginate(User), (req, res, next) => {
     });
 });
 
-//Finds and serves a single user based on a primary key.
+//Finds and serves a single user based on a primary key. If the user doesn't exist creatte a guest user
 router.get('/id/:userId', (req, res, next) => {
   User.findByPk(req.params.userId)
-    .then(user => res.status(200).send(user))
+    .then(user => {
+      return user
+        ? res.status(200).send(user)
+        : User.create({ userType: 'Guest', loggedIn: false });
+    })
+    .then(guest =>
+      res
+        .status(201)
+        .cookie('uuid', guest.id, {
+          path: '/',
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+        })
+        .send(guest)
+    )
     .catch(e => {
       res.status(404);
       next(e);
@@ -63,7 +76,15 @@ router.post('/', (req, res, next) => {
     billingState: billingState || null,
     billingZip: billingZip || null
   })
-    .then(user => res.status(201).send(user))
+    .then(user =>
+      res
+        .status(201)
+        .cookie('uuid', user.id, {
+          path: '/',
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+        })
+        .send(user)
+    )
     .catch(e => {
       res.status(400);
       next(e);
