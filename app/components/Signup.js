@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Signup = () => {
   return (
-    <div className="signup">
+    <div className="container mt-4">
       <div className="logo-medium"></div>
       <Form className="signup-form">
         <Form.Group>
