@@ -7,7 +7,7 @@ import {
   Route,
   Redirect
 } from 'react-router-dom';
-import { fetchUser } from '../redux/thunks/UserThunks';
+import { fetchUser, createUser } from '../redux/thunks/UserThunks';
 import { connect } from 'react-redux';
 import Login from './Login';
 import Signup from './Signup';
@@ -23,8 +23,14 @@ import AddProductForm from './AddProductForm';
 
 class Root extends React.Component {
   componentDidMount() {
+    const { fetchUser, createUser } = this.props;
     const userId = document.cookie.replace(/uuid=/, '');
-    this.props.fetchUser(userId);
+    console.log('USER ID = ', userId);
+    if (!userId) {
+      createUser({ userType: 'Guest', loggedIn: false });
+    } else {
+      fetchUser(userId);
+    }
   }
   render() {
     console.log('USER IS ', this.props.user);
@@ -60,7 +66,8 @@ class Root extends React.Component {
 const mapState = ({ user }) => ({ user });
 const mapDispatch = dispatch => {
   return {
-    fetchUser: userId => dispatch(fetchUser(userId))
+    fetchUser: userId => dispatch(fetchUser(userId)),
+    createUser: user => dispatch(createUser(user))
   };
 };
 export default connect(mapState, mapDispatch)(Root);
