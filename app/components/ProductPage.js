@@ -17,7 +17,6 @@ class ProductPage extends React.Component {
   }
   render() {
     const { singleProduct, postWishlist, user } = this.props;
-    conole.log('USER IS ', user);
     return (
       <div>
         {!singleProduct ? (
@@ -54,6 +53,7 @@ class ProductPage extends React.Component {
                   </div>
                   <Button>ADD TO CART</Button>
                   <Button
+                    disabled={user.userType === 'Guest'}
                     onClick={() =>
                       postWishlist({
                         productId: singleProduct.id,
