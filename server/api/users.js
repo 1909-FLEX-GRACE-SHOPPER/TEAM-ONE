@@ -7,11 +7,13 @@ const paginate = require('./utils');
 
 //Finds, counts and serves all users
 router.get('/', paginate(User), (req, res, next) => {
-  res.status(200).send(res.foundModels)
-  .catch(e => {
-    res.status(404);
-    next(e);
-  });
+  res
+    .status(200)
+    .send(res.foundModels)
+    .catch(e => {
+      res.status(404);
+      next(e);
+    });
 });
 
 //Finds and serves a single user based on a primary key.
@@ -71,34 +73,34 @@ router.post('/', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({
-      where: {
-          email,
-          password
-      }
+    where: {
+      email,
+      password
+    }
   })
-      .then(userOrNull => {
-          if (userOrNull) {
-              User.update(
-                  {
-                      loggedIn: true
-                  },
-                  {
-                      where: { email, password },
-                      returning: true
-                  },
-                  res.cookie('uuid', userOrNull.id, {
-                    path: '/',
-                    expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-                  })
-              )
-              return res.status(202).send(userOrNull); 
-          }
-      res.status(401).send('Failure!')
-      })
-      .catch(e => {
-          res.status(500).send('Internal Error')
-          next(e);
-      });
+    .then(userOrNull => {
+      if (userOrNull) {
+        User.update(
+          {
+            loggedIn: true
+          },
+          {
+            where: { email, password },
+            returning: true
+          },
+          res.cookie('uuid', userOrNull.id, {
+            path: '/',
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+          })
+        );
+        return res.status(202).send(userOrNull);
+      }
+      res.status(401).send('Failure!');
+    })
+    .catch(e => {
+      res.status(500).send('Internal Error');
+      next(e);
+    });
 });
 
 //Logs out a User
