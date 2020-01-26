@@ -12,7 +12,7 @@ const Cart = db.define('cart', {
     productQuantity: {
         type: INTEGER,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0
     }
 });
 

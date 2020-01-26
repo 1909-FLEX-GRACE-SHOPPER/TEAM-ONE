@@ -14,9 +14,7 @@ class Navigation extends Component {
 					<Nav.Link href='/products'>Shop</Nav.Link>
 				</Nav>
 				<Nav>
-					<Nav.Link href='/orders/:orderId/shoppingcart/:userId?'>
-						Cart
-					</Nav.Link>{' '}
+					<Nav.Link href='/shoppingcart/:userId'>Cart</Nav.Link>
 					{/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
 					<Nav.Link to='/signup' href='/signup'> Sign Up </Nav.Link>
 					<Nav.Link to='/login' href='/login'> Login </Nav.Link>
