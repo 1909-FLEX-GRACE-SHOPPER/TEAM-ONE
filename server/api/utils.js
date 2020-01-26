@@ -9,8 +9,7 @@ const paginate = (model) => {
 			limit,
 		})
 		.then(foundModels => {
-			res.foundModels = foundModels
-			next();
+			res.send(foundModels)
 		})
 		.catch(e => {
 			res.status(500)
