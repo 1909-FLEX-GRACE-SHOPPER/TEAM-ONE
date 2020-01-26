@@ -1,4 +1,3 @@
-//define Users model here
 const Sequelize = require('sequelize');
 const db = require('./../database.js');
 
@@ -64,7 +63,7 @@ const User = db.define('users', {
   },
   phone: {
     //TODO: Change this to String type to allow storing formating
-    type: INTEGER,
+    type: BIGINT,
     validate: {
       isNumeric: {
         args: true,
