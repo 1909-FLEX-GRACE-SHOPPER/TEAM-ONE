@@ -22,9 +22,9 @@ import React from 'react';
 
 // Redux
 
-// npm test -- filename
+// When run a test: npm test -- tests/orders-testing.js
 
-//TO DO: write tests about frontend or backend if necessary
+// TO DO: write tests about frontend or backend if necessary
 
 describe('Order Model', () => {
     describe('Validations', () => {

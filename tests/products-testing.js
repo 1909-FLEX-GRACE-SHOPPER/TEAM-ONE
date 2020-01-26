@@ -21,7 +21,9 @@ import React from 'react';
 
 // Redux
 
-//TO DO: write tests about frontend or backend if necessary
+// When run a test: npm test -- tests/products-testing.js
+
+// TO DO: write tests about frontend or backend if necessary
 
 describe('Product Model', () => {
     describe('Validations', () => {

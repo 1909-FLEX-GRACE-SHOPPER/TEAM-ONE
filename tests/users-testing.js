@@ -23,6 +23,8 @@ import { Button } from 'react-bootstrap';
 
 // Redux
 
+// When run a test: npm test -- tests/users-testing.js
+
 //TO DO: write tests about frontend or backend if necessary
 
 describe('User Model', () => {
