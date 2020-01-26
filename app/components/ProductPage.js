@@ -14,7 +14,6 @@ class ProductPage extends React.Component {
   }
   componentDidMount() {
     this.props.fetchSingleProduct(this.props.match.params.id);
-    this.props.fetchProducts();
   }
   render() {
     const { singleProduct, postWishlist, user } = this.props;
@@ -55,7 +54,10 @@ class ProductPage extends React.Component {
                   <Button>ADD TO CART</Button>
                   <Button
                     onClick={() =>
-                      postWishlist({ ...singleProduct, userId: user.id })
+                      postWishlist({
+                        productId: singleProduct.id,
+                        userId: user.id
+                      })
                     }
                   >
                     ADD TO WISHLIST
