@@ -37,12 +37,14 @@ class AddProductForm extends Component {
 				if(!fileName.match(/.(jpg|png|gif)$/i)) {
 					this.setState({
 						errors: {
+							...errors,
 							fileError: 'File type not valid. Choose another file.',
 						}
 					})
 				} else if(file.size > 1024 * 1024 * 5) {
 					this.setState({
 						errors: {
+							...errors,
 							fileError: 'File size too large. Choose another file.',
 						}
 					})
@@ -53,17 +55,37 @@ class AddProductForm extends Component {
 
 			case 'unitPrice':
 				if(isNaN(value * 1)) {
-					this.setState({ errors: { unitPriceError: 'Price not valid' } })
+					this.setState({
+						errors: {
+							...errors,
+							unitPriceError: 'Price not valid'
+						}
+					})
 				} else {
-					this.setState({ errors: { unitPriceError: '' } })
+					this.setState({
+						errors: {
+							...errors,
+							unitPriceError: ''
+						}
+					})
 				}
 				break;
 			
 			case 'inventory':
 				if(isNaN(value * 1)) {
-					this.setState({ errors: { inventoryError: 'Inventory not valid' } })
+					this.setState({
+						errors: {
+							...errors,
+							inventoryError: 'Inventory not valid'
+						}
+					})
 				} else {
-					this.setState({ errors: { inventoryError: '' } })
+					this.setState({
+						errors: {
+							...errors,
+							inventoryError: ''
+						}
+					})
 				}
 				break;
 
@@ -73,8 +95,7 @@ class AddProductForm extends Component {
 	}
 
 	handleOnChange = ({ target: { name, value } }) => {
-		this.setState({ [name]: value,
-		}, () => { this.validate(name, value) })
+		this.setState({ [name]: value }, () => { this.validate(name, value) })
 	}
 
 	handleBrowse = e => {
@@ -147,7 +168,7 @@ class AddProductForm extends Component {
 								alignItems: 'flex-end'
 							}
 						}>
-						<Group as={ Col } controlId="unitPrice">
+						<Group as={ Col } controlId="unitPrice" style={{ width: 'calc(50% - 1rem)' }}>
 							<Label>Unit Price <span style={{ color: 'red', fontSize: '10px' }}>*required</span></Label>
 							<Control
 								value={ unitPrice }
@@ -159,7 +180,7 @@ class AddProductForm extends Component {
 							<p show={ unitPriceError } className="danger">{ unitPriceError }</p>
 						</Group>
 
-						<Group as={ Col } controlId="inventory">
+						<Group as={ Col } controlId="inventory" style={{ width: 'calc(50% - 1rem)' }}>
 							<Label>Inventory</Label>
 							<Control
 								placeholder='0'

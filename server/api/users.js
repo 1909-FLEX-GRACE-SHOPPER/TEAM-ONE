@@ -29,6 +29,7 @@ router.get('/id/:userId', (req, res, next) => {
 //Creates a new user/signs a user up
 //Sets falsy fields in req.body that are allowed to be null to null
 router.post('/', (req, res, next) => {
+  console.log(req.body)
   const {
     firstName,
     lastName,
@@ -51,7 +52,7 @@ router.post('/', (req, res, next) => {
     lastName,
     email,
     password,
-    userType,
+    userType: 'Existing customer',
     phone: phone || null,
     shippingAddress: shippingAddress || null,
     shippingCity: shippingCity || null,
