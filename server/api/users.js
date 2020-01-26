@@ -67,23 +67,38 @@ router.post('/', (req, res, next) => {
     });
 });
 
-//Logs in a User
+//Finds the User in the table and attaches the cookie
 router.post('/login', (req, res, next) => {
   const { email, password } = req.body;
-  User.update(
-    {
-      loggedIn: true
-    },
-    {
-      where: { email, password },
-      returning: true
-    }
-  )
-    .then(user => res.status(201).send(user))
-    .catch(e => {
-      res.status(401);
-      next(e);
-    });
+  User.findOne({
+      where: {
+          email,
+          password
+      }
+  })
+      .then(userOrNull => {
+          if (userOrNull) {
+              User.update(
+                  {
+                      loggedIn: true
+                  },
+                  {
+                      where: { email, password },
+                      returning: true
+                  },
+                  res.cookie('uuid', userOrNull.id, {
+                    path: '/',
+                    expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+                  })
+              )
+              return res.status(202).send(userOrNull); 
+          }
+      res.status(401).send('Failure!')
+      })
+      .catch(e => {
+          res.status(500).send('Internal Error')
+          next(e);
+      });
 });
 
 //Logs out a User
