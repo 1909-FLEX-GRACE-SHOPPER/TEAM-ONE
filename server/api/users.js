@@ -42,13 +42,11 @@ router.get('/id/:userId', (req, res, next) => {
 //Creates a new user/signs a user up
 //Sets falsy fields in req.body that are allowed to be null to null
 router.post('/', (req, res, next) => {
-  console.log(req.body)
   const {
     firstName,
     lastName,
     email,
     password,
-    userType,
     phone,
     shippingAddress,
     shippingCity,
@@ -60,35 +58,62 @@ router.post('/', (req, res, next) => {
     billingZip
   } = req.body;
 
-  User.create({
-    firstName,
-    lastName,
-    email,
-    password,
-    userType: 'Existing customer',
-    phone: phone || null,
-    shippingAddress: shippingAddress || null,
-    shippingCity: shippingCity || null,
-    shippingState: shippingState || null,
-    shippingZip: shippingZip || null,
-    billingAddress: billingAddress || null,
-    billingCity: billingCity || null,
-    billingState: billingState || null,
-    billingZip: billingZip || null
+  User.findByPk(userId)
+  .then(userOrNull => {
+    if(userOrNull) {
+      userOrNull.update({
+        firstName,
+        lastName,
+        email,
+        password,
+        userType: 'Existing customer',
+        loggedIn: true,
+        phone: phone || null,
+        shippingAddress: shippingAddress || null,
+        shippingCity: shippingCity || null,
+        shippingState: shippingState || null,
+        shippingZip: shippingZip || null,
+        billingAddress: billingAddress || null,
+        billingCity: billingCity || null,
+        billingState: billingState || null,
+        billingZip: billingZip || null
+      })
+      .catch(e => {
+        next(e)
+      })
+    } else {
+      User.create({
+        firstName,
+        lastName,
+        email,
+        password,
+        userType: 'Existing customer',
+        loggedIn: true,
+        phone: phone || null,
+        shippingAddress: shippingAddress || null,
+        shippingCity: shippingCity || null,
+        shippingState: shippingState || null,
+        shippingZip: shippingZip || null,
+        billingAddress: billingAddress || null,
+        billingCity: billingCity || null,
+        billingState: billingState || null,
+        billingZip: billingZip || null
+      })
+    }
   })
-    .then(user =>
-      res
-        .status(201)
-        .cookie('uuid', user.id, {
-          path: '/',
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
-        })
-        .send(user)
-    )
-    .catch(e => {
-      res.status(400);
-      next(e);
-    });
+  .then(user => {
+    res
+      .status(201)
+      .cookie('uuid', user.id, {
+        path: '/',
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+      })
+      .send(user)
+  })
+  .catch(e => {
+    res.status(400);
+    next(e);
+  });
 });
 
 //Finds the User in the table and attaches the cookie

@@ -23,6 +23,7 @@ class Signup extends Component {
         passwordError: '',
         confirmPasswordError: '',
       },
+      userId: ''
     }
   }
 
@@ -93,6 +94,7 @@ class Signup extends Component {
 
   handleOnSubmit = e => {
     e.preventDefault()
+    this.state.userId = document.cookie.replace(/uuid=/, '')
     this.props.createUser(this.state);
       this.setState({
         firstName: '',
