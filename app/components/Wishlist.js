@@ -6,7 +6,13 @@ import WishlistItem from './WishlistItem.js';
 
 class Wishlist extends React.Component {
   componentDidMount() {
-    this.props.fetchWishlist(this.props.match.params.userId);
+    console.log('USER IS ', this.props.user);
+    if (
+      this.props.user.userType !== 'Guest' &&
+      this.props.user.userType !== undefined
+    ) {
+      this.props.fetchWishlist(this.props.match.params.userId);
+    }
   }
   render() {
     const { wishlist, user } = this.props;
