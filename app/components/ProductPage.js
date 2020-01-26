@@ -1,13 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  fetchSingleProduct,
-  fetchProducts
-} from '../redux/thunks/ProductThunks';
+import { fetchSingleProduct } from '../redux/thunks/ProductThunks';
 import { postWishlist } from '../redux/thunks/WishlistThunks';
 import Button from 'react-bootstrap/Button';
-import Product from './Product.js';
 
 class ProductPage extends React.Component {
   constructor() {
@@ -21,7 +17,7 @@ class ProductPage extends React.Component {
     this.props.fetchProducts();
   }
   render() {
-    const { singleProduct, products, postWishlist, user } = this.props;
+    const { singleProduct, postWishlist, user } = this.props;
     return (
       <div>
         {!singleProduct ? (
@@ -76,9 +72,6 @@ class ProductPage extends React.Component {
               </div>
               <div className="similar-products-container">
                 <h5>SIMILAR PRODUCTS</h5>
-                {products.map(_sp => (
-                  <Product key={`product-${_sp.id}`} product={_sp} />
-                ))}
               </div>
             </div>
           </div>
@@ -89,17 +82,14 @@ class ProductPage extends React.Component {
 }
 
 //TODO: This should fetch similar products not just all products
-//TODO: Add wishlist thunk
 //TODO: Add cart thunk
-const mapState = ({ singleProduct, products, user }) => ({
+const mapState = ({ singleProduct, user }) => ({
   singleProduct,
-  products,
   user
 });
 const mapDispatch = dispatch => {
   return {
     fetchSingleProduct: productId => dispatch(fetchSingleProduct(productId)),
-    fetchProducts: () => dispatch(fetchProducts()),
     postWishlist: item => dispatch(postWishlist(item))
   };
 };
