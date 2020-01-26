@@ -3,10 +3,13 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { User, Order } = models;
 
+const paginate = require('./utils');
+
 //Finds, counts and serves all users
-router.get('/', (req, res, next) => {
-  User.findAndCountAll()
-    .then(users => res.status(200).send(users))
+router.get('/', paginate(User), (req, res, next) => {
+  res
+    .status(200)
+    .send(res.foundModels)
     .catch(e => {
       res.status(404);
       next(e);
@@ -66,21 +69,36 @@ router.post('/', (req, res, next) => {
     });
 });
 
-//Logs in a User
+//Finds the User in the table and attaches the cookie
 router.post('/login', (req, res, next) => {
   const { email, password } = req.body;
-  User.update(
-    {
-      loggedIn: true
-    },
-    {
-      where: { email, password },
-      returning: true
+  User.findOne({
+    where: {
+      email,
+      password
     }
-  )
-    .then(user => res.status(201).send(user))
+  })
+    .then(userOrNull => {
+      if (userOrNull) {
+        User.update(
+          {
+            loggedIn: true
+          },
+          {
+            where: { email, password },
+            returning: true
+          },
+          res.cookie('uuid', userOrNull.id, {
+            path: '/',
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+          })
+        );
+        return res.status(202).send(userOrNull);
+      }
+      res.status(401).send('Failure!');
+    })
     .catch(e => {
-      res.status(401);
+      res.status(500).send('Internal Error');
       next(e);
     });
 });

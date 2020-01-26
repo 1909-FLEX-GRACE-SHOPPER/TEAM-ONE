@@ -1,32 +1,77 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Form , Button } from 'react-bootstrap';
+import { Form, Button, Col, Nav } from 'react-bootstrap';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { logInUser } from '../redux/thunks/UserThunks';
 
-const Login = () => {
-	return (
-		<div className='login-page'>
-			<Link to={'/'}>BACK</Link>
-			<div className='logo-medium'></div>
-			<Form>
-				<Form.Group>
-					<Form.Label>USER NAME OR EMAIL</Form.Label>
-					<Form.Control type='text' />
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>PASSWORD</Form.Label>
-					<Form.Control type='password' />
-				</Form.Group>
-				<div>SIGN IN WITH GOOGLE</div>
-				<div>SIGN IN WITH FACEBOOK</div>
-				<div>
-					NOT A USER? <Link to={'/signup'}>SIGN UP</Link>
-				</div>
-				<Button variant='primary' type='submit'>
-					LOG IN
-				</Button>
-			</Form>
-		</div>
-	);
+class Login extends Component {
+	state = {
+		email: '',
+		password: ''
+	};
+	handleChange = event => {
+		this.setState({
+			[event.target.name]: event.target.value
+		});
+	};
+	onSubmit = event => {
+		event.preventDefault();
+		this.props.logIn(this.state);
+	};
+	render() {
+		const { authError } = this.props.errorMessage;
+		const { logInStatus } = this.props.userLoginStatus;
+		return (
+			<Fragment>
+			{ !logInStatus ? (
+				<Form>
+					<Form.Group>
+						<Form.Label>Email Address</Form.Label>
+						<Col sm='5'>
+							<Form.Control
+								name='email'
+								type='email'
+								placeholder='Enter email'
+								onChange={this.handleChange}
+							/>
+						</Col>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label> Password</Form.Label>
+						<Col sm='5'>
+							<Form.Control
+								name='password'
+								type='password'
+								placeholder='Password'
+								onChange={this.handleChange}
+							/>
+						</Col>
+					</Form.Group>
+					<div>{authError ? authError : null}</div>
+					<Nav.Link href='/signup'> Sign up </Nav.Link>
+					<Button onClick={this.onSubmit}> Log In! </Button>
+				</Form>
+			) : (
+				<h2> {`Welcome to the Juul Store`} !</h2>
+			)
+			}
+			</Fragment>
+		);
+	}
+}
+
+const mapStateToProps = state => {
+	return {
+		errorMessage: state.authentication,
+		userLoginStatus: state.authentication
+	};
 };
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+	return {
+		logIn: credentials => dispatch(logInUser(credentials))
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

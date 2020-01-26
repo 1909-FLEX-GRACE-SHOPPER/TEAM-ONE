@@ -15,7 +15,7 @@ import Product from './Product';
 import ShoppingCart from './ShoppingCart';
 import Checkout from './Checkout';
 import Confirmation from './Confirmation';
-import WishList from './Wishlist';
+import Wishlist from './Wishlist';
 
 import AddProductForm from './AddProductForm';
 
@@ -40,7 +40,7 @@ const Root = () => {
           <Route
             path="/orders/:orderId/confirmation/:userId?" /*component={Confirmation} */
           />
-          <Route path="/wishlist/:userId" /*component={WishList} */ />
+          <Route path="/wishlist/:userId" component={Wishlist} />
           <Redirect to="/" />
         </Switch>
       </div>
