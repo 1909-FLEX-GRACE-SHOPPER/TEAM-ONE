@@ -21,24 +21,68 @@ class AddProductForm extends Component {
 			inventory: '',
 			file: [],
 			fileName: '',
-			errors: {
-				productName: '',
-				unitPrice: '',
-				inventory: '',
+			errors: { 
+				fileError: '',
+				unitPriceError: '',
+				inventoryError: '',
 			},
 			showToast: false,
 		}
 	}
 
+	validate = (field, value) => {
+		const { file, fileName } = this.state;
+		switch(field) {
+
+			case 'fileName':
+				if(!fileName.match(/.(jpg|png|gif)$/i)) {
+					this.setState({
+						errors: {
+							fileError: 'File type not valid. Choose another file.',
+						}
+					})
+				} else if(file.size > 1024 * 1024 * 5) {
+					this.setState({
+						errors: {
+							fileError: 'File size too large. Choose another file.',
+						}
+					})
+				} else {
+					this.setState({ errors: { fileError: '' } })
+				}
+				break;
+
+			case 'unitPrice':
+				if(isNaN(value * 1)) {
+					this.setState({ errors: { unitPriceError: 'Price not valid' } })
+				} else {
+					this.setState({ errors: { unitPriceError: '' } })
+				}
+				break;
+			
+			case 'inventory':
+				if(isNaN(value * 1)) {
+					this.setState({ errors: { inventoryError: 'Inventory not valid' } })
+				} else {
+					this.setState({ errors: { inventoryError: '' } })
+				}
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	handleOnChange = ({ target: { name, value } }) => {
-		this.setState({ [name]: value })
+		this.setState({ [name]: value,
+		}, () => { this.validate(name, value) })
 	}
 
 	handleBrowse = e => {
 		this.setState({
 			file: e.target.files[0],
-			fileName: e.target.files[0].name,
-		})
+			fileName: e.target.files[0].name, 
+		}, () => { this.validate('fileName', this.state.fileName) })
 	}
 
 	handleOnSubmit = e => {
@@ -67,10 +111,10 @@ class AddProductForm extends Component {
 	}
 
 	render() {
-		const { productName, productDescription, unitPrice, inventory, file, fileName } = this.state;
+		const { productName, productDescription, unitPrice, inventory, fileName, errors: { fileError, unitPriceError, inventoryError }, showToast } = this.state;
 		return (
 			<div className='container mt-4'>
-				<Toast show={ this.state.showToast } onClose={ this.closeToast } >
+				<Toast show={ showToast } onClose={ this.closeToast } >
 					<Toast.Header className='bg-success'>
 						<strong className="mr-auto text-white">Success!</strong>
 					</Toast.Header>
@@ -78,11 +122,12 @@ class AddProductForm extends Component {
 				</Toast>
 				<Form encType="multipart/form-data">
 					<Group controlId='productName'>
-						<Label>Product Name</Label>
+						<Label>Product Name <span style={{ color: 'red', fontSize: '10px' }}>*required</span></Label>
 						<Control
 							value={ productName }
 							name='productName'
 							onChange={ this.handleOnChange }
+							required
 						/>
 					</Group>
 
@@ -95,15 +140,24 @@ class AddProductForm extends Component {
 						/>
 					</Group>
 
-					<Row style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+					<Row style=
+						{
+							{
+								display: 'flex',
+								justifyContent: 'space-between',
+								alignItems: 'flex-end'
+							}
+						}>
 						<Group as={ Col } controlId="unitPrice">
-							<Label>Unit Price</Label>
+							<Label>Unit Price <span style={{ color: 'red', fontSize: '10px' }}>*required</span></Label>
 							<Control
-								placeholder='0.00'
 								value={ unitPrice }
 								name='unitPrice'
 								onChange={ this.handleOnChange }
+								required
+								style={{ WebkitAppearance: 'none' }}
 							/>
+							<p show={ unitPriceError } className="danger">{ unitPriceError }</p>
 						</Group>
 
 						<Group as={ Col } controlId="inventory">
@@ -113,19 +167,23 @@ class AddProductForm extends Component {
 								value={ inventory }
 								name='inventory'
 								onChange={ this.handleOnChange }
+								required
 							/>
+							<p show={ inventoryError } className="danger">{ inventoryError }</p>
 						</Group>
 
 						<Group as={ Col }>
-							<Label>Product Image</Label>
+							<Label>Product Image <span style={{ color: 'red', fontSize: '10px' }}>*File Size must not exceed 5MB. Accepted formats: .jpg .png .gif</span></Label>
 							<div className="custom-file">
 								<label className="custom-file-label" htmlFor="customFile">{ fileName }</label>
 								<Control type="file" className="custom-file-input" id="customFile" onChange={ this.handleBrowse }/>
 							</div>
+							
 						</Group>
+						<p show={ fileError } className="danger">{ fileError }</p>
 					</Row>
 
-					<Button disabled={ !productName || !unitPrice ? true : false } onClick={ this.handleOnSubmit }>Create Product</Button>
+					<Button disabled={ !productName || !unitPrice || fileError || unitPriceError || inventoryError } onClick={ this.handleOnSubmit }>Create Product</Button>
 				</Form>
 			</div>
 		)
