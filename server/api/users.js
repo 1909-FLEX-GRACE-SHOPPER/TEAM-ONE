@@ -16,10 +16,16 @@ router.get('/', paginate(User), (req, res, next) => {
     });
 });
 
-//Finds and serves a single user based on a primary key.
+//Finds and serves a single user based on a primary key. If the user doesn't exist creatte a guest user
 router.get('/id/:userId', (req, res, next) => {
+  console.log('SEARCHING FOR USER ID ', req.params.userId);
   User.findByPk(req.params.userId)
-    .then(user => res.status(200).send(user))
+    .then(user => {
+      return user
+        ? res.status(200).send(user)
+        : User.create({ userType: 'Guest', loggedIn: false });
+    })
+    .then(newUser => res.status(201).send(newUser))
     .catch(e => {
       res.status(404);
       next(e);
@@ -29,6 +35,8 @@ router.get('/id/:userId', (req, res, next) => {
 //Creates a new user/signs a user up
 //Sets falsy fields in req.body that are allowed to be null to null
 router.post('/', (req, res, next) => {
+  console.log('NEW USER');
+  console.log(req.body);
   const {
     firstName,
     lastName,
@@ -64,6 +72,8 @@ router.post('/', (req, res, next) => {
   })
     .then(user => res.status(201).send(user))
     .catch(e => {
+      console.log('ERROR CREATING USER ');
+      console.log(e);
       res.status(400);
       next(e);
     });
@@ -101,7 +111,6 @@ router.post('/login', (req, res, next) => {
       res.status(500).send('Internal Error');
       next(e);
     });
-
 });
 
 //Logs out a User

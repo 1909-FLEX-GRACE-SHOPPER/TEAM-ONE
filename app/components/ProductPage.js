@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  fetchSingleProduct,
-  fetchProducts
-} from '../redux/thunks/ProductThunks';
+import { fetchSingleProduct } from '../redux/thunks/ProductThunks';
+import { postWishlist } from '../redux/thunks/WishlistThunks';
 import Button from 'react-bootstrap/Button';
-import Product from './Product.js';
 
 class ProductPage extends React.Component {
   constructor() {
@@ -17,10 +14,10 @@ class ProductPage extends React.Component {
   }
   componentDidMount() {
     this.props.fetchSingleProduct(this.props.match.params.id);
-    this.props.fetchProducts();
   }
   render() {
-    const { singleProduct, products } = this.props;
+    const { singleProduct, postWishlist, user } = this.props;
+    conole.log('USER IS ', user);
     return (
       <div>
         {!singleProduct ? (
@@ -42,6 +39,7 @@ class ProductPage extends React.Component {
                       type="number"
                       className="product-quantity-select"
                       max={singleProduct.inventory}
+                      min="0"
                       value={this.state.quantity}
                       onChange={e => {
                         this.setState({ quantity: e.target.value });
@@ -55,7 +53,16 @@ class ProductPage extends React.Component {
                     </div>
                   </div>
                   <Button>ADD TO CART</Button>
-                  <Button>ADD TO WISHLIST</Button>
+                  <Button
+                    onClick={() =>
+                      postWishlist({
+                        productId: singleProduct.id,
+                        userId: user.id
+                      })
+                    }
+                  >
+                    ADD TO WISHLIST
+                  </Button>
                   <div className="product-description">
                     {singleProduct.description}
                   </div>
@@ -68,9 +75,6 @@ class ProductPage extends React.Component {
               </div>
               <div className="similar-products-container">
                 <h5>SIMILAR PRODUCTS</h5>
-                {products.map(_sp => (
-                  <Product key={`product-${_sp.id}`} product={_sp} />
-                ))}
               </div>
             </div>
           </div>
@@ -81,14 +85,15 @@ class ProductPage extends React.Component {
 }
 
 //TODO: This should fetch similar products not just all products
-//TODO: Add wishlist thunk
 //TODO: Add cart thunk
-
-const mapState = ({ singleProduct, products }) => ({ singleProduct, products });
+const mapState = ({ singleProduct, user }) => ({
+  singleProduct,
+  user
+});
 const mapDispatch = dispatch => {
   return {
     fetchSingleProduct: productId => dispatch(fetchSingleProduct(productId)),
-    fetchProducts: () => dispatch(fetchProducts())
+    postWishlist: item => dispatch(postWishlist(item))
   };
 };
 

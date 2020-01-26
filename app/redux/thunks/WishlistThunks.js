@@ -9,7 +9,6 @@ export const fetchWishlist = userId => {
       .get(`/api/wishlist/items/${userId}`)
       .then(res => {
         dispatch(setWishlist(res.data));
-        console.log('WISHLIST ', res.data);
       })
       .catch(e => console.error('Error fetching WL', e));
   };
