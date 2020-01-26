@@ -3,10 +3,11 @@ const router = require("express").Router();
 const { models } = require("../db/index.js");
 const { Order, OrderDetail, User } = models;
 
+const paginate = require('./utils');
+
 //Finds and servers all orders
-router.get('/', (req, res, next) => {
-	Order.findAllAndCount()
-	.then(orders => res.status(200).send(orders))
+router.get('/', paginate(Order), (req, res, next) => {
+	res.status(200).send(res.foundModels)
 	.catch(e => {
 		res.status(404);
 		next(e);

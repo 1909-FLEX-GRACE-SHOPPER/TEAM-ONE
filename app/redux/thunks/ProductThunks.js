@@ -7,7 +7,6 @@ import { setProducts, setSingleProduct } from '../actions';
 //Thunk for fetching all products.
 //Do you think we could initialize id to null, and reuse this thunk to make a call for a single product?
 export const fetchProducts = () => {
-  console.log('fetching products');
   return dispatch => {
     return axios
       .get(`/api/products`)
@@ -29,16 +28,17 @@ export const fetchSingleProduct = productId => {
 //Thunk for creating a product.
 //Refetches products after creating.
 export const postProduct = product => {
-    return dispatch => {
-        return axios.post(`/api/products`, product, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(() => dispatch(fetchProducts()))
-        .catch(e => console.error('Error creating product', e))
-    }
-}
+  return dispatch => {
+    return axios
+      .post(`/api/products`, product, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(() => dispatch(fetchProducts()))
+      .catch(e => console.error('Error creating product', e));
+  };
+};
 
 //Thunk for deleting a product.
 //Refetches products after deleting.
