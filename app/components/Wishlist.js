@@ -9,23 +9,27 @@ class Wishlist extends React.Component {
     this.props.fetchWishlist(this.props.match.params.userId);
   }
   render() {
-    const { wishlist } = this.props;
-    return (
-      <div>
-        {wishlist.length === 0 ? (
-          <div>Your wishlist is empty</div>
-        ) : (
-          <div>
-            <Link>Back</Link>
-            <div className="wishlist-product-listing">
-              {wishlist.map(_product => (
-                <WishlistItem key={`wl-${_product.id}`} product={_product} />
-              ))}
+    const { wishlist, user } = this.props;
+    if (user.userType === 'Guest') {
+      return <div>Please create an account to create a wishlist.</div>;
+    } else {
+      return (
+        <div>
+          {wishlist.length === 0 ? (
+            <div>Your wishlist is empty</div>
+          ) : (
+            <div>
+              <Link>Back</Link>
+              <div className="wishlist-product-listing">
+                {wishlist.map(_product => (
+                  <WishlistItem key={`wl-${_product.id}`} product={_product} />
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    );
+          )}
+        </div>
+      );
+    }
   }
 }
 
