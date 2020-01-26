@@ -6,7 +6,6 @@ import WishlistItem from './WishlistItem.js';
 
 class Wishlist extends React.Component {
   componentDidMount() {
-    console.log('USER IS ', this.props.user);
     if (
       this.props.user.userType !== 'Guest' &&
       this.props.user.userType !== undefined
