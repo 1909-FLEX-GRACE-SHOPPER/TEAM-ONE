@@ -1,26 +1,26 @@
 'use strict';
 
 // Assertions
-const chai = require('chai');
-const expect = chai.expect;
-const chaiThings = require('chai-things');
+import chai, { expect } from 'chai';
+import chaiThings from 'chai-things';
 chai.use(chaiThings);
 
 // User Model
-const { models } = require('../server/db/index');
-const { User } = models
+const { models, db } = require('../server/db/index');
+const { User } = models;
 
 // User Routes
 const app = require('../server/index');
-const agent = require('supertest')(app)
+const agent = require('supertest')(app);
 
 // User Component
 // TO DO: fix syntax error here: babel is not recognized.
-import { shallow, mount } from 'enzyme';
-// import Adapter from 'enzyme-adapter-react-16';
-// enzyme.configure({ adapter: new Adapter() });
-// import React from 'react';
+import enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+enzyme.configure({ adapter: new Adapter() });
+import React from 'react';
 import Login from '../app/components/Login';
+import { Buttom } from 'react-bootstrap;'
 
 // Redux
 
@@ -34,15 +34,16 @@ describe('User Model', () => {
         it('requires `userType`', async () => {
             try {
                 await userType.validate()
-                throw Error('validation was successful but should have failed without `userType`');
-            }
-            catch (err) {
+                throw Error(
+                    'validation was successful but should have failed without `userType`'
+                );
+            } catch (err) {
                 expect(err.message).to.contain('userType')
             }
-        })
+        });
 
-    })
-})
+    });
+});
 
 describe('User Routes', () => {
 
@@ -77,23 +78,23 @@ describe('User Routes', () => {
         await User.destroy({ where: {}, force: true })
         const createdUsers = await User.bulkCreate(userData);
         storedUsers = createdUsers.map(user => user.dataValues);
-    })
+    });
 
     xdescribe('GET `/api/users`', () => {
         it('should get all users', async () => {
-            const response = await agent
-                .get('/api/users')
-                .expect(200)
+            const response = await agent.get('/api/users').expect(200)
             // console.log(response.body)
             expect(response.body.count).to.equal(2);
-            expect(response.body.rows[1]['userType']).to.equal(storedUsers[1]['userType'])
-        })
-    })
-})
+            expect(response.body.rows[1]['userType']).to.equal(
+                storedUsers[1]['userType']
+            );
+        });
+    });
+});
 
 describe('Login Component', () => {
     it('should have a button', () => {
         const wrapper = shallow(<Login />);
-        expect(wrapper.find('button')).to.have.length(1);
-    })
-})
+        expect(wrapper.find(Buutton)).to.have.length(1);
+    });
+});
