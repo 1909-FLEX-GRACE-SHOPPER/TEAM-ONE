@@ -42,6 +42,49 @@ describe('User Model', () => {
     })
 })
 
-// describe('User Routes', () => {
+describe('User Routes', () => {
 
-// })
+    let storedUsers;
+
+    const userData = [
+        {
+            id: '07a5ac20-2275-4392-b6c9-0e5bd21a0166',
+            userType: 'Guest',
+            // email: 'haha@gmail.com',
+            // password: '234145',
+            // phone: 2029934857,
+            // shippingZip: 23423,
+            // cardNumber: 2727383849495050,
+            // securityCode: 234,
+            // billingZip: 23423,
+        },
+        {
+            id: '9df5c385-56ce-4159-8614-af919bd5771a',
+            userType: 'Admin',
+            // email: 'lol@gmail.com',
+            // password: '234145',
+            // phone: 2029934857,
+            // shippingZip: 23423,
+            // cardNumber: 2727383849495050,
+            // securityCode: 234,
+            // billingZip: 23423,
+        }
+    ];
+
+    beforeEach(async () => {
+        await User.destroy({ where: {}, force: true })
+        const createdUsers = await User.bulkCreate(userData);
+        storedUsers = createdUsers.map(user => user.dataValues);
+    })
+
+    describe('GET `/api/users`', () => {
+        it('should get all users', async () => {
+            const response = await agent
+                .get('/api/users')
+                .expect(200)
+            // console.log(response.body)
+            expect(response.body.count).to.equal(2);
+            expect(response.body.rows[1]['userType']).to.equal(storedUsers[1]['userType'])
+        })
+    })
+})

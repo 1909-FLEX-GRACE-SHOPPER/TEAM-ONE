@@ -14,7 +14,7 @@ const { Product } = models
 const app = require('../server/index');
 const agent = require('supertest')(app);
 
-// Order Component
+// Product Component
 // import enzyme, { shallow } from 'enzyme';
 // import Adapter from 'enzyme-adapter-react-16';
 // enzyme.configure({ adapter: new Adapter() });
@@ -43,7 +43,7 @@ describe('Product Model', () => {
 })
 
 describe('Product Routes', () => {
-    let storedProduct;
+    let storedProducts;
 
     const productData = [
         {
@@ -65,6 +65,7 @@ describe('Product Routes', () => {
     ];
 
     beforeEach(async () => {
+        await Product.destroy({ where: {}, force: true })
         const createdProducts = await Product.bulkCreate(productData);
         storedProducts = createdProducts.map(product => product.dataValues);
     })
@@ -74,6 +75,7 @@ describe('Product Routes', () => {
             const response = await agent
                 .get('/api/products')
                 .expect(200)
+
             expect(response.body).to.have.length(2);
             expect(response.body[0].unitPrice).to.equal(storedProducts[0].unitPrice)
         })

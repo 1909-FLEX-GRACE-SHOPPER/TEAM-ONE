@@ -64,7 +64,7 @@ const User = db.define('users', {
   },
   phone: {
     //TODO: Change this to String type to allow storing formating
-    type: INTEGER,
+    type: BIGINT,
     validate: {
       isNumeric: {
         args: true,
