@@ -7,7 +7,7 @@ const { Product } = models;
 const paginate = require('./utils');
 
 router.get('/', paginate(Product), (req, res, next) => {
-  res.send(res.foundModels)
+  res.status(200).send(foundModels)
   .catch(e => {
     res.status(404);
     next(e);

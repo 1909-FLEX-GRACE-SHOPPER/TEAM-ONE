@@ -1,5 +1,6 @@
 //Pagination middleware. 
 const paginate = (model) => {
+	debugger;
 	return (req, res, next) => {
 		const limit = req.query.limit * 1 || 10;
 		const offset = req.query.page * limit || 0; 
@@ -9,8 +10,7 @@ const paginate = (model) => {
 			limit,
 		})
 		.then(foundModels => {
-			res.foundModels = foundModels
-			next();
+			res.send(foundModels)
 		})
 		.catch(e => {
 			res.status(500)
