@@ -10,7 +10,6 @@ class Wishlist extends React.Component {
   }
   render() {
     const { wishlist } = this.props;
-    console.log('RENDERING WISHLIST ');
     return (
       <div>
         {wishlist.length === 0 ? (

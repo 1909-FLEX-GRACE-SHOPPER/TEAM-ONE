@@ -5,6 +5,7 @@ import {
   fetchSingleProduct,
   fetchProducts
 } from '../redux/thunks/ProductThunks';
+import { postWishlist } from '../redux/thunks/WishlistThunks';
 import Button from 'react-bootstrap/Button';
 import Product from './Product.js';
 
@@ -20,7 +21,7 @@ class ProductPage extends React.Component {
     this.props.fetchProducts();
   }
   render() {
-    const { singleProduct, products } = this.props;
+    const { singleProduct, products, postWishlist, user } = this.props;
     return (
       <div>
         {!singleProduct ? (
@@ -42,6 +43,7 @@ class ProductPage extends React.Component {
                       type="number"
                       className="product-quantity-select"
                       max={singleProduct.inventory}
+                      min="0"
                       value={this.state.quantity}
                       onChange={e => {
                         this.setState({ quantity: e.target.value });
@@ -55,7 +57,13 @@ class ProductPage extends React.Component {
                     </div>
                   </div>
                   <Button>ADD TO CART</Button>
-                  <Button>ADD TO WISHLIST</Button>
+                  <Button
+                    onClick={() =>
+                      postWishlist({ ...singleProduct, userId: user.id })
+                    }
+                  >
+                    ADD TO WISHLIST
+                  </Button>
                   <div className="product-description">
                     {singleProduct.description}
                   </div>
@@ -83,12 +91,16 @@ class ProductPage extends React.Component {
 //TODO: This should fetch similar products not just all products
 //TODO: Add wishlist thunk
 //TODO: Add cart thunk
-
-const mapState = ({ singleProduct, products }) => ({ singleProduct, products });
+const mapState = ({ singleProduct, products, user }) => ({
+  singleProduct,
+  products,
+  user
+});
 const mapDispatch = dispatch => {
   return {
     fetchSingleProduct: productId => dispatch(fetchSingleProduct(productId)),
-    fetchProducts: () => dispatch(fetchProducts())
+    fetchProducts: () => dispatch(fetchProducts()),
+    postWishlist: item => dispatch(postWishlist(item))
   };
 };
 
