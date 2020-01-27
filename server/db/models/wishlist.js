@@ -1,4 +1,3 @@
-//define Wishlist model here
 const Sequelize = require('sequelize');
 const db = require('./../database.js');
 
