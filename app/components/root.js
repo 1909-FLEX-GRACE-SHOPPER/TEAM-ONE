@@ -24,12 +24,14 @@ import AddProductForm from './AddProductForm';
 class Root extends React.Component {
   componentDidMount() {
     const { fetchUser, createUser } = this.props;
-    const userId = document.cookie.replace(/uuid=/, '');
-    if (!userId) {
-      createUser({ userType: 'Guest', loggedIn: false });
-    } else {
-      fetchUser(userId);
-    }
+
+    //Don't think we need the bottom code anymore 
+    // const userId = document.cookie.replace(/uuid=/, '');
+    // if (!userId) {
+    //   createUser({ userType: 'Guest', loggedIn: false });
+    // } else {
+    //   fetchUser(userId);
+    // }
   }
   render() {
     return (

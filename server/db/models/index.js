@@ -4,6 +4,7 @@ const Order = require('./orders');
 const OrderDetail = require('./order-details');
 const Product = require('./products');
 const Wishlist = require('./wishlist');
+const Session = require('./sessions')
 
 module.exports = {
     User,
@@ -11,4 +12,5 @@ module.exports = {
     OrderDetail,
     Product,
     Wishlist,
+    Session
 }
