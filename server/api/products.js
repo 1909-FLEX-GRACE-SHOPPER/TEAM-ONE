@@ -52,7 +52,7 @@ router.post('/', (req, res, next) => {
           productImage: `/uploads/${imageFile.name.split(' ').join('-')}`
         });
       })
-      .then(() => res.status(201))
+      .then(() => res.status(201).send('success creating'))
       .catch(e => {
         res.status(400);
         next(e);
@@ -64,7 +64,7 @@ router.post('/', (req, res, next) => {
       unitPrice: (unitPrice * 1).toFixed(2),
       inventory: inventory * 1 || 0,
     })
-    .then(() => res.status(201))
+    .then(() => res.status(201).send('success creating'))
     .catch(e => {
       res.status(400);
       next(e);

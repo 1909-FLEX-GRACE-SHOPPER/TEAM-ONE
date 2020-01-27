@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { setProducts, setSingleProduct } from '../actions';
+import { setProducts, setSingleProduct, statusMessage } from '../actions';
 
 //TODO: Render error component when thunks fail
 
@@ -36,9 +36,17 @@ export const postProduct = product => {
         }
       })
       .then(() => dispatch(fetchProducts()))
+      .then(() => dispatch(statusMessage({
+        status: 'success',
+        text: 'Product successfully added to store!'
+      })))
       .catch(() => {
-        dispatch(errorMessage('Error creating a User'))
+        dispatch(statusMessage({
+          status: 'fail',
+          text: 'Error creating a User'
+        }))
       })
+
   };
 };
 

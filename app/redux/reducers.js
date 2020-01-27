@@ -7,7 +7,7 @@ import {
   LOGIN_SUCCCESS,
   LOGIN_ERROR,
   SET_WISHLIST,
-  ERROR_MESSAGE,
+  STATUS_MESSAGE,
 } from './constants';
 
 export const products = (state = [], action) => {
@@ -86,9 +86,9 @@ export const wishlist = (state = [], action) => {
   }
 };
 
-export const errorMessage = (state = {}, action) => {
+export const statusMessage = (state = { status: null, text: '' }, action) => {
   switch (action.type) {
-    case ERROR_MESSAGE:
+    case STATUS_MESSAGE:
       return action.message
     default:
       return state;

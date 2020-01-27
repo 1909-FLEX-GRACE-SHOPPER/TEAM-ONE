@@ -7,7 +7,7 @@ import {
 	SET_WISHLIST,
 	LOGIN_SUCCCESS,
 	LOGIN_ERROR,
-	ERROR_MESSAGE,
+	STATUS_MESSAGE,
 } from './constants';
 
 export const setProducts = products => {
@@ -64,9 +64,9 @@ export const loggedInFail = () => {
 	};
 };
 
-export const errorMessage = message => {
+export const statusMessage = message => {
 	return {
-		type: ERROR_MESSAGE,
+		type: STATUS_MESSAGE,
 		message,
 	}
 }

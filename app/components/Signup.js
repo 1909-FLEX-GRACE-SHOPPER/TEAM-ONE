@@ -5,10 +5,10 @@ const { Group, Label, Control, Text, Row, Col } = Form;
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
-import { FailToast } from './Toasts'
+import ToastComponent from './Toasts'
 
 import { createUser } from '../redux/thunks/UserThunks';
-import { errorMessage } from '../redux/actions';
+import { statusMessage } from '../redux/actions';
 
 class Signup extends Component {
   constructor() {
@@ -106,14 +106,10 @@ class Signup extends Component {
         password: '',
         confirmPassword: '',
       })
-
   }
 
-  closeToast = () => {
-		this.props.resetError();
-	}
-
   render() {
+    const { status, text } = this.props.statusMessage
     const {
       firstName,
       lastName,
@@ -134,11 +130,7 @@ class Signup extends Component {
         <div className='logo-medium'></div>
 
         <Form className='signup-form'>
-          {
-            Object.keys(this.props.errorMessage).length
-            ? <FailToast message={ this.props.errorMessage } closeToast={ this.closeToast } />
-            : null
-          }
+          <ToastComponent status={ status } message={ text } />
           <Row style={{ dispaly: 'flex', justifyContent: 'space-between' }}>
             <Group as={ Col } controlId='firstName' style={{ width: 'calc(50% - 1rem)' }}>
               <Label>FIRST NAME <span style={{ color: 'red', fontSize: '10px' }}>*required</span></Label>
@@ -236,12 +228,11 @@ class Signup extends Component {
   };
 }
 
-const mapState = ({ user, errorMessage }) => ({ user, errorMessage })
+const mapState = ({ user, statusMessage }) => ({ user, statusMessage })
 
 const mapDispatch = dispatch => { 
   return {
     createUser: form => dispatch(createUser(form)),
-    resetError: () => dispatch(errorMessage('')),
   }
 }
 

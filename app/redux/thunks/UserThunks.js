@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { setUser, logInSuccess, loggedInFail, errorMessage } from '../actions';
+import { setUser, logInSuccess, loggedInFail, statusMessage } from '../actions';
 
 //TODO: Render error component when thunks fail
 
@@ -22,13 +22,21 @@ export const createUser = user => {
       .post(`/api/users`, user)
       .then(res => {
         dispatch(setUser(res.data))
-        dispatch(errorMessage(''))
+      .then(() => {
+        dispatch(statusMessage({
+          status: null,
+          text: '',
+        }))
       })
       .catch(() => {
-        dispatch(errorMessage('Error creating a User'))
-      });
+        dispatch(statusMessage({
+          status: 'fail',
+          text: 'Error creating a User'
+        }))
+      })
+    })
   };
-};
+}
 
 //Thunk for logging out a user.
 //Sets the user to null after logging out.

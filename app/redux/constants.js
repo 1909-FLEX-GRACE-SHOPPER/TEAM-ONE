@@ -14,4 +14,4 @@ export const LOGIN_SUCCCESS = 'LOGIN_SUCCESS';
 
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 
-export const ERROR_MESSAGE = 'ERROR_MESSAGE';
+export const STATUS_MESSAGE = 'STATUS_MESSAGE';

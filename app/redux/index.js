@@ -8,7 +8,7 @@ import {
   orderDetails,
   authentication,
   wishlist,
-  errorMessage,
+  statusMessage,
 } from './reducers';
 
 export default combineReducers({
@@ -19,5 +19,5 @@ export default combineReducers({
   orderDetails,
   authentication,
   wishlist,
-  errorMessage,
+  statusMessage,
 });

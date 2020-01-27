@@ -6,9 +6,9 @@ const { Row, Group, Label, Control, Col } = Form
 
 import { connect } from 'react-redux';
 
-import { SuccessToast, FailToast } from './Toasts';
+import ToastComponent  from './Toasts';
 import { postProduct } from '../redux/thunks/ProductThunks';
-import { errorMessage } from '../redux/actions';
+import { statusMessage } from '../redux/actions';
 
 //TODO: add tagging system
 
@@ -27,7 +27,6 @@ class AddProductForm extends Component {
 				unitPriceError: '',
 				inventoryError: '',
 			},
-			addProductToast: '',
 		}
 	}
 
@@ -126,28 +125,15 @@ class AddProductForm extends Component {
 			inventory: '',
 			file: [],
 			fileName: '',
-			addProductToast: 'Your new product has been added to the shop',
 		})
 	}
 
-	closeToast = () => {
-		this.props.resetError();
-	}
-
 	render() {
+		const { status, text } = this.props.statusMessage
 		const { productName, productDescription, unitPrice, inventory, fileName, errors: { fileError, unitPriceError, inventoryError }, addProductToast } = this.state;
 		return (
 			<div className='container mt-4'>
-				{
-					addProductToast
-					? <SuccessToast message={ addProductToast } closeToast={ this.closeToast } />
-					: null
-				}
-				{
-					Object.keys(this.props.errorMessage).length
-					? <FailToast message={ this.props.errorMessage } closeToast={ this.closeToast } />
-					: null
-				}
+				<ToastComponent status={ status } message={ text } />
 				<Form encType="multipart/form-data">
 					<Group controlId='productName'>
 						<Label>Product Name <span style={{ color: 'red', fontSize: '10px' }}>*required</span></Label>
@@ -218,7 +204,7 @@ class AddProductForm extends Component {
 	}
 }
 
-const mapState = ({ errorMessage }) => ({ errorMessage })
+const mapState = ({ statusMessage }) => ({ statusMessage })
 
 const mapDispatch = dispatch => {
 	return {
