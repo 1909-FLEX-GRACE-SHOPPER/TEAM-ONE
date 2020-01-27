@@ -41,6 +41,7 @@ router.get('/id/:userId', (req, res, next) => {
 //Sets falsy fields in req.body that are allowed to be null to null
 router.post('/', (req, res, next) => {
   const {
+    id,
     firstName,
     lastName,
     email,
@@ -56,7 +57,7 @@ router.post('/', (req, res, next) => {
     billingZip
   } = req.body;
 
-  User.findByPk(userId)
+  User.findByPk(id)
   .then(userOrNull => {
     if(userOrNull) {
       userOrNull.update({
@@ -76,9 +77,11 @@ router.post('/', (req, res, next) => {
         billingState: billingState || null,
         billingZip: billingZip || null
       })
+      .then(updatedUser => res.status(202).send(updatedUser))
       .catch(e => {
         next(e)
       })
+
     } else {
       User.create({
         firstName,
@@ -97,16 +100,16 @@ router.post('/', (req, res, next) => {
         billingState: billingState || null,
         billingZip: billingZip || null
       })
-    }
-  })
-  .then(user => {
-    res
-      .status(201)
-      .cookie('uuid', user.id, {
-        path: '/',
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+      .then(user => {
+        res
+          .status(201)
+          .cookie('uuid', user.id, {
+            path: '/',
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+          })
+          .send(user)
       })
-      .send(user)
+    }
   })
   .catch(e => {
     res.status(400);

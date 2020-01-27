@@ -13,3 +13,5 @@ export const SET_WISHLIST = 'SET_WISHLIST';
 export const LOGIN_SUCCCESS = 'LOGIN_SUCCESS';
 
 export const LOGIN_ERROR = 'LOGIN_ERROR';
+
+export const ERROR_MESSAGE = 'ERROR_MESSAGE';

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { setUser, logInSuccess, loggedInFail } from '../actions';
+import { setUser, logInSuccess, loggedInFail, errorMessage } from '../actions';
 
 //TODO: Render error component when thunks fail
 
@@ -20,8 +20,13 @@ export const createUser = user => {
   return dispatch => {
     return axios
       .post(`/api/users`, user)
-      .then(res => dispatch(setUser(res.data)))
-      .catch(e => console.error('Error creating user', e));
+      .then(res => {
+        dispatch(setUser(res.data))
+        dispatch(errorMessage(''))
+      })
+      .catch(e => {
+        dispatch(errorMessage('Error creating a User'))
+      });
   };
 };
 

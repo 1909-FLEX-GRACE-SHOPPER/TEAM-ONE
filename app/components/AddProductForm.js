@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Toast from 'react-bootstrap/Toast';
+
 const { Row, Group, Label, Control, Col } = Form
 
 import { connect } from 'react-redux';
 
+import { SuccessToast, FailToast } from './Toasts';
 import { postProduct } from '../redux/thunks/ProductThunks';
+import { errorMessage } from '../redux/actions';
 
 //TODO: add tagging system
 
@@ -25,12 +27,12 @@ class AddProductForm extends Component {
 				unitPriceError: '',
 				inventoryError: '',
 			},
-			showToast: false,
+			addProductToast: '',
 		}
 	}
 
 	validate = (field, value) => {
-		const { file, fileName } = this.state;
+		const { file, fileName, errors } = this.state;
 		switch(field) {
 
 			case 'fileName':
@@ -99,10 +101,12 @@ class AddProductForm extends Component {
 	}
 
 	handleBrowse = e => {
-		this.setState({
-			file: e.target.files[0],
-			fileName: e.target.files[0].name, 
-		}, () => { this.validate('fileName', this.state.fileName) })
+		if(e.target.files[0]) {
+			this.setState({
+				file: e.target.files[0],
+				fileName: e.target.files[0].name, 
+			}, () => { this.validate('fileName', this.state.fileName) })
+		}
 	}
 
 	handleOnSubmit = e => {
@@ -122,24 +126,28 @@ class AddProductForm extends Component {
 			inventory: '',
 			file: [],
 			fileName: '',
-			showToast: true,
+			addProductToast: 'Your new product has been added to the shop',
 		})
 	}
 
 	closeToast = () => {
-		this.setState({ showToast: false })
+		this.props.resetError();
 	}
 
 	render() {
-		const { productName, productDescription, unitPrice, inventory, fileName, errors: { fileError, unitPriceError, inventoryError }, showToast } = this.state;
+		const { productName, productDescription, unitPrice, inventory, fileName, errors: { fileError, unitPriceError, inventoryError }, addProductToast } = this.state;
 		return (
 			<div className='container mt-4'>
-				<Toast show={ showToast } onClose={ this.closeToast } >
-					<Toast.Header className='bg-success'>
-						<strong className="mr-auto text-white">Success!</strong>
-					</Toast.Header>
-					<Toast.Body className="text-success">Your new product has been added to the shop.</Toast.Body>
-				</Toast>
+				{
+					addProductToast
+					? <SuccessToast message={ addProductToast } closeToast={ this.closeToast } />
+					: null
+				}
+				{
+					Object.keys(this.props.errorMessage).length
+					? <FailToast message={ this.props.errorMessage } closeToast={ this.closeToast } />
+					: null
+				}
 				<Form encType="multipart/form-data">
 					<Group controlId='productName'>
 						<Label>Product Name <span style={{ color: 'red', fontSize: '10px' }}>*required</span></Label>
@@ -210,6 +218,13 @@ class AddProductForm extends Component {
 	}
 }
 
-const mapDispatch = dispatch => ({ postProduct: form => dispatch(postProduct(form)) })
+const mapState = ({ errorMessage }) => ({ errorMessage })
 
-export default connect(null, mapDispatch)(AddProductForm);
+const mapDispatch = dispatch => {
+	return {
+		postProduct: form => dispatch(postProduct(form)),
+		resetError: () => dispatch(errorMessage('')),
+	}
+}
+
+export default connect(mapState, mapDispatch)(AddProductForm);
