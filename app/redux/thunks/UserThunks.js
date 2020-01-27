@@ -24,7 +24,7 @@ export const createUser = user => {
         dispatch(setUser(res.data))
         dispatch(errorMessage(''))
       })
-      .catch(e => {
+      .catch(() => {
         dispatch(errorMessage('Error creating a User'))
       });
   };

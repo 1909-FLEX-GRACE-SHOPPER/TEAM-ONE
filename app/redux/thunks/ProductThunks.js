@@ -36,7 +36,9 @@ export const postProduct = product => {
         }
       })
       .then(() => dispatch(fetchProducts()))
-      .catch(e => console.error('Error creating product', e));
+      .catch(() => {
+        dispatch(errorMessage('Error creating a User'))
+      })
   };
 };
 
