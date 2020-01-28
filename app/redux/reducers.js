@@ -6,7 +6,10 @@ import {
   SET_ORDER_DETAILS,
   LOGIN_SUCCCESS,
   LOGIN_ERROR,
-  SET_WISHLIST
+  SET_WISHLIST,
+  SET_CART,
+  ADD_ITEM_TO_CART,
+  REMOVE_ITEM_FROM_CART
 } from './constants';
 
 export const products = (state = [], action) => {
@@ -84,3 +87,16 @@ export const wishlist = (state = [], action) => {
       return state;
   }
 };
+
+export const cart = (state = [], action) => {
+  switch (action.type) {
+    case SET_CART:
+      return action.products;
+    case ADD_ITEM_TO_CART:
+      return [...state, action.product];
+    case REMOVE_ITEM_FROM_CART:
+      return state.filter(product => product.id !== action.product.id);
+    default:
+      return state;
+  }
+}

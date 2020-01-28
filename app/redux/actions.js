@@ -6,7 +6,10 @@ import {
 	SET_ORDER_DETAILS,
 	SET_WISHLIST,
 	LOGIN_SUCCCESS,
-	LOGIN_ERROR
+	LOGIN_ERROR,
+	SET_CART,
+	ADD_ITEM_TO_CART,
+	REMOVE_ITEM_FROM_CART
 } from './constants';
 
 export const setProducts = products => {
@@ -60,5 +63,26 @@ export const logInSuccess = () => {
 export const loggedInFail = () => {
 	return {
 		type: LOGIN_ERROR
+	};
+};
+
+export const setCart = products => {
+	return {
+		type: SET_CART,
+		products
+	};
+};
+
+export const _addItemToCart = product => {
+	return {
+		type: ADD_ITEM_TO_CART,
+		product
+	};
+};
+
+export const _removeItemFromCart = product => {
+	return {
+		type: REMOVE_ITEM_FROM_CART,
+		product
 	};
 };
