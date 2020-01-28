@@ -18,18 +18,18 @@ router.post('/add/:userId', (req, res, next) => {
         .catch(e => res.status(400).next(e))
 })
 
-router.put('/:userId', (req, res, next) => {
+router.put('/:userId/:productId', (req, res, next) => {
     Cart.update({
         productQuantity: req.body.productQuantity,
     }, {
-        where: { id: req.params.productId },
+        where: { productid: req.params.productId },
         returning: true
     })
         .then(() => res.status(202))
         .catch(e => res.status(304).next(e))
 })
 
-router.delete('/remote:userId', (req, res, next) => {
+router.delete('/remove/:userId/:productId', (req, res, next) => {
     Cart.findByPk(req.params.productId)
         .then(product => product.destroy())
         .then(() => res.status(200).send('Product deleted'))
