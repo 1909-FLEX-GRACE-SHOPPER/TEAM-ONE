@@ -11,8 +11,6 @@ app.use(cookieParser());
 
 app.use((req, res, next) => {
   //The user doesn't have a session cookie so we create a session
-  console.log('cookies', req.cookies);
-
   if (!req.cookies['session_id']) {
     Session.create()
       .then(session =>
