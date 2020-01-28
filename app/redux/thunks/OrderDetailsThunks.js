@@ -1,15 +1,23 @@
 import axios from 'axios';
 
-import { setOrderDetails } from '../actions';
+import { setOrderDetails, statusMessage } from '../actions';
 
-//TODO: Render error component when thunks fail
+import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
+
+//TODO: delete console.logs on deployment
 
 //Thunk to fetch orderDetails from an order.
 export const fetchOrderDetails = orderId => {
     return dispatch => {
         return axios.get(`/api/orders/${ orderId }/orderDetails`)
         .then(res => dispatch(setOrderDetails(res.data)))
-        .catch(e => console.error('Error fetching order details', e))
+        .catch(e => {
+            console.log(e)
+            dispatch(statusMessage({
+                status: FAIL,
+                text: COMMON_FAIL,
+            }))
+        })
     }
 }
 
@@ -18,8 +26,20 @@ export const fetchOrderDetails = orderId => {
 export const postOrderDetails = (orderId, orderDetailId, orderDetail) => {
     return dispatch => {
         return axios.post(`/api/orders/${ orderId }/orderDetails/${ orderDetailId }`, orderDetail)
-        ,then(() => dispatch(fetchOrderDetails(orderId)))
-        .catch(e => console.error('Error creating order details', e))
+        ,then(() => {
+            dispatch(fetchOrderDetails(orderId))
+            dispatch(statusMessage({
+                status: SUCCESS,
+                text: 'Order detail added',
+            }))
+        })
+        .catch(e => {
+            console.log(e);
+            dispatch(statusMessage({
+                status: FAIL,
+                text: `There was an error creating a new order detail. Try again later.`,
+            }))
+        })
     }
 }
 
@@ -28,17 +48,41 @@ export const postOrderDetails = (orderId, orderDetailId, orderDetail) => {
 export const deleteOrderDetails = (orderId, orderDetailId) => {
     return dispatch => {
         return axios.delete(`/api/orders/${ orderId }/orderDetails/${ orderDetailId }`)
-        .then(() => dispatch(fetchOrderDetails(orderId)))
-        .catch(e => console.error('Error deleting order details', e))
+        .then(() => {
+            dispatch(fetchOrderDetails(orderId))
+            dispatch(statusMessage({
+                status: SUCCESS,
+                text: 'Order detail deleted'
+            }))
+        })
+        .catch(e => {
+            console.log(e)
+            dispatch(statusMessage({
+                status: FAIL,
+                text: COMMON_FAIL,
+            }))
+        })
     }
 }
 
 //Thunk to update an orderDetail.
-//Fetches orders after deleting.
+//Fetches orders after updating.
 export const updateOrderDetails = (orderId, orderDetailId, orderDetail) => {
     return dispatch => {
         return axios.put(`/api/orders/${ orderId }/orderDetails/${ orderDetailId}`, orderDetail)
-        .then(() => dispatch(fetchOrderDetails(orderId)))
-        .catch(e => console.error('Error updating order details', e))
+        .then(() => {
+            dispatch(fetchOrderDetails(orderId))
+            dispatch(statusMessage({
+                status: SUCCESS,
+                text: 'Order detail updated'
+            }))
+        })
+        .catch(e => {
+            console.log(e);
+            dispatch(statusMessage({
+                status: FAIL,
+                text: `There was an error updating your order detail. Try again later.`
+            }))
+        })
     }
 }

@@ -3,11 +3,13 @@ import Toast from 'react-bootstrap/Toast';
 import { connect } from 'react-redux';
 import { statusMessage } from '../redux/actions'
 
+import { SUCCESS, FAIL } from '../redux/thunks/utils'
+
 export const ToastComponent = props => {
 
     const { status, message } = props
     switch(status) {
-        case 'success':
+        case SUCCESS:
             return (
                 <Toast onClose={ () => props.resetStatus() } >
                     <Toast.Header className='bg-success'>
@@ -16,17 +18,15 @@ export const ToastComponent = props => {
                     <Toast.Body className="text-success">{ message }</Toast.Body>
                 </Toast>
             )
-            break;
-        case 'fail':
+        case FAIL:
             return (
-                <Toast onClose={ props.resetStatus } >
+                <Toast onClose={ () => props.resetStatus() } >
                     <Toast.Header className='bg-danger'>
                         <strong className="mr-auto text-white">Error!</strong>
                     </Toast.Header>
                     <Toast.Body className="text-danger">{ message }</Toast.Body>
                 </Toast>
             )
-            break;
         default:
             return null;
         }

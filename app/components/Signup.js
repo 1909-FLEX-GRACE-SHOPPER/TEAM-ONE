@@ -5,10 +5,7 @@ const { Group, Label, Control, Text, Row, Col } = Form;
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
-import ToastComponent from './Toasts'
-
 import { createUser } from '../redux/thunks/UserThunks';
-import { statusMessage } from '../redux/actions';
 
 class Signup extends Component {
   constructor() {
@@ -95,21 +92,20 @@ class Signup extends Component {
   }
 
   handleOnSubmit = e => {
+    e.preventDefault();
     const { id } = this.props.user
-    e.preventDefault()
-    this.props.createUser({ ...this.state, id });
-      this.setState({
-        firstName: '',
-        lastName: '',
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-      })
+    this.props.createUser({ ...this.state, id })
+    this.setState({
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    })
   }
 
   render() {
-    const { status, text } = this.props.statusMessage
     const {
       firstName,
       lastName,
@@ -130,8 +126,7 @@ class Signup extends Component {
         <div className='logo-medium'></div>
 
         <Form className='signup-form'>
-          <ToastComponent status={ status } message={ text } />
-          <Row style={{ dispaly: 'flex', justifyContent: 'space-between' }}>
+          <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Group as={ Col } controlId='firstName' style={{ width: 'calc(50% - 1rem)' }}>
               <Label>FIRST NAME <span style={{ color: 'red', fontSize: '10px' }}>*required</span></Label>
               <Control
@@ -228,7 +223,7 @@ class Signup extends Component {
   };
 }
 
-const mapState = ({ user, statusMessage }) => ({ user, statusMessage })
+const mapState = ({ user }) => ({ user })
 
 const mapDispatch = dispatch => { 
   return {
