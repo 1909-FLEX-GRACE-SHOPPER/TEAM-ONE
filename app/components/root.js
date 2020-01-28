@@ -44,8 +44,7 @@ class Root extends React.Component {
             <Route exact path="/products/add" component={AddProductForm} />
             <Route path="/products/:id" component={ProductPage} />
             <Route
-              path="/orders/:orderId/shoppingcart/:userId?" /*component={ShoppingCart} */
-            />
+              path="/shoppingcart/:userId?" /*component={ShoppingCart}*/ />
             <Route
               path="/orders/:orderId/checkout/:userId?" /*component={Checkout} */
             />

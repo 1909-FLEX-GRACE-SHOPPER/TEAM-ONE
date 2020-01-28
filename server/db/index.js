@@ -6,13 +6,18 @@ const {
   Order,
   OrderDetail,
   Product,
-  Wishlist
+  Wishlist,
+  Cart
 } = require('./models/index');
 
 //MODEL ASSOCIATIONS
 
 //WISHLISTS
 Product.belongsToMany(User, { through: Wishlist });
+User.hasMany(Product);
+
+//CART
+Product.belongsToMany(User, { through: Cart });
 User.hasMany(Product);
 
 //ORDERS
@@ -30,6 +35,7 @@ module.exports = {
     Order,
     OrderDetail,
     Product,
-    Wishlist
+    Wishlist,
+    Cart
   }
 };
