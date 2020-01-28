@@ -7,6 +7,7 @@ const {
   OrderDetail,
   Product,
   Wishlist,
+  Session,
   Cart
 } = require('./models/index');
 
@@ -28,6 +29,10 @@ Order.belongsTo(User);
 Product.belongsToMany(Order, { through: OrderDetail });
 Order.belongsToMany(Product, { through: OrderDetail });
 
+//Sessions 
+Session.hasOne(User);
+User.belongsTo(Session);
+
 module.exports = {
   db,
   models: {
@@ -36,6 +41,7 @@ module.exports = {
     OrderDetail,
     Product,
     Wishlist,
+    Session,
     Cart
   }
 };
