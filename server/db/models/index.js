@@ -12,6 +12,6 @@ module.exports = {
     OrderDetail,
     Product,
     Wishlist,
-    Session
+    Session,
     Cart
 }

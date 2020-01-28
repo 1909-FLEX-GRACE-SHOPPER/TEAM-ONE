@@ -3,7 +3,6 @@ const app = require('./server.js');
 const { db } = require('./db/index.js');
 const { seedUsers, seedProducts } = require('../seed.js');
 const cookieParser = require('cookie-parser');
-const { Session } = models;
 
 app.use(cookieParser())
 
