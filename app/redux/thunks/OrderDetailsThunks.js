@@ -26,7 +26,7 @@ export const fetchOrderDetails = orderId => {
 export const postOrderDetails = (orderId, orderDetailId, orderDetail) => {
     return dispatch => {
         return axios.post(`/api/orders/${ orderId }/orderDetails/${ orderDetailId }`, orderDetail)
-        ,then(() => {
+        .then(() => {
             dispatch(fetchOrderDetails(orderId))
             dispatch(statusMessage({
                 status: SUCCESS,
