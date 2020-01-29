@@ -25,12 +25,14 @@ import AddProductForm from './AddProductForm';
 class Root extends React.Component {
   componentDidMount() {
     const { fetchUser, createUser } = this.props;
-    const userId = document.cookie.replace(/uuid=/, '');
-    if (!userId) {
-      createUser({ userType: 'Guest', loggedIn: false });
-    } else {
-      fetchUser(userId);
-    }
+
+    //Don't think we need the bottom code anymore 
+    // const userId = document.cookie.replace(/uuid=/, '');
+    // if (!userId) {
+    //   createUser({ userType: 'Guest', loggedIn: false });
+    // } else {
+    //   fetchUser(userId);
+    // }
   }
   render() {
     const { status, text } = this.props.statusMessage;
@@ -47,8 +49,7 @@ class Root extends React.Component {
             <Route exact path="/products/add" component={AddProductForm} />
             <Route path="/products/:id" component={ProductPage} />
             <Route
-              path="/orders/:orderId/shoppingcart/:userId?" /*component={ShoppingCart} */
-            />
+              path="/shoppingcart/:userId?" /*component={ShoppingCart}*/ />
             <Route
               path="/orders/:orderId/checkout/:userId?" /*component={Checkout} */
             />
