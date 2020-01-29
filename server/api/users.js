@@ -109,12 +109,17 @@ router.post('/login', (req, res, next) => {
       if (userOrNull) {
         User.update(
           {
-            loggedIn: true
+            sessionId: req.cookies.session_id,
+            loggedIn:true
           },
           {
             where: { email, password },
-            returning: true
-          }
+            returning: req.cookies.session_id
+          },
+          res.cookie('session_id',req.cookies.session_id,{
+            path: '/',
+            expires: new Date(Date.now() + 1000 * 60 * 60)
+          })
         );
         return res.status(202).send(userOrNull);
       }
