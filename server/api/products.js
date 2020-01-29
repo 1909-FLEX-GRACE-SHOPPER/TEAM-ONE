@@ -31,41 +31,45 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const { productName, productDescription, unitPrice, inventory } = req.body;
 
-  const imageFile = req.files.productImage;
-  console.log(
-    path.join(
-      '__dirname',
-      '..',
-      '/public',
-      '/uploads',
-      `/${imageFile.name.split(' ').join('-')}`
-    )
-  );
-
-  imageFile
-    .mv(
-      path.join(
-        '__dirname',
-        '..',
-        '/public',
-        '/uploads',
-        `/${imageFile.name.split(' ').join('-')}`
+  if(req.files) {
+    const imageFile = req.files.productImage
+    imageFile
+      .mv(
+        path.join(
+          '__dirname',
+          '..',
+          '/public',
+          '/uploads',
+          `/${imageFile.name.split(' ').join('-')}`
+        )
       )
-    )
-    .then(() => {
-      Product.create({
-        productName,
-        productDescription,
-        unitPrice: (unitPrice * 1).toFixed(2),
-        inventory: inventory * 1 || 0,
-        productImage: `/uploads/${imageFile.name.split(' ').join('-')}`
+      .then(() => {
+        Product.create({
+          productName,
+          productDescription,
+          unitPrice: (unitPrice * 1).toFixed(2),
+          inventory: inventory * 1 || 0,
+          productImage: `/uploads/${imageFile.name.split(' ').join('-')}`
+        });
+      })
+      .then(() => res.status(201).send('success creating'))
+      .catch(e => {
+        res.status(400);
+        next(e);
       });
+  } else {
+    Product.create({
+      productName,
+      productDescription,
+      unitPrice: (unitPrice * 1).toFixed(2),
+      inventory: inventory * 1 || 0,
     })
-    .then(() => res.status(201))
+    .then(() => res.status(201).send('success creating'))
     .catch(e => {
       res.status(400);
       next(e);
-    });
+    })
+  }
 });
 
 //Deletes a product based on a primary key.
