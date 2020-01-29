@@ -1,26 +1,26 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const path = require('path');
-const fileUpload = require('express-fileupload');
-const cookieParser = require('cookie-parser');
-const Session = require('./db/models/sessions');
+const path = require("path");
+const fileUpload = require("express-fileupload");
+const cookieParser = require("cookie-parser");
+const Session = require("./db/models/sessions");
 
 app.use(express.json());
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-  if (!req.cookies['session_id']) {
+  if (!req.cookies["session_id"]) {
     Session.create()
       .then(session => {
-        res.cookie('session_id', session.id, {
-          path: '/',
+        res.cookie("session_id", session.id, {
+          path: "/",
           expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
         });
         next();
       })
       .catch(e => {
         console.error(e);
-        res.satus(404).redirect('/error');
+        res.satus(404).redirect("/error");
       });
   } else {
     next();
@@ -33,19 +33,19 @@ app.use(
   })
 );
 
-app.use(express.static(path.join('__dirname', '..', '/public')));
+app.use(express.static(path.join("__dirname", "..", "/public")));
 
-app.use('/api', require('./api'));
+app.use("/api", require("./api"));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
 }); // Send index.html for any other requests , "*" -will send our react application
 
 //Error-handling endware
-app.use('/', (err, req, res, next) => {
+app.use("/", (err, req, res, next) => {
   res
     .status(err.status || 500)
-    .send({ message: err.message } || 'Internal server error');
+    .send({ message: err.message } || "Internal server error");
 });
 
 module.exports = app;

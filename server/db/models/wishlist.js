@@ -1,9 +1,9 @@
-const Sequelize = require('sequelize');
-const db = require('./../database.js');
+const Sequelize = require("sequelize");
+const db = require("./../database.js");
 
 const { UUID, UUIDV4 } = Sequelize;
 
-const Wishlist = db.define('wishlist', {
+const Wishlist = db.define("wishlist", {
   id: {
     primaryKey: true,
     type: UUID,

@@ -10,7 +10,7 @@ import {
   SET_CART,
   ADD_ITEM_TO_CART,
   REMOVE_ITEM_FROM_CART
-} from './constants';
+} from "./constants";
 
 export const products = (state = [], action) => {
   switch (action.type) {
@@ -65,7 +65,7 @@ export const authentication = (
     case LOGIN_ERROR:
       return {
         ...state,
-        authError: 'Login Failed',
+        authError: "Login Failed",
         logInStatus: false
       };
     case LOGIN_SUCCCESS:
@@ -99,4 +99,4 @@ export const cart = (state = [], action) => {
     default:
       return state;
   }
-}
+};

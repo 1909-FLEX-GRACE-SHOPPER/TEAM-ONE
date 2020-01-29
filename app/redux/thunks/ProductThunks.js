@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-import { setProducts, setSingleProduct } from '../actions';
+import { setProducts, setSingleProduct } from "../actions";
 
 //TODO: Render error component when thunks fail
 
@@ -11,7 +11,7 @@ export const fetchProducts = () => {
     return axios
       .get(`/api/products`)
       .then(res => dispatch(setProducts(res.data)))
-      .catch(e => console.error('Error fetching products', e));
+      .catch(e => console.error("Error fetching products", e));
   };
 };
 
@@ -21,7 +21,7 @@ export const fetchSingleProduct = productId => {
     return axios
       .get(`/api/products/${productId}`)
       .then(res => dispatch(setSingleProduct(res.data)))
-      .catch(e => console.error('Error fetching single product', e));
+      .catch(e => console.error("Error fetching single product", e));
   };
 };
 
@@ -32,11 +32,11 @@ export const postProduct = product => {
     return axios
       .post(`/api/products`, product, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          "Content-Type": "multipart/form-data"
         }
       })
       .then(() => dispatch(fetchProducts()))
-      .catch(e => console.error('Error creating product', e));
+      .catch(e => console.error("Error creating product", e));
   };
 };
 
@@ -47,7 +47,7 @@ export const deleteProduct = productId => {
     return axios
       .delete(`/api/products/${productId}`)
       .then(() => dispatch(fetchProducts()))
-      .catch(e => console.error('Error deleting product', e));
+      .catch(e => console.error("Error deleting product", e));
   };
 };
 
@@ -58,6 +58,6 @@ export const updateProduct = (productId, product) => {
     return axios
       .put(`/api/products/${productId}`, product)
       .then(res => dispatch(setSingleProduct(res.data)))
-      .catch(e => console.error('Error updating product', e));
+      .catch(e => console.error("Error updating product", e));
   };
 };

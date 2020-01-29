@@ -1,12 +1,12 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const { models } = require('../db/index.js');
+const { models } = require("../db/index.js");
 const { User, Order } = models;
 
-const paginate = require('./utils');
+const paginate = require("./utils");
 
 //Finds, counts and serves all users
-router.get('/', paginate(User), (req, res, next) => {
+router.get("/", paginate(User), (req, res, next) => {
   res
     .status(200)
     .send(res.foundModels)
@@ -18,7 +18,7 @@ router.get('/', paginate(User), (req, res, next) => {
 
 //Creates a new user/signs a user up
 //Sets falsy fields in req.body that are allowed to be null to null
-router.post('/', (req, res, next) => {
+router.post("/", (req, res, next) => {
   const {
     firstName,
     lastName,
@@ -52,10 +52,7 @@ router.post('/', (req, res, next) => {
     billingState: billingState || null,
     billingZip: billingZip || null
   })
-    .then(user =>
-      res
-        .status(201).send(user)
-    )
+    .then(user => res.status(201).send(user))
     .catch(e => {
       res.status(400);
       next(e);
@@ -63,12 +60,12 @@ router.post('/', (req, res, next) => {
 });
 
 //Finds the User in the table and attaches the cookie
-router.post('/login', (req, res, next) => {
+router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({
     where: {
       email,
-      password,
+      password
     }
   })
     .then(userOrNull => {
@@ -84,16 +81,16 @@ router.post('/login', (req, res, next) => {
         );
         return res.status(202).send(userOrNull);
       }
-      res.status(401).send('Failure!');
+      res.status(401).send("Failure!");
     })
     .catch(e => {
-      res.status(500).send('Internal Error');
+      res.status(500).send("Internal Error");
       next(e);
     });
 });
 
 //Logs out a User
-router.post('/logout', (req, res, next) => {
+router.post("/logout", (req, res, next) => {
   const { email, password } = req.body;
   User.update(
     {
@@ -112,7 +109,7 @@ router.post('/logout', (req, res, next) => {
 });
 
 //Deletes a user based on a primary key.
-router.delete('/:id', (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   User.findByPk(req.params.id)
     .then(user => user.destroy())
     .then(() => res.status(202))
@@ -124,7 +121,7 @@ router.delete('/:id', (req, res, next) => {
 
 //Updates a user based on a primary key.
 //Falsy fields in req.body are set to the current values.
-router.put('/:id', (req, res, next) => {
+router.put("/:id", (req, res, next) => {
   const {
     firstName,
     lastName,
@@ -170,7 +167,7 @@ router.put('/:id', (req, res, next) => {
 
 //Finds and serves a single user based on a primary key.
 //Eager loads associated orders.
-router.get('/:userId/orders', (req, res, next) => {
+router.get("/:userId/orders", (req, res, next) => {
   User.findByPk(req.params.userId, {
     include: [
       {
@@ -186,7 +183,7 @@ router.get('/:userId/orders', (req, res, next) => {
 });
 
 //Creates a new order for a specific User.
-router.post('/:userId/orders', (req, res, next) => {
+router.post("/:userId/orders", (req, res, next) => {
   const { shippingAddress, orderCost } = req.body;
 
   const { userId } = req.params;
@@ -204,7 +201,7 @@ router.post('/:userId/orders', (req, res, next) => {
 });
 
 //Deletes an order based on a primary key.
-router.delete('/:userId/order/:orderId', (req, res, next) => {
+router.delete("/:userId/order/:orderId", (req, res, next) => {
   Order.findByPk(req.params.orderId)
     .then(order => order.destroy())
     .then(() => res.status(202))
@@ -217,7 +214,7 @@ router.delete('/:userId/order/:orderId', (req, res, next) => {
 //Updates an order based on a primary key.
 //Falsy fields in req.body are set to the current values.
 //No need to update a userId
-router.put('/:userId/orders/:orderId', (req, res, next) => {
+router.put("/:userId/orders/:orderId", (req, res, next) => {
   const { shippingAddress, orderCost } = req.body;
 
   Order.findByPk(req.params.orderid)

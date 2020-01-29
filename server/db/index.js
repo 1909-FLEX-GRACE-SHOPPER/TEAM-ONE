@@ -1,6 +1,6 @@
 //collect all models and db connection
 //export everything in the database from here
-const db = require('./database');
+const db = require("./database");
 const {
   User,
   Order,
@@ -9,7 +9,7 @@ const {
   Wishlist,
   Session,
   Cart
-} = require('./models/index');
+} = require("./models/index");
 
 //MODEL ASSOCIATIONS
 
@@ -29,7 +29,7 @@ Order.belongsTo(User);
 Product.belongsToMany(Order, { through: OrderDetail });
 Order.belongsToMany(Product, { through: OrderDetail });
 
-//Sessions 
+//Sessions
 Session.hasOne(User);
 User.belongsTo(Session);
 

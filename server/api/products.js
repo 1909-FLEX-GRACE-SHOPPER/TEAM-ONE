@@ -1,20 +1,22 @@
-const router = require('express').Router();
-const path = require('path');
+const router = require("express").Router();
+const path = require("path");
 
-const { models } = require('../db/index');
+const { models } = require("../db/index");
 const { Product } = models;
 
-const paginate = require('./utils');
+const paginate = require("./utils");
 
-router.get('/', paginate(Product), (req, res, next) => {
-  res.status(200).send(foundModels)
-  .catch(e => {
-    res.status(404);
-    next(e);
-  });
+router.get("/", paginate(Product), (req, res, next) => {
+  res
+    .status(200)
+    .send(foundModels)
+    .catch(e => {
+      res.status(404);
+      next(e);
+    });
 });
 
-router.get('/:id', (req, res, next) => {
+router.get("/:id", (req, res, next) => {
   Product.findByPk(req.params.id)
     .then(product => {
       res.status(200).send(product);
@@ -28,28 +30,28 @@ router.get('/:id', (req, res, next) => {
 //Creates a new product.
 //Sets falsy field in req.body.productDescription to be null.
 //Sets falsy field in req.body.inventory to 0.
-router.post('/', (req, res, next) => {
+router.post("/", (req, res, next) => {
   const { productName, productDescription, unitPrice, inventory } = req.body;
 
   const imageFile = req.files.productImage;
   console.log(
     path.join(
-      '__dirname',
-      '..',
-      '/public',
-      '/uploads',
-      `/${imageFile.name.split(' ').join('-')}`
+      "__dirname",
+      "..",
+      "/public",
+      "/uploads",
+      `/${imageFile.name.split(" ").join("-")}`
     )
   );
 
   imageFile
     .mv(
       path.join(
-        '__dirname',
-        '..',
-        '/public',
-        '/uploads',
-        `/${imageFile.name.split(' ').join('-')}`
+        "__dirname",
+        "..",
+        "/public",
+        "/uploads",
+        `/${imageFile.name.split(" ").join("-")}`
       )
     )
     .then(() => {
@@ -58,7 +60,7 @@ router.post('/', (req, res, next) => {
         productDescription,
         unitPrice: (unitPrice * 1).toFixed(2),
         inventory: inventory * 1 || 0,
-        productImage: `/uploads/${imageFile.name.split(' ').join('-')}`
+        productImage: `/uploads/${imageFile.name.split(" ").join("-")}`
       });
     })
     .then(() => res.status(201))
@@ -69,7 +71,7 @@ router.post('/', (req, res, next) => {
 });
 
 //Deletes a product based on a primary key.
-router.delete('/:id', (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   Product.findByPk(req.params.id)
     .then(product => product.destroy())
     .then(() => res.status(202))
@@ -81,7 +83,7 @@ router.delete('/:id', (req, res, next) => {
 
 //Updates a product based on a primary key.
 //Falsy fields in req.body are set to the current values.
-router.put('/:id', (req, res, next) => {
+router.put("/:id", (req, res, next) => {
   const { productName, productDescription, unitPrice, inventory } = req.body;
 
   Product.findByPk(req.params.id)
