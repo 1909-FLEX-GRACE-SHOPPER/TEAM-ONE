@@ -1,7 +1,13 @@
 const router = require("express").Router();
 const { models } = require("../db/index.js");
 const { Cart, Product } = models;
-
+//temporary get route
+router.get("/", (req, res, next) => {
+  Cart.findAll()
+    .then(productsInCart => res.status(200).send(productsInCart))
+    .catch(e => res.status(400).next(e));
+});
+/*
 router.get("/:userId", (req, res, next) => {
   Cart.findAll({
     where: {
@@ -12,7 +18,7 @@ router.get("/:userId", (req, res, next) => {
     .then(productsInCart => res.status(200).send(productsInCart))
     .catch(e => res.status(400).next(e));
 });
-
+*/
 router.post("/add/:userId", (req, res, next) => {
   Cart.create(req.body)
     .then(product => res.status(201).send(product))

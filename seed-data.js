@@ -193,14 +193,14 @@ const users = [
 
 const carts = [
   {
-    productQuantity: 2,
-    productId: "26e00b4f-9957-46c6-a6e5-85045b0bbf32",
-    userId: "a829f92e-bffa-4f1f-aaa0-fd3906fe02dc"
+    productQuantity: 2
+    // productId: "26e00b4f-9957-46c6-a6e5-85045b0bbf32"
+    // userId: "a829f92e-bffa-4f1f-aaa0-fd3906fe02dc"
   },
   {
-    productQuantity: 3,
-    productId: "3e2481d0-49f3-4a28-b7a2-3641e795ef43",
-    userId: "54be1173-b525-4158-840d-0b4c02f8afb8"
+    productQuantity: 3
+    // productId: "3e2481d0-49f3-4a28-b7a2-3641e795ef43",
+    // userId: "54be1173-b525-4158-840d-0b4c02f8afb8"
   }
 ];
 

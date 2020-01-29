@@ -18,11 +18,11 @@ db.sync({ force: true })
     return seedProducts();
   })
   .then(() => {
-    console.log("cart seeded");
+    console.log("products seeded");
     return seedCarts();
   })
   .then(() => {
-    console.log("products seeded");
+    console.log("cart seeded");
     app.listen(PORT, () => {
       console.log(`App is listening at localhost:${PORT}`);
     });
