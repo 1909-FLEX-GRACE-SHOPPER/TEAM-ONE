@@ -16,25 +16,15 @@ router.get('/', paginate(User), (req, res, next) => {
     });
 });
 
-//Finds and serves a single user based on a primary key.
-router.get('/id/:userId', (req, res, next) => {
-  User.findByPk(req.params.userId)
-    .then(user => res.status(200).send(user))
-    .catch(e => {
-      res.status(404);
-      next(e);
-    });
-});
-
 //Creates a new user/signs a user up
 //Sets falsy fields in req.body that are allowed to be null to null
 router.post('/', (req, res, next) => {
   const {
+    id,
     firstName,
     lastName,
     email,
     password,
-    userType,
     phone,
     shippingAddress,
     shippingCity,
@@ -46,27 +36,64 @@ router.post('/', (req, res, next) => {
     billingZip
   } = req.body;
 
-  User.create({
-    firstName,
-    lastName,
-    email,
-    password,
-    userType,
-    phone: phone || null,
-    shippingAddress: shippingAddress || null,
-    shippingCity: shippingCity || null,
-    shippingState: shippingState || null,
-    shippingZip: shippingZip || null,
-    billingAddress: billingAddress || null,
-    billingCity: billingCity || null,
-    billingState: billingState || null,
-    billingZip: billingZip || null
+  User.findByPk(id)
+  .then(userOrNull => {
+    if(userOrNull) {
+      userOrNull.update({
+        firstName,
+        lastName,
+        email,
+        password,
+        userType: 'Existing customer',
+        loggedIn: true,
+        phone: phone || null,
+        shippingAddress: shippingAddress || null,
+        shippingCity: shippingCity || null,
+        shippingState: shippingState || null,
+        shippingZip: shippingZip || null,
+        billingAddress: billingAddress || null,
+        billingCity: billingCity || null,
+        billingState: billingState || null,
+        billingZip: billingZip || null
+      })
+      .then(updatedUser => res.status(202).send(updatedUser))
+      .catch(e => {
+        next(e)
+      })
+
+    } else {
+      User.create({
+        firstName,
+        lastName,
+        email,
+        password,
+        userType: 'Existing customer',
+        loggedIn: true,
+        phone: phone || null,
+        shippingAddress: shippingAddress || null,
+        shippingCity: shippingCity || null,
+        shippingState: shippingState || null,
+        shippingZip: shippingZip || null,
+        billingAddress: billingAddress || null,
+        billingCity: billingCity || null,
+        billingState: billingState || null,
+        billingZip: billingZip || null
+      })
+      .then(user => {
+        res
+          .status(201)
+          .cookie('uuid', user.id, {
+            path: '/',
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+          })
+          .send(user)
+      })
+    }
   })
-    .then(user => res.status(201).send(user))
-    .catch(e => {
-      res.status(400);
-      next(e);
-    });
+  .catch(e => {
+    res.status(400);
+    next(e);
+  });
 });
 
 //Finds the User in the table and attaches the cookie
@@ -75,7 +102,7 @@ router.post('/login', (req, res, next) => {
   User.findOne({
     where: {
       email,
-      password
+      password,
     }
   })
     .then(userOrNull => {
@@ -87,11 +114,7 @@ router.post('/login', (req, res, next) => {
           {
             where: { email, password },
             returning: true
-          },
-          res.cookie('uuid', userOrNull.id, {
-            path: '/',
-            expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
-          })
+          }
         );
         return res.status(202).send(userOrNull);
       }
@@ -101,7 +124,6 @@ router.post('/login', (req, res, next) => {
       res.status(500).send('Internal Error');
       next(e);
     });
-
 });
 
 //Logs out a User

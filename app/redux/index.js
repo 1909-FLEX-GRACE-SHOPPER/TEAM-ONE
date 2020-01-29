@@ -7,7 +7,8 @@ import {
   orders,
   orderDetails,
   authentication,
-  wishlist
+  wishlist,
+  statusMessage,
 } from './reducers';
 
 export default combineReducers({
@@ -17,5 +18,6 @@ export default combineReducers({
   orders,
   orderDetails,
   authentication,
-  wishlist
+  wishlist,
+  statusMessage,
 });

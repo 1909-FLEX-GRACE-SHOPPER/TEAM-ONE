@@ -6,7 +6,8 @@ import {
 	SET_ORDER_DETAILS,
 	SET_WISHLIST,
 	LOGIN_SUCCCESS,
-	LOGIN_ERROR
+	LOGIN_ERROR,
+	STATUS_MESSAGE,
 } from './constants';
 
 export const setProducts = products => {
@@ -62,3 +63,10 @@ export const loggedInFail = () => {
 		type: LOGIN_ERROR
 	};
 };
+
+export const statusMessage = message => {
+	return {
+		type: STATUS_MESSAGE,
+		message,
+	}
+}

@@ -12,7 +12,6 @@ class Products extends React.Component {
   render() {
     let { products } = this.props;
     products = products.rows || [];
-    console.log(products);
     const PRODUCTS_PER_PAGE = 10;
     return (
       <div>

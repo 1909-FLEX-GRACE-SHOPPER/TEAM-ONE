@@ -1,4 +1,3 @@
-//define Products model here
 const Sequelize = require('sequelize');
 const db = require('./../database.js');
 
@@ -8,7 +7,7 @@ const Product = db.define('products', {
     id: {
         primaryKey: true,
         type: UUID,
-        defaultValue: UUIDV4,
+        defaultValue: UUIDV4
     },
     productName: {
         type: STRING,
@@ -21,20 +20,20 @@ const Product = db.define('products', {
             notNull: {
                 arg: true,
                 msg: 'Product name cannot be null',
-            },
-        },
+            }
+        }
     },
     productDescription: {
-        type: TEXT,
+        type: TEXT
     },
     unitPrice: {
         type: DECIMAL(10, 2),
-        allowNull: false,
+        allowNull: false
     },
     inventory: {
         type: INTEGER,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0
     },
     productImage: {
         type: STRING,
