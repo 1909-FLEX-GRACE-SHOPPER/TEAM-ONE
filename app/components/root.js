@@ -24,16 +24,8 @@ import AddProductForm from './AddProductForm';
 
 class Root extends React.Component {
   componentDidMount() {
-    const { fetchUser, createUser, user } = this.props;
+    const { fetchUser } = this.props;
     fetchUser(document.cookie.replace(/session_id=/, ''));
-    console.log('USER IS ', user);
-    //Don't think we need the bottom code anymore
-    // const userId = document.cookie.replace(/uuid=/, '');
-    // if (!userId) {
-    //   createUser({ userType: 'Guest', loggedIn: false });
-    // } else {
-    //   fetchUser(userId);
-    // }
   }
   render() {
     const { status, text } = this.props.statusMessage;

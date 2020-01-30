@@ -3,7 +3,7 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { User, Order } = models;
 
-const paginate = require('./utils');
+const { paginate, UserObject } = require('./utils');
 
 router.get('/session/:sessionId', (req, res, next) => {
   User.findOne({
@@ -29,78 +29,31 @@ router.get('/', paginate(User), (req, res, next) => {
     });
 });
 
-//Creates a new user/signs a user up
+//Creates a new user and destroys the guest user associated with their session id
 //Sets falsy fields in req.body that are allowed to be null to null
-router.post('/', (req, res, next) => {
-  const {
-    id,
-    firstName,
-    lastName,
-    email,
-    password,
-    phone,
-    shippingAddress,
-    shippingCity,
-    shippingState,
-    shippingZip,
-    billingAddress,
-    billingCity,
-    billingState,
-    billingZip
-  } = req.body;
-
-  User.findByPk(id)
-    .then(userOrNull => {
-      if (userOrNull) {
-        userOrNull
-          .update({
-            firstName,
-            lastName,
-            email,
-            password,
-            userType: 'Existing customer',
-            loggedIn: true,
-            phone: phone || null,
-            shippingAddress: shippingAddress || null,
-            shippingCity: shippingCity || null,
-            shippingState: shippingState || null,
-            shippingZip: shippingZip || null,
-            billingAddress: billingAddress || null,
-            billingCity: billingCity || null,
-            billingState: billingState || null,
-            billingZip: billingZip || null
-          })
-          .then(updatedUser => res.status(202).send(updatedUser))
-          .catch(e => {
-            next(e);
-          });
-      } else {
-        User.create({
-          firstName,
-          lastName,
-          email,
-          password,
-          userType: 'Existing customer',
-          loggedIn: true,
-          phone: phone || null,
-          shippingAddress: shippingAddress || null,
-          shippingCity: shippingCity || null,
-          shippingState: shippingState || null,
-          shippingZip: shippingZip || null,
-          billingAddress: billingAddress || null,
-          billingCity: billingCity || null,
-          billingState: billingState || null,
-          billingZip: billingZip || null
-        }).then(user => {
+router.post('/new', (req, res, next) => {
+  const user = new UserObject(req.body);
+  User.create({ ...user, sessionId: req.cookies.session_id })
+    .then(newUser => {
+      User.destroy({
+        where: {
+          sessionId: req.cookies.session_id,
+          userType: 'Guest'
+        }
+      })
+        .then(() =>
           res
             .status(201)
-            .cookie('uuid', user.id, {
+            .cookie('session_id', req.cookies.session_id, {
               path: '/',
               expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
             })
-            .send(user);
+            .send(newUser)
+        )
+        .catch(e => {
+          res.status(400);
+          next(e);
         });
-      }
     })
     .catch(e => {
       res.status(400);
@@ -124,8 +77,7 @@ router.post('/login', (req, res, next) => {
       if (userOrNull) {
         User.update(
           {
-            sessionId: req.cookies.session_id,
-            loggedIn: true
+            sessionId: req.cookies.session_id
           },
           {
             where: { email, password },
