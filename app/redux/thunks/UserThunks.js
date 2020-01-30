@@ -30,7 +30,7 @@ export const fetchUser = sessionId => {
 export const createUser = user => {
   return dispatch => {
     return axios
-      .post(`/api/users`, user)
+      .post(`/api/users/new`, user)
       .then(res => {
         dispatch(setUser(res.data));
       })
