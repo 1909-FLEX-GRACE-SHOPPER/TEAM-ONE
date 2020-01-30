@@ -55,7 +55,7 @@ class Login extends Component {
         ) : (
           <h2>
             {' '}
-            {`Hi ${this.props.user.firstName}Welcome to the Juul Store`} !
+            {`Hi ${this.props.user.firstName} Welcome to the Juul Store`} !
           </h2>
         )}
       </Fragment>
