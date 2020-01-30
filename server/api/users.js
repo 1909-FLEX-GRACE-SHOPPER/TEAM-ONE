@@ -34,22 +34,26 @@ router.get('/', paginate(User), (req, res, next) => {
 router.post('/new', (req, res, next) => {
   const user = new UserObject(req.body);
   User.create({ ...user, sessionId: req.cookies.session_id })
-    .then(() =>
+    .then(newUser => {
       User.destroy({
         where: {
           sessionId: req.cookies.session_id,
           userType: 'Guest'
         }
       })
-    )
-    .then(() => {
-      res
-        .status(201)
-        .cookie('session_id', req.cookies.session_id, {
-          path: '/',
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
-        })
-        .send(user);
+        .then(() =>
+          res
+            .status(201)
+            .cookie('session_id', req.cookies.session_id, {
+              path: '/',
+              expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+            })
+            .send(newUser)
+        )
+        .catch(e => {
+          res.status(400);
+          next(e);
+        });
     })
     .catch(e => {
       res.status(400);
