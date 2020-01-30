@@ -5,6 +5,19 @@ const { User, Order } = models;
 
 const paginate = require('./utils');
 
+router.get('/session/:sessionId', (req, res, next) => {
+  User.findOne({
+    where: {
+      sessionId: req.params.sessionId
+    }
+  })
+    .then(user => res.status(200).send(user))
+    .catch(e => {
+      res.status(400);
+      next(e);
+    });
+});
+
 //Finds, counts and serves all users
 router.get('/', paginate(User), (req, res, next) => {
   res
@@ -37,72 +50,74 @@ router.post('/', (req, res, next) => {
   } = req.body;
 
   User.findByPk(id)
-  .then(userOrNull => {
-    if(userOrNull) {
-      userOrNull.update({
-        firstName,
-        lastName,
-        email,
-        password,
-        userType: 'Existing customer',
-        loggedIn: true,
-        phone: phone || null,
-        shippingAddress: shippingAddress || null,
-        shippingCity: shippingCity || null,
-        shippingState: shippingState || null,
-        shippingZip: shippingZip || null,
-        billingAddress: billingAddress || null,
-        billingCity: billingCity || null,
-        billingState: billingState || null,
-        billingZip: billingZip || null
-      })
-      .then(updatedUser => res.status(202).send(updatedUser))
-      .catch(e => {
-        next(e)
-      })
-
-    } else {
-      User.create({
-        firstName,
-        lastName,
-        email,
-        password,
-        userType: 'Existing customer',
-        loggedIn: true,
-        phone: phone || null,
-        shippingAddress: shippingAddress || null,
-        shippingCity: shippingCity || null,
-        shippingState: shippingState || null,
-        shippingZip: shippingZip || null,
-        billingAddress: billingAddress || null,
-        billingCity: billingCity || null,
-        billingState: billingState || null,
-        billingZip: billingZip || null
-      })
-      .then(user => {
-        res
-          .status(201)
-          .cookie('uuid', user.id, {
-            path: '/',
-            expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+    .then(userOrNull => {
+      if (userOrNull) {
+        userOrNull
+          .update({
+            firstName,
+            lastName,
+            email,
+            password,
+            userType: 'Existing customer',
+            loggedIn: true,
+            phone: phone || null,
+            shippingAddress: shippingAddress || null,
+            shippingCity: shippingCity || null,
+            shippingState: shippingState || null,
+            shippingZip: shippingZip || null,
+            billingAddress: billingAddress || null,
+            billingCity: billingCity || null,
+            billingState: billingState || null,
+            billingZip: billingZip || null
           })
-          .send(user)
-      })
-    }
-  })
-  .catch(e => {
-    res.status(400);
-    next(e);
-  });
+          .then(updatedUser => res.status(202).send(updatedUser))
+          .catch(e => {
+            next(e);
+          });
+      } else {
+        User.create({
+          firstName,
+          lastName,
+          email,
+          password,
+          userType: 'Existing customer',
+          loggedIn: true,
+          phone: phone || null,
+          shippingAddress: shippingAddress || null,
+          shippingCity: shippingCity || null,
+          shippingState: shippingState || null,
+          shippingZip: shippingZip || null,
+          billingAddress: billingAddress || null,
+          billingCity: billingCity || null,
+          billingState: billingState || null,
+          billingZip: billingZip || null
+        }).then(user => {
+          res
+            .status(201)
+            .cookie('uuid', user.id, {
+              path: '/',
+              expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+            })
+            .send(user);
+        });
+      }
+    })
+    .catch(e => {
+      res.status(400);
+      next(e);
+    });
 });
 
 //Finds the User in the table and attaches the cookie
 router.post('/login', (req, res, next) => {
   const { email, password } = req.body;
+  //TODO: merge the guest user's products and cart with the logged in user
+  //   i.e: replace the guest user's id with the logged in user's id on all records!
+  //Temporary solution: Delete the guest user before you log in the new user.
   User.findOne({
     where: {
       email,
-      password,
+      password
     }
   })
     .then(userOrNull => {
@@ -110,20 +125,34 @@ router.post('/login', (req, res, next) => {
         User.update(
           {
             sessionId: req.cookies.session_id,
-            loggedIn:true
+            loggedIn: true
           },
           {
             where: { email, password },
-            returning: req.cookies.session_id
-          },
-          res.cookie('session_id',req.cookies.session_id,{
-            path: '/',
-            expires: new Date(Date.now() + 1000 * 60 * 60)
+            returning: false
+          }
+        )
+          .then(() => {
+            User.destroy({
+              where: {
+                sessionId: req.cookies.session_id,
+                userType: 'Guest'
+              }
+            });
           })
-        );
-        return res.status(202).send(userOrNull);
+          .then(() => {
+            return res
+              .cookie('session_id', req.cookies.session_id, {
+                path: '/',
+                expires: new Date(Date.now() + 1000 * 60 * 60)
+              })
+              .status(202)
+              .send(userOrNull);
+          })
+          .catch(e => res.status(401).send('Failure!'));
+      } else {
+        return res.status(404).send('User not found');
       }
-      res.status(401).send('Failure!');
     })
     .catch(e => {
       res.status(500).send('Internal Error');
