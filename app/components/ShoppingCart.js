@@ -1,18 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem.js";
-import Button from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
-const ShoppingCart = ({ products }) => {
+const ShoppingCart = () => {
   return (
     <div className="shopping-cart">
-      <Link>BACK</Link>
       <div>SHOPPING CART</div>
-      <div className="shopping-cart-product-listing">
-        {products.map(_product => (
-          <CartItem product={_product} />
-        ))}
-      </div>
       <div>TOTAL</div>
       <Button>CHECKOUT</Button>
     </div>

@@ -18,6 +18,7 @@ class Navigation extends Component {
 					{/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
 					<Nav.Link to='/signup' href='/signup'> Sign Up </Nav.Link>
 					<Nav.Link to='/login' href='/login'> Login </Nav.Link>
+					<Nav.Link to='/checkout' href='/checkout'> Login </Nav.Link>
 				</Nav>
 			</Navbar>
 		);

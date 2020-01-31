@@ -1,18 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import CreditCard from "./CreditCard.js";
-import Shipping from "./Shipping.js";
-import Button from "react-bootstrap";
 
-const Checkout = ({ orderDetails }) => {
+import { Switch, Route } from 'react-router-dom';
+
+import CheckoutCrumb from './CheckoutCrumb';
+import ShoppingCart from './ShoppingCart';
+import CheckoutForms from './CheckoutForms';
+import Confirmation from './Confirmation';
+
+const Checkout = () => {
   return (
     <div className="checkout-page">
-      <Link>Back</Link>
-      <div>CHECKOUT - {orderDetails.userType}</div>
-      <div>BILLING</div>
-      <CreditCard />
-      <Shipping />
-      <Button>PROCEED TO CONFIRMATION</Button>
+      <CheckoutCrumb />
+      <Switch>
+        <Route path='/checkout/cart' component={ ShoppingCart } />
+        <Route path='/checkout/payment-information' component={ CheckoutForms } />
+        <Route path='/checkout/confirmation' component={ Confirmation } />
+      </Switch>
     </div>
   );
 };
