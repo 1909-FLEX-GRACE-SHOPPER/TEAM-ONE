@@ -102,8 +102,7 @@ const users = [
     billingAddress: '5 Hanover Square',
     billingCity: 'New York',
     billingState: 'NY',
-    billingZip: '10001',
-    loggedIn: false
+    billingZip: '10001'
   },
   {
     userType: 'Admin',
@@ -123,8 +122,7 @@ const users = [
     billingAddress: '5 Hanover Square',
     billingCity: 'New York',
     billingState: 'NY',
-    billingZip: '10001',
-    loggedIn: false
+    billingZip: '10001'
   },
   {
     userType: 'Admin',
@@ -144,8 +142,7 @@ const users = [
     billingAddress: '5 Hanover Square',
     billingCity: 'New York',
     billingState: 'NY',
-    billingZip: '10001',
-    loggedIn: false
+    billingZip: '10001'
   },
   {
     userType: 'Admin',
@@ -165,8 +162,7 @@ const users = [
     billingAddress: '5 Hanover Square',
     billingCity: 'New York',
     billingState: 'NY',
-    billingZip: '10001',
-    loggedIn: false
+    billingZip: '10001'
   },
   {
     userType: 'Existing customer',
@@ -186,8 +182,7 @@ const users = [
     billingAddress: '5 Hanover Square',
     billingCity: 'New York',
     billingState: 'NY',
-    billingZip: '10001',
-    loggedIn: false
+    billingZip: '10001'
   }
 ];
 

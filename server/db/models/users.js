@@ -17,10 +17,6 @@ const User = db.define('users', {
       isIn: [['Guest', 'Existing customer', 'Admin']]
     }
   },
-  loggedIn: {
-    type: BOOLEAN,
-    defaultValue: false
-  },
   email: {
     type: STRING,
     allowNull: true,
@@ -51,7 +47,7 @@ const User = db.define('users', {
         }
       },
       len: {
-        arg: [ 8, 20 ]
+        arg: [8, 20]
       }
     }
   },

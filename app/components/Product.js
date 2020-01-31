@@ -10,7 +10,11 @@ const Product = ({ product }) => {
           <div>{product.productName}</div>
           <div>${product.unitPrice}</div>
         </Card.Header>
-        <Card.Img variant="bottom" src={product.productImage} />
+        <Card.Img
+          variant="bottom"
+          className="product-image-small"
+          src={product.productImage}
+        />
       </Card>
     </Link>
   );

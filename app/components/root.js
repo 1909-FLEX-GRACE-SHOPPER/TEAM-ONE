@@ -18,29 +18,23 @@ import ShoppingCart from './ShoppingCart';
 import Checkout from './Checkout';
 import Confirmation from './Confirmation';
 import Wishlist from './Wishlist';
-import ToastComponent from './Toasts'
+import ToastComponent from './Toasts';
 
 import AddProductForm from './AddProductForm';
 
 class Root extends React.Component {
   componentDidMount() {
-    const { fetchUser, createUser } = this.props;
-
-    //Don't think we need the bottom code anymore 
-    // const userId = document.cookie.replace(/uuid=/, '');
-    // if (!userId) {
-    //   createUser({ userType: 'Guest', loggedIn: false });
-    // } else {
-    //   fetchUser(userId);
-    // }
+    const { fetchUser } = this.props;
+    fetchUser(document.cookie.replace(/session_id=/, ''));
   }
   render() {
     const { status, text } = this.props.statusMessage;
+    console.log('USER IS ', this.props.user);
     return (
       <Router>
         <div>
           <Navigation />
-          <ToastComponent status={ status } message={ text }/>
+          <ToastComponent status={status} message={text} />
           <Switch>
             <Route exact path="/" component={WelcomeMessage} />
             <Route path="/login" component={Login} />
@@ -48,8 +42,7 @@ class Root extends React.Component {
             <Route exact path="/products" component={Products} />
             <Route exact path="/products/add" component={AddProductForm} />
             <Route path="/products/:id" component={ProductPage} />
-            <Route
-              path="/shoppingcart/:userId?" /*component={ShoppingCart}*/ />
+            <Route path="/shoppingcart/:userId?" /*component={ShoppingCart}*/ />
             <Route
               path="/orders/:orderId/checkout/:userId?" /*component={Checkout} */
             />
