@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import { Nav, Navbar, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import NavGuest from './NavGuest';
+import NavUser from './NavUser';
 
 class Navigation extends Component {
 	render() {
+		const { user } = this.props;
+		const links = user.firstName ? <NavUser/> : <NavGuest />;
 		return (
 			<Navbar bg='dark' variant='dark'>
 				<Navbar.Brand>Logo</Navbar.Brand>
@@ -16,12 +20,17 @@ class Navigation extends Component {
 				<Nav>
 					<Nav.Link href='/shoppingcart/:userId'>Cart</Nav.Link>
 					{/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
-					<Nav.Link to='/signup' href='/signup'> Sign Up </Nav.Link>
-					<Nav.Link to='/login' href='/login'> Login </Nav.Link>
+					{links}
 				</Nav>
 			</Navbar>
 		);
 	}
 }
 
-export default Navigation;
+const mapStateToProps = state => {
+	return {
+		user: state.user
+	};
+};
+
+export default connect(mapStateToProps)(Navigation);
