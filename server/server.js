@@ -16,7 +16,6 @@ app.use((req, res, next) => {
       .then(session =>
         User.create({
           userType: "Guest",
-          loggedIn: false,
           sessionId: session.id
         })
       )

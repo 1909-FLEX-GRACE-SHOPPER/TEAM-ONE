@@ -3,7 +3,20 @@ const router = require("express").Router();
 const { models } = require("../db/index.js");
 const { User, Order } = models;
 
-const paginate = require("./utils");
+const { paginate, UserObject } = require('./utils');
+
+router.get('/session/:sessionId', (req, res, next) => {
+  User.findOne({
+    where: {
+      sessionId: req.params.sessionId
+    }
+  })
+    .then(user => res.status(200).send(user))
+    .catch(e => {
+      res.status(400);
+      next(e);
+    });
+});
 
 //Finds, counts and serves all users
 router.get("/", paginate(User), (req, res, next) => {
@@ -16,8 +29,9 @@ router.get("/", paginate(User), (req, res, next) => {
     });
 });
 
-//Creates a new user/signs a user up
+//Creates a new user and destroys the guest user associated with their session id
 //Sets falsy fields in req.body that are allowed to be null to null
+<<<<<<< HEAD
 router.post("/", (req, res, next) => {
   const {
     id,
@@ -88,6 +102,31 @@ router.post("/", (req, res, next) => {
             .send(user);
         });
       }
+=======
+router.post('/new', (req, res, next) => {
+  const user = new UserObject(req.body);
+  User.create({ ...user, sessionId: req.cookies.session_id })
+    .then(newUser => {
+      User.destroy({
+        where: {
+          sessionId: req.cookies.session_id,
+          userType: 'Guest'
+        }
+      })
+        .then(() =>
+          res
+            .status(201)
+            .cookie('session_id', req.cookies.session_id, {
+              path: '/',
+              expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+            })
+            .send(newUser)
+        )
+        .catch(e => {
+          res.status(400);
+          next(e);
+        });
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
     })
     .catch(e => {
       res.status(400);
@@ -98,6 +137,9 @@ router.post("/", (req, res, next) => {
 //Finds the User in the table and attaches the cookie
 router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
+  //TODO: merge the guest user's products and cart with the logged in user
+  //   i.e: replace the guest user's id with the logged in user's id on all records!
+  //Temporary solution: Delete the guest user before you log in the new user.
   User.findOne({
     where: {
       email,
@@ -108,6 +150,7 @@ router.post("/login", (req, res, next) => {
       if (userOrNull) {
         User.update(
           {
+<<<<<<< HEAD
             sessionId: req.cookies.session_id,
             loggedIn: true
           },
@@ -118,11 +161,40 @@ router.post("/login", (req, res, next) => {
           res.cookie("session_id", req.cookies.session_id, {
             path: "/",
             expires: new Date(Date.now() + 1000 * 60 * 60)
+=======
+            sessionId: req.cookies.session_id
+          },
+          {
+            where: { email, password },
+            returning: false
+          }
+        )
+          .then(() => {
+            User.destroy({
+              where: {
+                sessionId: req.cookies.session_id,
+                userType: 'Guest'
+              }
+            });
           })
-        );
-        return res.status(202).send(userOrNull);
+          .then(() => {
+            return res
+              .cookie('session_id', req.cookies.session_id, {
+                path: '/',
+                expires: new Date(Date.now() + 1000 * 60 * 60)
+              })
+              .status(202)
+              .send(userOrNull);
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
+          })
+          .catch(e => res.status(401).send('Failure!'));
+      } else {
+        return res.status(404).send('User not found');
       }
+<<<<<<< HEAD
       res.status(401).send("Failure!");
+=======
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
     })
     .catch(e => {
       res.status(500).send("Internal Error");

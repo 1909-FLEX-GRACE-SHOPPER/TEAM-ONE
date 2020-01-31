@@ -98,12 +98,20 @@ const users = [
     cardNumber: "4242424242424242",
     cardHolder: "Cissy Bae",
     expirationDate: EXPIRATION_DATE,
+<<<<<<< HEAD
     securityCode: "123",
     billingAddress: "5 Hanover Square",
     billingCity: "New York",
     billingState: "NY",
     billingZip: "10001",
     loggedIn: false
+=======
+    securityCode: '123',
+    billingAddress: '5 Hanover Square',
+    billingCity: 'New York',
+    billingState: 'NY',
+    billingZip: '10001'
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
   },
   {
     userType: "Admin",
@@ -119,12 +127,20 @@ const users = [
     cardNumber: "4242424242424242",
     cardHolder: "Nicolas Ries",
     expirationDate: EXPIRATION_DATE,
+<<<<<<< HEAD
     securityCode: "123",
     billingAddress: "5 Hanover Square",
     billingCity: "New York",
     billingState: "NY",
     billingZip: "10001",
     loggedIn: false
+=======
+    securityCode: '123',
+    billingAddress: '5 Hanover Square',
+    billingCity: 'New York',
+    billingState: 'NY',
+    billingZip: '10001'
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
   },
   {
     userType: "Admin",
@@ -140,12 +156,20 @@ const users = [
     cardNumber: "4242424242424242",
     cardHolder: "Shel Orlock",
     expirationDate: EXPIRATION_DATE,
+<<<<<<< HEAD
     securityCode: "123",
     billingAddress: "5 Hanover Square",
     billingCity: "New York",
     billingState: "NY",
     billingZip: "10001",
     loggedIn: false
+=======
+    securityCode: '123',
+    billingAddress: '5 Hanover Square',
+    billingCity: 'New York',
+    billingState: 'NY',
+    billingZip: '10001'
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
   },
   {
     userType: "Admin",
@@ -161,12 +185,20 @@ const users = [
     cardNumber: "4242424242424242",
     cardHolder: "Raymon Ng",
     expirationDate: EXPIRATION_DATE,
+<<<<<<< HEAD
     securityCode: "123",
     billingAddress: "5 Hanover Square",
     billingCity: "New York",
     billingState: "NY",
     billingZip: "10001",
     loggedIn: false
+=======
+    securityCode: '123',
+    billingAddress: '5 Hanover Square',
+    billingCity: 'New York',
+    billingState: 'NY',
+    billingZip: '10001'
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
   },
   {
     userType: "Existing customer",
@@ -182,12 +214,20 @@ const users = [
     cardNumber: "4242424242424242",
     cardHolder: "Mojo Jojo",
     expirationDate: EXPIRATION_DATE,
+<<<<<<< HEAD
     securityCode: "123",
     billingAddress: "5 Hanover Square",
     billingCity: "New York",
     billingState: "NY",
     billingZip: "10001",
     loggedIn: false
+=======
+    securityCode: '123',
+    billingAddress: '5 Hanover Square',
+    billingCity: 'New York',
+    billingState: 'NY',
+    billingZip: '10001'
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
   }
 ];
 
