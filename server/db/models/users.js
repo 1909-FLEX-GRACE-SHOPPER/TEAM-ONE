@@ -51,7 +51,7 @@ const User = db.define("users", {
         }
       },
       len: {
-        arg: 6
+        arg: [ 8, 20 ]
       }
     }
   },

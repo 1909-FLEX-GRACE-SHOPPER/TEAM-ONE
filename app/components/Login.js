@@ -20,7 +20,7 @@ class Login extends Component {
 		this.props.logIn(this.state);
 	};
 	render() {
-		console.log(this.props)
+		// console.log(this.props)
 		const { authError } = this.props.errorMessage;
 		const { logInStatus } = this.props.userLoginStatus;
 		return (

@@ -18,6 +18,7 @@ import ShoppingCart from "./ShoppingCart";
 import Checkout from "./Checkout";
 import Confirmation from "./Confirmation";
 import Wishlist from "./Wishlist";
+import ToastComponent from "./Toasts";
 
 import AddProductForm from "./AddProductForm";
 
@@ -34,10 +35,12 @@ class Root extends React.Component {
     // }
   }
   render() {
+    const { status, text } = this.props.statusMessage;
     return (
       <Router>
         <div>
           <Navigation />
+          <ToastComponent status={status} message={text} />
           <Switch>
             <Route exact path="/" component={WelcomeMessage} />
             <Route path="/login" component={Login} />
@@ -61,11 +64,12 @@ class Root extends React.Component {
   }
 }
 
-const mapState = ({ user }) => ({ user });
+const mapState = ({ user, statusMessage }) => ({ user, statusMessage });
 const mapDispatch = dispatch => {
   return {
     fetchUser: userId => dispatch(fetchUser(userId)),
     createUser: user => dispatch(createUser(user))
   };
 };
+
 export default connect(mapState, mapDispatch)(Root);

@@ -86,3 +86,10 @@ export const _removeItemFromCart = product => {
     product
   };
 };
+
+export const statusMessage = message => {
+  return {
+    type: STATUS_MESSAGE,
+    message
+  };
+};

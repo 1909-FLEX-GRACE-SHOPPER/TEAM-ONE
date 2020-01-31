@@ -9,7 +9,8 @@ import {
   SET_WISHLIST,
   SET_CART,
   ADD_ITEM_TO_CART,
-  REMOVE_ITEM_FROM_CART
+  REMOVE_ITEM_FROM_CART,
+  STATUS_MESSAGE
 } from "./constants";
 
 export const products = (state = [], action) => {
@@ -96,6 +97,14 @@ export const cart = (state = [], action) => {
       return [...state, action.product];
     case REMOVE_ITEM_FROM_CART:
       return state.filter(product => product.id !== action.product.id);
+    default:
+      return state;
+  }
+};
+export const statusMessage = (state = { status: null, text: "" }, action) => {
+  switch (action.type) {
+    case STATUS_MESSAGE:
+      return action.message;
     default:
       return state;
   }

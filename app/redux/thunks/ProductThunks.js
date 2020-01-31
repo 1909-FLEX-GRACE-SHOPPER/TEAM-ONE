@@ -1,8 +1,10 @@
 import axios from "axios";
 
-import { setProducts, setSingleProduct } from "../actions";
+import { setProducts, setSingleProduct, statusMessage } from "../actions";
 
-//TODO: Render error component when thunks fail
+import { SUCCESS, FAIL, COMMON_FAIL } from "./utils";
+
+//TODO: Delete console.log on deployment
 
 //Thunk for fetching all products.
 //Do you think we could initialize id to null, and reuse this thunk to make a call for a single product?
@@ -11,7 +13,15 @@ export const fetchProducts = () => {
     return axios
       .get(`/api/products`)
       .then(res => dispatch(setProducts(res.data)))
-      .catch(e => console.error("Error fetching products", e));
+      .catch(e => {
+        console.error(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
   };
 };
 
@@ -21,7 +31,15 @@ export const fetchSingleProduct = productId => {
     return axios
       .get(`/api/products/${productId}`)
       .then(res => dispatch(setSingleProduct(res.data)))
-      .catch(e => console.error("Error fetching single product", e));
+      .catch(e => {
+        console.error(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
   };
 };
 
@@ -35,8 +53,24 @@ export const postProduct = product => {
           "Content-Type": "multipart/form-data"
         }
       })
-      .then(() => dispatch(fetchProducts()))
-      .catch(e => console.error("Error creating product", e));
+      .then(() => {
+        dispatch(fetchProducts());
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: "Product successfully added to the shop."
+          })
+        );
+      })
+      .catch(e => {
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: "There was an error creating a new product. Try again later."
+          })
+        );
+      });
   };
 };
 
@@ -46,8 +80,24 @@ export const deleteProduct = productId => {
   return dispatch => {
     return axios
       .delete(`/api/products/${productId}`)
-      .then(() => dispatch(fetchProducts()))
-      .catch(e => console.error("Error deleting product", e));
+      .then(() => {
+        dispatch(fetchProducts());
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: "Product deleted from the shop."
+          })
+        );
+      })
+      .catch(e => {
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
   };
 };
 
@@ -57,7 +107,23 @@ export const updateProduct = (productId, product) => {
   return dispatch => {
     return axios
       .put(`/api/products/${productId}`, product)
-      .then(res => dispatch(setSingleProduct(res.data)))
-      .catch(e => console.error("Error updating product", e));
+      .then(res => {
+        dispatch(setSingleProduct(res.data));
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: "Product updated."
+          })
+        );
+      })
+      .catch(e => {
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
   };
 };

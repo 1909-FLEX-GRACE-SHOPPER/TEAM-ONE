@@ -20,11 +20,11 @@ router.get("/", paginate(User), (req, res, next) => {
 //Sets falsy fields in req.body that are allowed to be null to null
 router.post("/", (req, res, next) => {
   const {
+    id,
     firstName,
     lastName,
     email,
     password,
-    userType,
     phone,
     shippingAddress,
     shippingCity,
@@ -36,23 +36,59 @@ router.post("/", (req, res, next) => {
     billingZip
   } = req.body;
 
-  User.create({
-    firstName,
-    lastName,
-    email,
-    password,
-    userType,
-    phone: phone || null,
-    shippingAddress: shippingAddress || null,
-    shippingCity: shippingCity || null,
-    shippingState: shippingState || null,
-    shippingZip: shippingZip || null,
-    billingAddress: billingAddress || null,
-    billingCity: billingCity || null,
-    billingState: billingState || null,
-    billingZip: billingZip || null
-  })
-    .then(user => res.status(201).send(user))
+  User.findByPk(id)
+    .then(userOrNull => {
+      if (userOrNull) {
+        userOrNull
+          .update({
+            firstName,
+            lastName,
+            email,
+            password,
+            userType: "Existing customer",
+            loggedIn: true,
+            phone: phone || null,
+            shippingAddress: shippingAddress || null,
+            shippingCity: shippingCity || null,
+            shippingState: shippingState || null,
+            shippingZip: shippingZip || null,
+            billingAddress: billingAddress || null,
+            billingCity: billingCity || null,
+            billingState: billingState || null,
+            billingZip: billingZip || null
+          })
+          .then(updatedUser => res.status(202).send(updatedUser))
+          .catch(e => {
+            next(e);
+          });
+      } else {
+        User.create({
+          firstName,
+          lastName,
+          email,
+          password,
+          userType: "Existing customer",
+          loggedIn: true,
+          phone: phone || null,
+          shippingAddress: shippingAddress || null,
+          shippingCity: shippingCity || null,
+          shippingState: shippingState || null,
+          shippingZip: shippingZip || null,
+          billingAddress: billingAddress || null,
+          billingCity: billingCity || null,
+          billingState: billingState || null,
+          billingZip: billingZip || null
+        }).then(user => {
+          res
+            .status(201)
+            .cookie("uuid", user.id, {
+              path: "/",
+              expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+            })
+            .send(user);
+        });
+      }
+    })
     .catch(e => {
       res.status(400);
       next(e);
@@ -72,12 +108,17 @@ router.post("/login", (req, res, next) => {
       if (userOrNull) {
         User.update(
           {
+            sessionId: req.cookies.session_id,
             loggedIn: true
           },
           {
             where: { email, password },
-            returning: true
-          }
+            returning: req.cookies.session_id
+          },
+          res.cookie("session_id", req.cookies.session_id, {
+            path: "/",
+            expires: new Date(Date.now() + 1000 * 60 * 60)
+          })
         );
         return res.status(202).send(userOrNull);
       }

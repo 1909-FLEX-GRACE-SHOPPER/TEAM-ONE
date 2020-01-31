@@ -8,7 +8,8 @@ import {
   orderDetails,
   authentication,
   wishlist,
-  cart
+  cart,
+  statusMessage
 } from "./reducers";
 
 export default combineReducers({
@@ -19,5 +20,6 @@ export default combineReducers({
   orderDetails,
   authentication,
   wishlist,
-  cart
+  cart,
+  statusMessage
 });
