@@ -92,7 +92,7 @@ export const wishlist = (state = [], action) => {
 export const cart = (state = [], action) => {
   switch (action.type) {
     case SET_CART:
-      return action.products;
+      return action.cart;
     case ADD_ITEM_TO_CART:
       return [...state, action.product];
     case REMOVE_ITEM_FROM_CART:

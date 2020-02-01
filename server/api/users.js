@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const { models } = require('../db/index.js');
-const { User, Order } = models;
+const { User, Order, Cart } = models;
 
 const { paginate, UserObject } = require('./utils');
 
@@ -252,6 +252,56 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
       res.status(304);
       next(e);
     });
+});
+
+router.get('/:userId/cart', (req, res, next) => {
+  User.findByPk(req.params.userId, {
+    include: [
+      {
+        model: Cart
+      }
+    ]
+  })
+    .then(user => res.status(200).send(user))
+    .catch(e => {
+      res.status(404);
+      next(e);
+    });
+});
+
+//edit product quantity in cart
+router.put('/:userId/cart/:cartId', (req, res, next) => {
+  const { productQuantity } = req.body;
+
+  Cart.findByPk(req.params.cartId)
+    .then(cart =>
+      cart.update({
+        productQuantity: productQuantity
+      })
+    )
+    .then(() => res.status(202))
+    .catch(e => {
+      res.status(304);
+      next(e);
+    });
+});
+// insert products in user's cart table
+// TODO: decide if need to create subtotal for each product in cart
+router.post('/:userId/cart', (req, res, next) => {
+  const { productId, productQuantity } = req.body;
+
+  const { userId } = req.params;
+
+  Cart.create({ userId, productId, productQuantity })
+    .then(() => res.status(201))
+    .catch(e => res.status(400).next(e));
+});
+
+router.delete('/:userId/cart/:cartId', (req, res, next) => {
+  Cart.findByPk(req.params.cartId)
+    .then(product => product.destroy())
+    .then(() => res.status(200).send('Product deleted'))
+    .catch(e => res.status(400).next(e));
 });
 
 module.exports = router;

@@ -5,22 +5,13 @@ import { setCart, addItemToCart, _removeItemFromCart } from '../actions';
 export function fetchCart() {
   return function thunk(dispatch) {
     return axios
-      .get(`/api/cart`)
+      .get(`/api/users/${userId}/cart`)
       .then(res => res.data)
-      .then(products => dispatch(setCart(products)))
+      .then(cart => dispatch(setCart(cart)))
       .catch(e => console.error('Error fetching Cart', e));
   };
 }
 /*
-export function fetchCart() {
-  return function thunk(dispatch) {
-    return axios
-      .get(`/api/cart/${userId}`)
-      .then(res => res.data)
-      .then(products => dispatch(setCart(products)))
-      .catch(e => console.error("Error fetching Cart", e));
-  };
-}
 
 export function addItemToCart() {
   return function thunk(dispatch) {

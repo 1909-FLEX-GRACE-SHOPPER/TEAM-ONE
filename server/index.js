@@ -1,7 +1,7 @@
 //May add conditions to { force: true } later to avoid delating the entire database in the deployed app
 const app = require('./server.js');
 const { db } = require('./db/index.js');
-const { seedUsers, seedProducts, seedCarts } = require('../seed.js');
+const { seedUsers, seedProducts } = require('../seed.js');
 const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
@@ -14,15 +14,11 @@ db.sync({ force: true })
     return seedUsers();
   })
   .then(() => {
-    console.log('users seeded');
+    console.log('users and cart seeded');
     return seedProducts();
   })
   .then(() => {
     console.log('products seeded');
-    return seedCarts();
-  })
-  .then(() => {
-    console.log('cart seeded');
     app.listen(PORT, () => {
       console.log(`App is listening at localhost:${PORT}`);
     });

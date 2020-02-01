@@ -66,10 +66,10 @@ export const loggedInFail = () => {
   };
 };
 
-export const setCart = products => {
+export const setCart = cart => {
   return {
     type: SET_CART,
-    products
+    cart
   };
 };
 
