@@ -1,20 +1,26 @@
-const { users, products, cart } = require('./seed-data.js');
+const { users, products } = require('./seed-data.js');
 const { User, Product, Cart } = require('./server/db/models/index.js');
-const { db } = require('./server/db/index.js');
-const { green, red } = require('chalk');
-//TODO: seed userId in Cart database
-const seedUsers = async () => {
-  await Promise.all(users.map(_u => User.create(_u))).then(() =>
-    Promise.all(cart.map(product => Cart.create(product)))
+
+const seed = async () => {
+  let [user1, user2] = await Promise.all(users.map(user => User.create(user)));
+
+  let [prod1, prod2] = await Promise.all(
+    products.map(product => Product.create(product))
   );
+
+  let cart1 = {
+    productQuantity: 2,
+    userId: user1.id,
+    productId: prod1.id
+  };
+  let cart2 = {
+    productQuantity: 3,
+    userId: user2.id,
+    productId: prod2.id
+  };
+
+  Cart.create(cart1);
+  Cart.create(cart2);
 };
 
-const seedProducts = () => {
-  return Promise.all(products.map(_p => Product.create(_p)));
-};
-
-// const seedCart = () => {
-//   return Promise.all(cart.map(product => Cart.create(product)));
-// };
-
-module.exports = { seedUsers, seedProducts };
+module.exports = seed;
