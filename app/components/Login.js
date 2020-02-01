@@ -73,7 +73,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     logIn: credentials => dispatch(logInUser(credentials))
-
   };
 };
 
