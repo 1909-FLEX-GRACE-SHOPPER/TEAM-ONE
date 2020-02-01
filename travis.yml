@@ -7,7 +7,7 @@ cache:
 services:
   - postgresql
 before_script:
-  - psql -c 'create database "grace-shopper";' -U postgres
+  - psql -c 'create database "grace-shopper-test";' -U postgres
 script:
   - npm run lint
   #- npm run test-ci
