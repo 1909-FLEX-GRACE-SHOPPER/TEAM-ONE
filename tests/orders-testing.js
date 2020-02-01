@@ -1,5 +1,3 @@
-'use strict';
-
 // Assertions
 import chai, { expect } from 'chai';
 import chaiThings from 'chai-things';
