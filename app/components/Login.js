@@ -20,7 +20,6 @@ class Login extends Component {
     this.props.logIn(this.state);
   };
   render() {
-    console.log(this.props);
     const { authError } = this.props.errorMessage;
     const { logInStatus } = this.props.userLoginStatus;
     return (
@@ -54,7 +53,10 @@ class Login extends Component {
             <Button onClick={this.onSubmit}> Log In! </Button>
           </Form>
         ) : (
-          <h2> {'Welcome to the Juul Store'} !</h2>
+          <h2>
+            {' '}
+            {`Hi ${this.props.user.firstName} Welcome to the Juul Store`} !
+          </h2>
         )}
       </Fragment>
     );
@@ -65,6 +67,7 @@ const mapStateToProps = state => {
   return {
     errorMessage: state.authentication,
     userLoginStatus: state.authentication,
+    user: state.user,
   };
 };
 

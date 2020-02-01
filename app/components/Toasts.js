@@ -3,6 +3,8 @@ import Toast from 'react-bootstrap/Toast';
 import { connect } from 'react-redux';
 import { statusMessage } from '../redux/actions';
 
+import { SUCCESS, FAIL } from '../redux/thunks/utils';
+
 export const ToastComponent = props => {
   const { status, message } = props;
   switch (status) {

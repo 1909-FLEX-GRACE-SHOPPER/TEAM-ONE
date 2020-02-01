@@ -17,10 +17,13 @@ const User = db.define('users', {
       isIn: [['Guest', 'Existing customer', 'Admin']],
     },
   },
+<<<<<<< HEAD
   loggedIn: {
     type: BOOLEAN,
     defaultValue: false,
   },
+=======
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
   email: {
     type: STRING,
     allowNull: true,
@@ -51,9 +54,15 @@ const User = db.define('users', {
         }
       },
       len: {
+<<<<<<< HEAD
         arg: [8, 20],
       },
     },
+=======
+        arg: [8, 20]
+      }
+    }
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
   },
   firstName: {
     type: STRING,

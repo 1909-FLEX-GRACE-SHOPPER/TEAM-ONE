@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-import { setOrders } from '../actions';
+import { setOrders, statusMessage } from '../actions';
 
-//TODO: Render error component when thunks fail
+import { SUCCESS, FAIL, COMMON_FAIL } from './utils;';
+
+//TODO: Delete console.logs on deployment
 
 //Thunk for fetch all orders from a user
 export const fetchOrders = userId => {
@@ -10,7 +12,15 @@ export const fetchOrders = userId => {
     return axios
       .get(`/api/users/${userId}/orders`)
       .then(res => dispatch(setOrders(res.data)))
-      .catch(e => console.error('Error fetching orders', e));
+      .catch(e => {
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL,
+          })
+        );
+      });
   };
 };
 
@@ -20,8 +30,24 @@ export const postOrder = (userId, order) => {
   return dispatch => {
     return axios
       .post(`/api/users/${userId}/orders`, order)
-      .then(() => dispatch(fetchOrders(userId)))
-      .catch(e => console.error('Error fetch orders', e));
+      .then(() => {
+        dispatch(fetchOrders(userId));
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Order added',
+          })
+        );
+      })
+      .catch(e => {
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: 'There was an error creating a new order. Try again later.',
+          })
+        );
+      });
   };
 };
 
@@ -31,8 +57,24 @@ export const deleteOrder = (userId, orderId) => {
   return dispatch => {
     axios
       .delete(`/api/users/${userId}/orders/${orderId}`)
-      .then(() => dispatch(fetchOrders(userId)))
-      .catch(e => console.error('Error deleting order', e));
+      .then(() => {
+        dispatch(fetchOrders(userId));
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Order deleted',
+          })
+        );
+      })
+      .catch(e => {
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL,
+          })
+        );
+      });
   };
 };
 
@@ -41,7 +83,23 @@ export const updateOrder = (userId, orderId, order) => {
   return dispatch => {
     return axios
       .put(`/api/users/${userId}/orders/${orderId}`, order)
-      .then(() => dispatch(fetchOrders(userId)))
-      .catch(e => console.error('Error updating order', e));
+      .then(() => {
+        dispatch(fetchOrders(userId));
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Order updated',
+          })
+        );
+      })
+      .catch(e => {
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: 'There was an error updating your order. Try again later.',
+          })
+        );
+      });
   };
 };

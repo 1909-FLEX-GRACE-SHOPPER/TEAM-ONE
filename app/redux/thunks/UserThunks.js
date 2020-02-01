@@ -2,15 +2,26 @@ import axios from 'axios';
 
 import { setUser, logInSuccess, loggedInFail, statusMessage } from '../actions';
 
-//TODO: Render error component when thunks fail
+import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
 //Thunk for fetching a user
-export const fetchUser = (userId = null) => {
+export const fetchUser = sessionId => {
   return dispatch => {
-    return axios
-      .get(`/api/users/id/${userId}`)
-      .then(res => dispatch(setUser(res.data)))
-      .catch(e => console.error('Error fetching user', e));
+    return (
+      axios
+        //.get(`/api/users/id/${userId}`)
+        .get(`/api/users/session/${sessionId}`)
+        .then(res => dispatch(setUser(res.data)))
+        .catch(e => {
+          console.error(e);
+          dispatch(
+            statusMessage({
+              status: FAIL,
+              text: COMMON_FAIL,
+            })
+          );
+        })
+    );
   };
 };
 
@@ -18,25 +29,27 @@ export const fetchUser = (userId = null) => {
 //Sets the user to the created user after creating
 export const createUser = user => {
   return dispatch => {
-    return axios.post(`/api/users`, user).then(res => {
-      dispatch(setUser(res.data))
-        .then(() => {
-          dispatch(
-            statusMessage({
-              status: null,
-              text: '',
-            })
-          );
-        })
-        .catch(() => {
-          dispatch(
-            statusMessage({
-              status: 'fail',
-              text: 'Error creating a User',
-            })
-          );
-        });
-    });
+    return axios
+      .post('/api/users/new', user)
+      .then(res => {
+        dispatch(setUser(res.data));
+      })
+      .then(() => {
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Welcome to Juuls by Jewel',
+          })
+        );
+      })
+      .catch(() => {
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: 'There was an error signing you up. Try again later.',
+          })
+        );
+      });
   };
 };
 
@@ -45,7 +58,7 @@ export const createUser = user => {
 export const logOutUser = ({ email, password }) => {
   return dispatch => {
     return axios
-      .post(`/api/users/login`, { email, password })
+      .post('/api/users/login', { email, password })
       .then(() => dispatch(setUser(null)))
       .catch(e => console.error('Error logging user out', e));
   };
@@ -57,8 +70,24 @@ export const deleteUser = userId => {
   return dispatch => {
     return axios
       .delete(`/api/users/${userId}`)
-      .then(() => dispatch(setUser(null)))
-      .catch(e => console.error('Error deleting user', e));
+      .then(() => {
+        dispatch(setUser(null));
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'User successfully deleted',
+          })
+        );
+      })
+      .catch(e => {
+        console.error(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL,
+          })
+        );
+      });
   };
 };
 
@@ -68,8 +97,23 @@ export const updateUser = (userId, user) => {
   return dispatch => {
     return axios
       .put(`/api/users/${userId}`, user)
-      .then(res => dispatch(setUser(res.data)))
-      .catch(e => console.error('Error updating user', e));
+      .then(res => {
+        dispatch(setUser(res.data));
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'User updated.',
+          })
+        );
+      })
+      .catch(e => {
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+          })
+        );
+      });
   };
 };
 
@@ -78,9 +122,10 @@ export const updateUser = (userId, user) => {
 export const logInUser = ({ email, password }) => {
   return dispatch => {
     return axios
-      .post(`/api/users/login`, { email, password })
-      .then(() => {
+      .post('/api/users/login', { email, password })
+      .then(user => {
         dispatch(logInSuccess());
+        dispatch(setUser(user.data));
       })
       .catch(err => {
         dispatch(loggedInFail(err));

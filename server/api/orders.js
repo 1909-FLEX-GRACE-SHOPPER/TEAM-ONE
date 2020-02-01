@@ -3,7 +3,7 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { Order, OrderDetail, User } = models;
 
-const paginate = require('./utils');
+const { paginate } = require('./utils');
 
 //Finds and servers all orders
 router.get('/', paginate(Order), (req, res, next) => {

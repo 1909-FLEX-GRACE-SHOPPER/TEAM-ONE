@@ -6,9 +6,7 @@ const { Row, Group, Label, Control, Col } = Form;
 
 import { connect } from 'react-redux';
 
-import ToastComponent from './Toasts';
 import { postProduct } from '../redux/thunks/ProductThunks';
-import { statusMessage } from '../redux/actions';
 
 //TODO: add tagging system
 
@@ -135,7 +133,6 @@ class AddProductForm extends Component {
   };
 
   render() {
-    const { status, text } = this.props.statusMessage;
     const {
       productName,
       productDescription,
@@ -143,11 +140,9 @@ class AddProductForm extends Component {
       inventory,
       fileName,
       errors: { fileError, unitPriceError, inventoryError },
-      addProductToast,
     } = this.state;
     return (
       <div className="container mt-4">
-        <ToastComponent status={status} message={text} />
         <Form encType="multipart/form-data">
           <Group controlId="productName">
             <Label>
@@ -262,13 +257,10 @@ class AddProductForm extends Component {
   }
 }
 
-const mapState = ({ statusMessage }) => ({ statusMessage });
-
 const mapDispatch = dispatch => {
   return {
     postProduct: form => dispatch(postProduct(form)),
-    resetError: () => dispatch(errorMessage('')),
   };
 };
 
-export default connect(mapState, mapDispatch)(AddProductForm);
+export default connect(null, mapDispatch)(AddProductForm);

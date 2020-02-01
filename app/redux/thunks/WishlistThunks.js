@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-import { setWishlist } from '../actions';
+import { setWishlist, statusMessage } from '../actions';
 
-//TODO: Render error component when thunks fail
+import { SUCCESS, FAIL, COMMON_FAIL } from './utils'
+
+//TODO: Delete console.logs on deployment
 export const fetchWishlist = userId => {
   return dispatch => {
     return axios
@@ -10,7 +12,13 @@ export const fetchWishlist = userId => {
       .then(res => {
         dispatch(setWishlist(res.data));
       })
-      .catch(e => console.error('Error fetching WL', e));
+      .catch(e => {
+        console.log(e)
+        dispatch(statusMessage({
+          status: FAIL,
+          text: COMMON_FAIL,
+        }))
+      });
   };
 };
 
@@ -18,8 +26,20 @@ export const postWishlist = item => {
   return dispatch => {
     return axios
       .post(`/api/wishlist/add`, item)
-      .then(() => dispatch(fetchWishlist(item.userId)))
-      .catch(e => console.error('Error adding WL item', e));
+      .then(() => {
+        dispatch(fetchWishlist(item.userId))
+        dispatch(statusMessage({
+          status: SUCCESS,
+          text: 'Wishlist item added.'
+        }))
+      })
+      .catch(e => {
+        console.log(e);
+        dispatch(statusMessage({
+          status: FAIL,
+          text: COMMON_FAIL,
+        }))
+      });
   };
 };
 

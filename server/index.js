@@ -9,6 +9,7 @@ app.use(cookieParser());
 const PORT = process.env.PORT || 3000;
 
 db.sync({ force: true })
+<<<<<<< HEAD
   .then(() => {
     console.log('db synced');
     return seedUsers();
@@ -24,3 +25,21 @@ db.sync({ force: true })
     });
   })
   .catch(error => console.log('error syncing db ', error));
+=======
+	.then(() => {
+		console.log('db synced');
+		return seedUsers();
+	})
+	.then(() => {
+		console.log('users seeded');
+		return seedProducts();
+	})
+	.then(() => {
+		console.log('products seeded');
+		app.listen(PORT, () => {
+			console.log(`App is listening at localhost:${PORT}`);
+		});
+	})
+	.catch(error => console.log('error syncing db ', error));
+
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408

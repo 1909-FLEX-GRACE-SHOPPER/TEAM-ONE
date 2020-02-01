@@ -4,7 +4,7 @@ const path = require('path');
 const { models } = require('../db/index');
 const { Product } = models;
 
-const paginate = require('./utils');
+const { paginate } = require('./utils');
 
 router.get('/', paginate(Product), (req, res, next) => {
   res

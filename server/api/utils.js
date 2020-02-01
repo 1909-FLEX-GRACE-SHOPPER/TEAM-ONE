@@ -19,4 +19,21 @@ const paginate = model => {
   };
 };
 
-module.exports = paginate;
+function UserObject(user) {
+  this.firstName = user.firstName;
+  this.lastName = user.lastName;
+  this.email = user.email;
+  this.password = user.password;
+  this.phone = user.phone || null;
+  this.shippingAddress = user.shippingAddress || null;
+  this.shippingCity = user.shippingCity || null;
+  this.shippingState = user.shippingState || null;
+  this.shippingZip = user.shippingZip || null;
+  this.billingAddress = user.billingAddress || null;
+  this.billingCity = user.billingCity || null;
+  this.billingState = user.billingState || null;
+  this.billingZip = user.billingZip || null;
+  this.userType = 'Existing customer';
+}
+
+module.exports = { paginate, UserObject };

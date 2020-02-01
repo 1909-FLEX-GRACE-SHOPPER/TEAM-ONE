@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import ToastComponent from './Toasts';
 
 import { createUser } from '../redux/thunks/UserThunks';
-import { statusMessage } from '../redux/actions';
 
 class Signup extends Component {
   constructor() {
@@ -130,8 +129,7 @@ class Signup extends Component {
         <div className="logo-medium"></div>
 
         <Form className="signup-form">
-          <ToastComponent status={status} message={text} />
-          <Row style={{ dispaly: 'flex', justifyContent: 'space-between' }}>
+          <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Group
               as={Col}
               controlId="firstName"

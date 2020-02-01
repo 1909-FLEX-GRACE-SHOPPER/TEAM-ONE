@@ -18,24 +18,23 @@ import ShoppingCart from './ShoppingCart';
 import Checkout from './Checkout';
 import Confirmation from './Confirmation';
 import Wishlist from './Wishlist';
+import ToastComponent from './Toasts';
 
 import AddProductForm from './AddProductForm';
 
 class Root extends React.Component {
   componentDidMount() {
-    const { fetchUser, createUser } = this.props;
-    const userId = document.cookie.replace(/uuid=/, '');
-    if (!userId) {
-      createUser({ userType: 'Guest', loggedIn: false });
-    } else {
-      fetchUser(userId);
-    }
+    const { fetchUser } = this.props;
+    fetchUser(document.cookie.replace(/session_id=/, ''));
   }
   render() {
+    const { status, text } = this.props.statusMessage;
+    console.log('USER IS ', this.props.user);
     return (
       <Router>
         <div>
           <Navigation />
+          <ToastComponent status={status} message={text} />
           <Switch>
             <Route exact path="/" component={WelcomeMessage} />
             <Route path="/login" component={Login} />
@@ -59,11 +58,12 @@ class Root extends React.Component {
   }
 }
 
-const mapState = ({ user }) => ({ user });
+const mapState = ({ user, statusMessage }) => ({ user, statusMessage });
 const mapDispatch = dispatch => {
   return {
     fetchUser: userId => dispatch(fetchUser(userId)),
     createUser: user => dispatch(createUser(user)),
   };
 };
+
 export default connect(mapState, mapDispatch)(Root);
