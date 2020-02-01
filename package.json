@@ -1,5 +1,7 @@
 {
   "name": "team-one",
+  "db-name": "grace-shopper",
+  "db-test-name": "grace-shopper-test",
   "version": "1.0.0",
   "description": "Team One's Grace Shopper App for 1909-Flex",
   "main": "index.js",
@@ -14,7 +16,7 @@
     "start:client-dev": "./node_modules/.bin/webpack --mode=\"development\" --watch",
     "build": "./node_modules/.bin/webpack --mode=\"production\"",
     "test": "mocha ./tests  --reporter nyan --watch --require @babel/polyfill --require babel-core/register",
-    "test-ci": "mocha ./tests  --reporter nyan --watch --require @babel/polyfill --require babel-core/register"
+    "test-ci": "mocha ./tests  --reporter nyan --require @babel/polyfill --require babel-core/register"
   },
   "repository": {
     "type": "git",
