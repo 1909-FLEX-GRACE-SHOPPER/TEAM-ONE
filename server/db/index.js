@@ -7,12 +7,8 @@ const {
   OrderDetail,
   Product,
   Wishlist,
-<<<<<<< HEAD
-  Cart,
-=======
   Session,
-  Cart
->>>>>>> 44265208d95366a9270609dc18b55659e469c408
+  Cart,
 } = require('./models/index');
 
 //MODEL ASSOCIATIONS
@@ -33,7 +29,7 @@ Order.belongsTo(User);
 Product.belongsToMany(Order, { through: OrderDetail });
 Order.belongsToMany(Product, { through: OrderDetail });
 
-//Sessions 
+//Sessions
 Session.hasOne(User);
 User.belongsTo(Session);
 
@@ -45,12 +41,7 @@ module.exports = {
     OrderDetail,
     Product,
     Wishlist,
-<<<<<<< HEAD
+    Session,
     Cart,
   },
-=======
-    Session,
-    Cart
-  }
->>>>>>> 44265208d95366a9270609dc18b55659e469c408
 };
