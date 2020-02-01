@@ -12,7 +12,7 @@ class ShoppingCart extends React.Component {
 
   render() {
     const { cart } = this.props;
-    console.log(cart);
+    console.log('cart' + cart);
     if (cart.length === 0) {
       return (
         <div className='shopping-cart'>
