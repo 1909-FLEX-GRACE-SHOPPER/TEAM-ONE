@@ -1,14 +1,29 @@
 import axios from 'axios';
 
-import { setCart, addItemToCart, _removeItemFromCart } from '../actions';
-// temporary fetchCart thunk
-export function fetchCart() {
+import {
+  statusMessage,
+  setCart,
+  addItemToCart,
+  _removeItemFromCart
+} from '../actions';
+
+import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
+
+export function fetchCart(userId) {
   return function thunk(dispatch) {
     return axios
       .get(`/api/users/${userId}/cart`)
       .then(res => res.data)
       .then(cart => dispatch(setCart(cart)))
-      .catch(e => console.error('Error fetching Cart', e));
+      .catch(e => {
+        console.error('Error fetching Cart', e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
   };
 }
 /*

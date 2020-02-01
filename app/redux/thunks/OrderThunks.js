@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { setOrders, statusMessage } from '../actions';
 
-import { SUCCESS, FAIL, COMMON_FAIL } from './utils;';
+import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
 //TODO: Delete console.logs on deployment
 
