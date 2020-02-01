@@ -10,6 +10,7 @@ const { green, red } = require('chalk');
 //of created carts small (maybe 3/4 max for proof of concept), and do this one-by-one without Promise.all.
 //You can now set the foreign keys to ids stored in variables (userId = user1.id). The problem before is that
 //the userId was changing everytime it seeded, so you couldn't hardcode in an id. LMK any questions.
+//You'll do the same for products so move the seedProducts into this function before you seed the cart, store variables, etc.
 const seedUsers = async () => {
   await Promise.all(users.map(_u => User.create(_u))).then(() =>
     Promise.all(cart.map(product => Cart.create(product)))
