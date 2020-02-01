@@ -1,7 +1,7 @@
-import React from "react";
-import { Button } from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import Product from "./Product";
+import React from 'react';
+import { Button } from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import Product from './Product';
 
 class CartItem extends React.Component {
   constructor(props) {
@@ -16,16 +16,16 @@ class CartItem extends React.Component {
   render() {
     const { productImage, productName, quantity } = this.state;
     return (
-      <div className="cart-item">
+      <div className='cart-item'>
         product
-        <img className="cart-item-image" src={productImage} />
-        <div className="cart-item-name">{productName}</div>
-        <div className="cart-item-quantity-edit">
+        <img className='cart-item-image' src={productImage} />
+        <div className='cart-item-name'>{productName}</div>
+        <div className='cart-item-quantity-edit'>
           {/* TODO: create an edit form */}
-          <div className="cart-item-quantity">Quantity: {quantity}</div>
+          <div className='cart-item-quantity'>Quantity: {quantity}</div>
           <Button>Edit</Button>
         </div>
-        <div className="cart-item-subtotal">Subtotal: </div>
+        <div className='cart-item-subtotal'>Subtotal: </div>
         {/* TODO: create remove function */}
         <Button>Remove</Button>
       </div>

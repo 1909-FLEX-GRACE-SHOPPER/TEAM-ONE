@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
 import {
   products,
@@ -10,7 +10,7 @@ import {
   wishlist,
   cart,
   statusMessage
-} from "./reducers";
+} from './reducers';
 
 export default combineReducers({
   products,

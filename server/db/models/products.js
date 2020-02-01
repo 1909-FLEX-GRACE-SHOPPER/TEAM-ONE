@@ -1,9 +1,9 @@
-const Sequelize = require("sequelize");
-const db = require("./../database.js");
+const Sequelize = require('sequelize');
+const db = require('./../database.js');
 
 const { UUID, UUIDV4, STRING, DECIMAL, TEXT, INTEGER } = Sequelize;
 
-const Product = db.define("products", {
+const Product = db.define('products', {
   id: {
     primaryKey: true,
     type: UUID,
@@ -15,11 +15,11 @@ const Product = db.define("products", {
     validate: {
       notEmpty: {
         args: true,
-        msg: "Product name cannot be empty"
+        msg: 'Product name cannot be empty'
       },
       notNull: {
         arg: true,
-        msg: "Product name cannot be null"
+        msg: 'Product name cannot be null'
       }
     }
   },
@@ -37,7 +37,7 @@ const Product = db.define("products", {
   },
   productImage: {
     type: STRING,
-    defaultValue: "No image"
+    defaultValue: 'No image'
   }
 });
 

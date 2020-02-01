@@ -11,7 +11,7 @@ import {
   ADD_ITEM_TO_CART,
   REMOVE_ITEM_FROM_CART,
   STATUS_MESSAGE
-} from "./constants";
+} from './constants';
 
 export const products = (state = [], action) => {
   switch (action.type) {
@@ -66,7 +66,7 @@ export const authentication = (
     case LOGIN_ERROR:
       return {
         ...state,
-        authError: "Login Failed",
+        authError: 'Login Failed',
         logInStatus: false
       };
     case LOGIN_SUCCCESS:
@@ -101,7 +101,7 @@ export const cart = (state = [], action) => {
       return state;
   }
 };
-export const statusMessage = (state = { status: null, text: "" }, action) => {
+export const statusMessage = (state = { status: null, text: '' }, action) => {
   switch (action.type) {
     case STATUS_MESSAGE:
       return action.message;

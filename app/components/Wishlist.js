@@ -25,7 +25,7 @@ class Wishlist extends React.Component {
           ) : (
             <div>
               <Link>Back</Link>
-              <div className="wishlist-product-listing">
+              <div className='wishlist-product-listing'>
                 {wishlist.map(_product => (
                   <WishlistItem key={`wl-${_product.id}`} product={_product} />
                 ))}

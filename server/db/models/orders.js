@@ -1,9 +1,9 @@
-const Sequelize = require("sequelize");
-const db = require("./../database.js");
+const Sequelize = require('sequelize');
+const db = require('./../database.js');
 
 const { UUID, UUIDV4, STRING, DECIMAL, INTEGER, BIGINT, DATEONLY } = Sequelize;
 
-const Order = db.define("orders", {
+const Order = db.define('orders', {
   id: {
     primaryKey: true,
     type: UUID,
@@ -40,7 +40,7 @@ const Order = db.define("orders", {
     validate: {
       isNumeric: {
         args: true,
-        msg: "Shipping zip code should only contain numbers"
+        msg: 'Shipping zip code should only contain numbers'
       },
       len: {
         arg: 5
@@ -53,7 +53,7 @@ const Order = db.define("orders", {
     validate: {
       isNumeric: {
         args: true,
-        msg: "Card number should only contain numbers"
+        msg: 'Card number should only contain numbers'
       },
       len: {
         arg: 16
@@ -74,7 +74,7 @@ const Order = db.define("orders", {
     validate: {
       isNumeric: {
         args: true,
-        msg: "Security code should only contain numbers"
+        msg: 'Security code should only contain numbers'
       },
       len: {
         arg: 3
@@ -99,7 +99,7 @@ const Order = db.define("orders", {
     validate: {
       isNumeric: {
         args: true,
-        msg: "Billing zip code should only contain numbers"
+        msg: 'Billing zip code should only contain numbers'
       },
       len: {
         arg: 5

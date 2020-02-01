@@ -1,9 +1,9 @@
-const Sequelize = require("sequelize");
-const db = require("./../database.js");
+const Sequelize = require('sequelize');
+const db = require('./../database.js');
 
 const { UUID, UUIDV4, STRING, BOOLEAN, INTEGER, DATEONLY, BIGINT } = Sequelize;
 
-const User = db.define("users", {
+const User = db.define('users', {
   id: {
     primaryKey: true,
     type: UUID,
@@ -14,7 +14,7 @@ const User = db.define("users", {
     allowNull: false,
     //may need to update this later depends on how a user chooses his type
     validate: {
-      isIn: [["Guest", "Existing customer", "Admin"]]
+      isIn: [['Guest', 'Existing customer', 'Admin']]
     }
   },
   email: {
@@ -23,15 +23,15 @@ const User = db.define("users", {
     unique: true,
     validate: {
       customValidator(value) {
-        if (value === null && this.userType !== "Guest") {
+        if (value === null && this.userType !== 'Guest') {
           throw new Error(
-            "Email address cannot be null unless user type is guest"
+            'Email address cannot be null unless user type is guest'
           );
         }
       },
       isEmail: {
         arg: true,
-        msg: "Email address must be valid"
+        msg: 'Email address must be valid'
       }
     }
   },
@@ -42,8 +42,8 @@ const User = db.define("users", {
     allowNull: true,
     validate: {
       customValidator(value) {
-        if (value === null && this.userType !== "Guest") {
-          throw new Error("Password cannot be null unless user type is guest");
+        if (value === null && this.userType !== 'Guest') {
+          throw new Error('Password cannot be null unless user type is guest');
         }
       },
       len: {
@@ -63,7 +63,7 @@ const User = db.define("users", {
     validate: {
       isNumeric: {
         args: true,
-        msg: "Phone number should only contain numbers"
+        msg: 'Phone number should only contain numbers'
       },
       len: {
         //we may want to change the length when we want to pursue internationalization
@@ -85,7 +85,7 @@ const User = db.define("users", {
     validate: {
       isNumeric: {
         args: true,
-        msg: "Shipping zip code should only contain numbers"
+        msg: 'Shipping zip code should only contain numbers'
       },
       len: {
         arg: 5
@@ -97,7 +97,7 @@ const User = db.define("users", {
     validate: {
       isNumeric: {
         args: true,
-        msg: "Card number should only contain numbers"
+        msg: 'Card number should only contain numbers'
       },
       len: {
         arg: 16
@@ -115,7 +115,7 @@ const User = db.define("users", {
     validate: {
       isNumeric: {
         args: true,
-        msg: "Security code should only contain numbers"
+        msg: 'Security code should only contain numbers'
       },
       len: {
         arg: 3
@@ -136,7 +136,7 @@ const User = db.define("users", {
     validate: {
       isNumeric: {
         args: true,
-        msg: "Billing zip code should only contain numbers"
+        msg: 'Billing zip code should only contain numbers'
       },
       len: {
         arg: 5

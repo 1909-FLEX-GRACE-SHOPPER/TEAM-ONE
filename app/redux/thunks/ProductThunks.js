@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { setProducts, setSingleProduct, statusMessage } from "../actions";
+import { setProducts, setSingleProduct, statusMessage } from '../actions';
 
-import { SUCCESS, FAIL, COMMON_FAIL } from "./utils";
+import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
 //TODO: Delete console.log on deployment
 
@@ -50,7 +50,7 @@ export const postProduct = product => {
     return axios
       .post(`/api/products`, product, {
         headers: {
-          "Content-Type": "multipart/form-data"
+          'Content-Type': 'multipart/form-data'
         }
       })
       .then(() => {
@@ -58,7 +58,7 @@ export const postProduct = product => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: "Product successfully added to the shop."
+            text: 'Product successfully added to the shop.'
           })
         );
       })
@@ -67,7 +67,7 @@ export const postProduct = product => {
         dispatch(
           statusMessage({
             status: FAIL,
-            text: "There was an error creating a new product. Try again later."
+            text: 'There was an error creating a new product. Try again later.'
           })
         );
       });
@@ -85,7 +85,7 @@ export const deleteProduct = productId => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: "Product deleted from the shop."
+            text: 'Product deleted from the shop.'
           })
         );
       })
@@ -112,7 +112,7 @@ export const updateProduct = (productId, product) => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: "Product updated."
+            text: 'Product updated.'
           })
         );
       })

@@ -1,8 +1,8 @@
-const Sequelize = require("sequelize");
-const db = require("./../database.js");
+const Sequelize = require('sequelize');
+const db = require('./../database.js');
 const { UUID, UUIDV4 } = Sequelize;
 
-const Session = db.define("session", {
+const Session = db.define('session', {
   id: {
     primaryKey: true,
     type: UUID,

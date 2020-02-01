@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { setOrders, statusMessage } from "../actions";
+import { setOrders, statusMessage } from '../actions';
 
-import { SUCCESS, FAIL, COMMON_FAIL } from "./utils;";
+import { SUCCESS, FAIL, COMMON_FAIL } from './utils;';
 
 //TODO: Delete console.logs on deployment
 
@@ -35,7 +35,7 @@ export const postOrder = (userId, order) => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: "Order added"
+            text: 'Order added'
           })
         );
       })
@@ -44,7 +44,7 @@ export const postOrder = (userId, order) => {
         dispatch(
           statusMessage({
             status: FAIL,
-            text: "There was an error creating a new order. Try again later."
+            text: 'There was an error creating a new order. Try again later.'
           })
         );
       });
@@ -62,7 +62,7 @@ export const deleteOrder = (userId, orderId) => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: "Order deleted"
+            text: 'Order deleted'
           })
         );
       })
@@ -88,7 +88,7 @@ export const updateOrder = (userId, orderId, order) => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: "Order updated"
+            text: 'Order updated'
           })
         );
       })
@@ -97,7 +97,7 @@ export const updateOrder = (userId, orderId, order) => {
         dispatch(
           statusMessage({
             status: FAIL,
-            text: "There was an error updating your order. Try again later."
+            text: 'There was an error updating your order. Try again later.'
           })
         );
       });

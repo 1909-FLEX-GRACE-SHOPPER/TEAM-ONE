@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { setOrderDetails, statusMessage } from "../actions";
+import { setOrderDetails, statusMessage } from '../actions';
 
-import { SUCCESS, FAIL, COMMON_FAIL } from "./utils";
+import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
 //TODO: delete console.logs on deployment
 
@@ -35,7 +35,7 @@ export const postOrderDetails = (orderId, orderDetailId, orderDetail) => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: "Order detail added"
+            text: 'Order detail added'
           })
         );
       })
@@ -62,7 +62,7 @@ export const deleteOrderDetails = (orderId, orderDetailId) => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: "Order detail deleted"
+            text: 'Order detail deleted'
           })
         );
       })
@@ -89,7 +89,7 @@ export const updateOrderDetails = (orderId, orderDetailId, orderDetail) => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: "Order detail updated"
+            text: 'Order detail updated'
           })
         );
       })

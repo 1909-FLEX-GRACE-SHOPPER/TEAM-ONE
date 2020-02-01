@@ -10,7 +10,7 @@ import {
   SET_CART,
   ADD_ITEM_TO_CART,
   REMOVE_ITEM_FROM_CART
-} from "./constants";
+} from './constants';
 
 export const setProducts = products => {
   return {

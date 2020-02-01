@@ -1,9 +1,9 @@
-const Sequelize = require("sequelize");
-const db = require("./../database.js");
+const Sequelize = require('sequelize');
+const db = require('./../database.js');
 
 const { UUID, UUIDV4, DECIMAL, INTEGER } = Sequelize;
 
-const OrderDetail = db.define("orderDetails", {
+const OrderDetail = db.define('orderDetails', {
   id: {
     primaryKey: true,
     type: UUID,

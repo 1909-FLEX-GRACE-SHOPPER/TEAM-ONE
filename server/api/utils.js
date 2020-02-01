@@ -18,10 +18,6 @@ const paginate = model => {
       });
   };
 };
-<<<<<<< HEAD
-
-module.exports = paginate;
-=======
 
 function UserObject(user) {
   this.firstName = user.firstName;
@@ -41,4 +37,3 @@ function UserObject(user) {
 }
 
 module.exports = { paginate, UserObject };
->>>>>>> 44265208d95366a9270609dc18b55659e469c408

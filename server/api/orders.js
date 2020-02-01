@@ -3,17 +3,10 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { Order, OrderDetail, User } = models;
 
-<<<<<<< HEAD
-const paginate = require("./utils");
-
-//Finds and servers all orders
-router.get("/", paginate(Order), (req, res, next) => {
-=======
 const { paginate } = require('./utils');
 
 //Finds and servers all orders
 router.get('/', paginate(Order), (req, res, next) => {
->>>>>>> 44265208d95366a9270609dc18b55659e469c408
   res
     .status(200)
     .send(res.foundModels)
@@ -25,11 +18,7 @@ router.get('/', paginate(Order), (req, res, next) => {
 
 //Finds and serves a single order based on a primary key.
 //Eager loads associated user.
-<<<<<<< HEAD
-router.get("/:id", (req, res, next) => {
-=======
 router.get('/:id', (req, res, next) => {
->>>>>>> 44265208d95366a9270609dc18b55659e469c408
   Order.findByPk(req.params.id, {
     include: [
       {
@@ -46,11 +35,7 @@ router.get('/:id', (req, res, next) => {
 
 //Finds and serves a single user based on a primary key.
 //Eager loads associated cart.
-<<<<<<< HEAD
-router.get("/:orderId/orderDetails", (req, res, next) => {
-=======
 router.get('/:orderId/orderDetails', (req, res, next) => {
->>>>>>> 44265208d95366a9270609dc18b55659e469c408
   User.findByPk(req.params.orderId, {
     include: [
       {
@@ -66,11 +51,7 @@ router.get('/:orderId/orderDetails', (req, res, next) => {
 });
 
 //Adds a new item to the cart
-<<<<<<< HEAD
-router.post("/:orderId/orderDetails", (req, res, next) => {
-=======
 router.post('/:orderId/orderDetails', (req, res, next) => {
->>>>>>> 44265208d95366a9270609dc18b55659e469c408
   const { productId, productQuantity, productCost } = req.body;
   const { orderId } = req.params;
 
@@ -88,11 +69,7 @@ router.post('/:orderId/orderDetails', (req, res, next) => {
 });
 
 //Deletes an item from a cart
-<<<<<<< HEAD
-router.delete("/:orderId/orderDetails/:orderDetailId", (req, res, next) => {
-=======
 router.delete('/:orderId/orderDetails/:orderDetailId', (req, res, next) => {
->>>>>>> 44265208d95366a9270609dc18b55659e469c408
   const { orderDetailId } = req.params;
 
   orderDetail
@@ -106,11 +83,7 @@ router.delete('/:orderId/orderDetails/:orderDetailId', (req, res, next) => {
 });
 
 //Updates an existing item in the cart
-<<<<<<< HEAD
-router.put("/:orderId/orderDetails/:orderDetailId", (req, res, next) => {
-=======
 router.put('/:orderId/orderDetails/:orderDetailId', (req, res, next) => {
->>>>>>> 44265208d95366a9270609dc18b55659e469c408
   const { productId, productQuantity, productCost } = req.body;
   const { orderId, orderDetailId } = req.params;
 

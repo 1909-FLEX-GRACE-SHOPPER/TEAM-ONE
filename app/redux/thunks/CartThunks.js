@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { setCart, addItemToCart, _removeItemFromCart } from "../actions";
+import { setCart, addItemToCart, _removeItemFromCart } from '../actions';
 // temporary fetchCart thunk
 export function fetchCart() {
   return function thunk(dispatch) {
@@ -8,7 +8,7 @@ export function fetchCart() {
       .get(`/api/cart`)
       .then(res => res.data)
       .then(products => dispatch(setCart(products)))
-      .catch(e => console.error("Error fetching Cart", e));
+      .catch(e => console.error('Error fetching Cart', e));
   };
 }
 /*
