@@ -58,12 +58,6 @@ export const logInSuccess = () => {
 	};
 };
 
-export const loggedInFail = () => {
-	return {
-		type: LOGIN_ERROR
-	};
-};
-
 export const statusMessage = message => {
 	return {
 		type: STATUS_MESSAGE,
