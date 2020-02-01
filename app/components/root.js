@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from 'react-router-dom';
 import { fetchUser, createUser } from '../redux/thunks/UserThunks';
 import { connect } from 'react-redux';
@@ -62,7 +62,7 @@ const mapState = ({ user, statusMessage }) => ({ user, statusMessage });
 const mapDispatch = dispatch => {
   return {
     fetchUser: userId => dispatch(fetchUser(userId)),
-    createUser: user => dispatch(createUser(user))
+    createUser: user => dispatch(createUser(user)),
   };
 };
 

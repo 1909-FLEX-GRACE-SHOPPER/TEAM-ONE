@@ -8,11 +8,11 @@ import { logInUser } from '../redux/thunks/UserThunks';
 class Login extends Component {
   state = {
     email: '',
-    password: ''
+    password: '',
   };
   handleChange = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
   onSubmit = event => {
@@ -67,13 +67,13 @@ const mapStateToProps = state => {
   return {
     errorMessage: state.authentication,
     userLoginStatus: state.authentication,
-    user: state.user
+    user: state.user,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    logIn: credentials => dispatch(logInUser(credentials))
+    logIn: credentials => dispatch(logInUser(credentials)),
   };
 };
 

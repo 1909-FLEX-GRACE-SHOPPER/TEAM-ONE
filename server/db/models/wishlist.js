@@ -7,8 +7,8 @@ const Wishlist = db.define('wishlist', {
   id: {
     primaryKey: true,
     type: UUID,
-    defaultValue: UUIDV4
-  }
+    defaultValue: UUIDV4,
+  },
 });
 
 module.exports = Wishlist;

@@ -22,9 +22,9 @@ router.get('/:id', (req, res, next) => {
   Order.findByPk(req.params.id, {
     include: [
       {
-        model: User
-      }
-    ]
+        model: User,
+      },
+    ],
   })
     .then(order => res.status(200).send(order))
     .catch(e => {
@@ -39,9 +39,9 @@ router.get('/:orderId/orderDetails', (req, res, next) => {
   User.findByPk(req.params.orderId, {
     include: [
       {
-        model: OrderDetail
-      }
-    ]
+        model: OrderDetail,
+      },
+    ],
   })
     .then(user => res.status(200).send(user))
     .catch(e => {
@@ -59,7 +59,7 @@ router.post('/:orderId/orderDetails', (req, res, next) => {
     orderId: orderId * 1,
     productId: productId * 1,
     productQuantity: productQuantity * 1,
-    productCost: (productCost * 1).toFixed(2)
+    productCost: (productCost * 1).toFixed(2),
   })
     .then(() => res.status(201))
     .catch(e => {
@@ -93,7 +93,7 @@ router.put('/:orderId/orderDetails/:orderDetailId', (req, res, next) => {
         orderId: orderId * 1,
         productId: productId * 1 || orderDetail.productId,
         productQuantity: productQuantity * 1 || orderDetail.productQuantity,
-        productCost: productCost * 1 || orderDetail.productCost
+        productCost: productCost * 1 || orderDetail.productCost,
       })
     )
     .then(() => res.status(202))

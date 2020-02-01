@@ -46,9 +46,28 @@ export const postProduct = product => {
     return axios
       .post(`/api/products`, product, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       })
+<<<<<<< HEAD
+      .then(() => dispatch(fetchProducts()))
+      .then(() =>
+        dispatch(
+          statusMessage({
+            status: 'success',
+            text: 'Product successfully added to store!',
+          })
+        )
+      )
+      .catch(() => {
+        dispatch(
+          statusMessage({
+            status: 'fail',
+            text: 'Error creating a User',
+          })
+        );
+      });
+=======
       .then(() => {
         dispatch(fetchProducts())
         dispatch(statusMessage({
@@ -64,6 +83,7 @@ export const postProduct = product => {
         }))
       })
 
+>>>>>>> 44265208d95366a9270609dc18b55659e469c408
   };
 };
 

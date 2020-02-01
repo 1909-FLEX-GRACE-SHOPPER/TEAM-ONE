@@ -17,7 +17,7 @@ export const fetchUser = sessionId => {
           dispatch(
             statusMessage({
               status: FAIL,
-              text: COMMON_FAIL
+              text: COMMON_FAIL,
             })
           );
         })
@@ -30,7 +30,7 @@ export const fetchUser = sessionId => {
 export const createUser = user => {
   return dispatch => {
     return axios
-      .post(`/api/users/new`, user)
+      .post('/api/users/new', user)
       .then(res => {
         dispatch(setUser(res.data));
       })
@@ -38,7 +38,7 @@ export const createUser = user => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: 'Welcome to Juuls by Jewel'
+            text: 'Welcome to Juuls by Jewel',
           })
         );
       })
@@ -46,7 +46,7 @@ export const createUser = user => {
         dispatch(
           statusMessage({
             status: FAIL,
-            text: 'There was an error signing you up. Try again later.'
+            text: 'There was an error signing you up. Try again later.',
           })
         );
       });
@@ -58,7 +58,7 @@ export const createUser = user => {
 export const logOutUser = ({ email, password }) => {
   return dispatch => {
     return axios
-      .post(`/api/users/login`, { email, password })
+      .post('/api/users/login', { email, password })
       .then(() => dispatch(setUser(null)))
       .catch(e => console.error('Error logging user out', e));
   };
@@ -75,7 +75,7 @@ export const deleteUser = userId => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: 'User successfully deleted'
+            text: 'User successfully deleted',
           })
         );
       })
@@ -84,7 +84,7 @@ export const deleteUser = userId => {
         dispatch(
           statusMessage({
             status: FAIL,
-            text: COMMON_FAIL
+            text: COMMON_FAIL,
           })
         );
       });
@@ -102,7 +102,7 @@ export const updateUser = (userId, user) => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: 'User updated.'
+            text: 'User updated.',
           })
         );
       })
@@ -110,7 +110,7 @@ export const updateUser = (userId, user) => {
         console.log(e);
         dispatch(
           statusMessage({
-            status: FAIL
+            status: FAIL,
           })
         );
       });
@@ -122,7 +122,7 @@ export const updateUser = (userId, user) => {
 export const logInUser = ({ email, password }) => {
   return dispatch => {
     return axios
-      .post(`/api/users/login`, { email, password })
+      .post('/api/users/login', { email, password })
       .then(user => {
         dispatch(logInSuccess());
         dispatch(setUser(user.data));

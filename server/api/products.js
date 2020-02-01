@@ -51,7 +51,7 @@ router.post('/', (req, res, next) => {
           productDescription,
           unitPrice: (unitPrice * 1).toFixed(2),
           inventory: inventory * 1 || 0,
-          productImage: `/uploads/${imageFile.name.split(' ').join('-')}`
+          productImage: `/uploads/${imageFile.name.split(' ').join('-')}`,
         });
       })
       .then(() => res.status(201).send('success creating'))
@@ -64,7 +64,7 @@ router.post('/', (req, res, next) => {
       productName,
       productDescription,
       unitPrice: (unitPrice * 1).toFixed(2),
-      inventory: inventory * 1 || 0
+      inventory: inventory * 1 || 0,
     })
       .then(() => res.status(201).send('success creating'))
       .catch(e => {
@@ -96,7 +96,7 @@ router.put('/:id', (req, res, next) => {
         productName: productName || product.productName,
         productDescription: productDescription || product.productDescription,
         unitPrice: (unitPrice * 1).toFixed(2) || product.unitPrice,
-        inventory: inventory * 1 || product.inventory
+        inventory: inventory * 1 || product.inventory,
       })
     )
     .then(product => res.status(202).send(product))

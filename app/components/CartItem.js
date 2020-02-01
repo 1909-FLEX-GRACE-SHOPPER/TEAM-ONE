@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const CartItem = () => {
   return <div>This is a cart item</div>;

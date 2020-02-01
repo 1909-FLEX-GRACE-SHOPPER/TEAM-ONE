@@ -46,7 +46,7 @@ class Products extends React.Component {
 const mapState = ({ products }) => ({ products });
 const mapDispatch = dispatch => {
   return {
-    fetchProducts: () => dispatch(fetchProducts())
+    fetchProducts: () => dispatch(fetchProducts()),
   };
 };
 

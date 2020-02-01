@@ -7,7 +7,7 @@ const paginate = model => {
     model
       .findAndCountAll({
         offset,
-        limit
+        limit,
       })
       .then(foundModels => {
         res.send(foundModels);

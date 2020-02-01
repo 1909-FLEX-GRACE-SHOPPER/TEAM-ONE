@@ -8,8 +8,8 @@ const { paginate, UserObject } = require('./utils');
 router.get('/session/:sessionId', (req, res, next) => {
   User.findOne({
     where: {
-      sessionId: req.params.sessionId
-    }
+      sessionId: req.params.sessionId,
+    },
   })
     .then(user => res.status(200).send(user))
     .catch(e => {
@@ -38,15 +38,15 @@ router.post('/new', (req, res, next) => {
       User.destroy({
         where: {
           sessionId: req.cookies.session_id,
-          userType: 'Guest'
-        }
+          userType: 'Guest',
+        },
       })
         .then(() =>
           res
             .status(201)
             .cookie('session_id', req.cookies.session_id, {
               path: '/',
-              expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+              expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
             })
             .send(newUser)
         )
@@ -70,33 +70,33 @@ router.post('/login', (req, res, next) => {
   User.findOne({
     where: {
       email,
-      password
-    }
+      password,
+    },
   })
     .then(userOrNull => {
       if (userOrNull) {
         User.update(
           {
-            sessionId: req.cookies.session_id
+            sessionId: req.cookies.session_id,
           },
           {
             where: { email, password },
-            returning: false
+            returning: false,
           }
         )
           .then(() => {
             User.destroy({
               where: {
                 sessionId: req.cookies.session_id,
-                userType: 'Guest'
-              }
+                userType: 'Guest',
+              },
             });
           })
           .then(() => {
             return res
               .cookie('session_id', req.cookies.session_id, {
                 path: '/',
-                expires: new Date(Date.now() + 1000 * 60 * 60)
+                expires: new Date(Date.now() + 1000 * 60 * 60),
               })
               .status(202)
               .send(userOrNull);
@@ -117,11 +117,11 @@ router.post('/logout', (req, res, next) => {
   const { email, password } = req.body;
   User.update(
     {
-      loggedIn: false
+      loggedIn: false,
     },
     {
       where: { email, password },
-      returning: true
+      returning: true,
     }
   )
     .then(() => res.status(201))
@@ -159,7 +159,7 @@ router.put('/:id', (req, res, next) => {
     billingAddress,
     billingCity,
     billingState,
-    billingZip
+    billingZip,
   } = req.body;
 
   User.findByPk(req.params.id)
@@ -178,7 +178,7 @@ router.put('/:id', (req, res, next) => {
         billingAddress: billingAddress || user.billingAddress,
         billingCity: billingCity || user.billingCity,
         billingState: billingState || user.billingState,
-        billingZip: billingZip || user.billingZip
+        billingZip: billingZip || user.billingZip,
       })
     )
     .then(user => res.status(202).send(user))
@@ -194,9 +194,9 @@ router.get('/:userId/orders', (req, res, next) => {
   User.findByPk(req.params.userId, {
     include: [
       {
-        model: Order
-      }
-    ]
+        model: Order,
+      },
+    ],
   })
     .then(user => res.status(200).send(user))
     .catch(e => {
@@ -214,7 +214,7 @@ router.post('/:userId/orders', (req, res, next) => {
   Order.create({
     userId,
     shippingAddress,
-    orderCost: (orderCost * 1).toFixed(2)
+    orderCost: (orderCost * 1).toFixed(2),
   })
     .then(() => res.status(201))
     .catch(e => {
@@ -244,7 +244,7 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
     .then(order =>
       order.update({
         shippingAddress: shippingAddress || order.shippingAddress,
-        orderCost: (orderCost * 1).toFixed(2) || order.orderCost
+        orderCost: (orderCost * 1).toFixed(2) || order.orderCost,
       })
     )
     .then(() => res.status(202))

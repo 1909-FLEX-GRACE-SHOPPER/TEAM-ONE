@@ -64,13 +64,13 @@ export const authentication = (
       return {
         ...state,
         authError: 'Login Failed',
-        logInStatus: false
+        logInStatus: false,
       };
     case LOGIN_SUCCCESS:
       return {
         ...state,
         authError: null,
-        logInStatus: true
+        logInStatus: true,
       };
     default:
       return state;
@@ -89,8 +89,8 @@ export const wishlist = (state = [], action) => {
 export const statusMessage = (state = { status: null, text: '' }, action) => {
   switch (action.type) {
     case STATUS_MESSAGE:
-      return action.message
+      return action.message;
     default:
       return state;
   }
-}
+};

@@ -7,8 +7,8 @@ const { Wishlist } = models;
 router.get('/items/:userId', (req, res, next) => {
   Wishlist.findAll({
     where: {
-      userId: req.params.userId
-    }
+      userId: req.params.userId,
+    },
   })
     .then(wishlist => res.status(200).send(wishlist))
     .catch(e => {

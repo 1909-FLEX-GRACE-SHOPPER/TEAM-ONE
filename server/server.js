@@ -16,14 +16,14 @@ app.use((req, res, next) => {
       .then(session =>
         User.create({
           userType: 'Guest',
-          sessionId: session.id
+          sessionId: session.id,
         })
       )
       // because this is a new session we create a guest user and give them the new session id
       .then(guest => {
         res.cookie('session_id', guest.dataValues.sessionId, {
           path: '/',
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
         });
         req.user = guest;
         next();
@@ -37,8 +37,8 @@ app.use((req, res, next) => {
     // find the user by session id and add it to req
     User.findOne({
       where: {
-        sessionId: req.cookies['session_id']
-      }
+        sessionId: req.cookies['session_id'],
+      },
     })
       .then(user => {
         req.user = user;
@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 
 app.use(
   fileUpload({
-    limits: { fileSize: 50 * 1024 * 1024 }
+    limits: { fileSize: 50 * 1024 * 1024 },
   })
 );
 

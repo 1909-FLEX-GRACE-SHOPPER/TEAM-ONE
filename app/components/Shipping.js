@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Shipping = ({ shippingAddress }) => {
   <div>This is the address display</div>;

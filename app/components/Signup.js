@@ -5,6 +5,8 @@ const { Group, Label, Control, Text, Row, Col } = Form;
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
+import ToastComponent from './Toasts';
+
 import { createUser } from '../redux/thunks/UserThunks';
 
 class Signup extends Component {
@@ -21,8 +23,8 @@ class Signup extends Component {
         usernameError: '',
         emailError: '',
         passwordError: '',
-        confirmPasswordError: ''
-      }
+        confirmPasswordError: '',
+      },
     };
   }
 
@@ -35,15 +37,15 @@ class Signup extends Component {
           this.setState({
             errors: {
               ...errors,
-              emailError: 'Email not valid'
-            }
+              emailError: 'Email not valid',
+            },
           });
         } else {
           this.setState({
             errors: {
               ...errors,
-              emailError: ''
-            }
+              emailError: '',
+            },
           });
         }
         break;
@@ -53,15 +55,15 @@ class Signup extends Component {
           this.setState({
             errors: {
               ...errors,
-              passwordError: 'Password not valid'
-            }
+              passwordError: 'Password not valid',
+            },
           });
         } else {
           this.setState({
             errors: {
               ...errors,
-              passwordError: ''
-            }
+              passwordError: '',
+            },
           });
         }
         break;
@@ -71,15 +73,15 @@ class Signup extends Component {
           this.setState({
             errors: {
               ...errors,
-              confirmPasswordError: 'Passwords must match'
-            }
+              confirmPasswordError: 'Passwords must match',
+            },
           });
         } else {
           this.setState({
             errors: {
               ...errors,
-              confirmPasswordError: ''
-            }
+              confirmPasswordError: '',
+            },
           });
         }
       default:
@@ -92,8 +94,8 @@ class Signup extends Component {
   };
 
   handleOnSubmit = e => {
-    e.preventDefault();
     const { id } = this.props.user;
+    e.preventDefault();
     this.props.createUser({ ...this.state, id });
     this.setState({
       firstName: '',
@@ -101,11 +103,12 @@ class Signup extends Component {
       username: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
     });
   };
 
   render() {
+    const { status, text } = this.props.statusMessage;
     const {
       firstName,
       lastName,
@@ -113,7 +116,12 @@ class Signup extends Component {
       email,
       password,
       confirmPassword,
-      errors: { usernameError, emailError, passwordError, confirmPasswordError }
+      errors: {
+        usernameError,
+        emailError,
+        passwordError,
+        confirmPasswordError,
+      },
     } = this.state;
 
     return (
@@ -244,11 +252,11 @@ class Signup extends Component {
   }
 }
 
-const mapState = ({ user }) => ({ user });
+const mapState = ({ user, statusMessage }) => ({ user, statusMessage });
 
 const mapDispatch = dispatch => {
   return {
-    createUser: form => dispatch(createUser(form))
+    createUser: form => dispatch(createUser(form)),
   };
 };
 

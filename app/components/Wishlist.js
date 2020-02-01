@@ -41,7 +41,7 @@ class Wishlist extends React.Component {
 const mapState = ({ wishlist, user }) => ({ wishlist, user });
 const mapDispatch = dispatch => {
   return {
-    fetchWishlist: userId => dispatch(fetchWishlist(userId))
+    fetchWishlist: userId => dispatch(fetchWishlist(userId)),
   };
 };
 
