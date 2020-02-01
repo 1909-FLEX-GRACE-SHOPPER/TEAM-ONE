@@ -7,7 +7,7 @@ const {
   OrderDetail,
   Product,
   Wishlist,
-  Cart
+  Cart,
 } = require('./models/index');
 
 //MODEL ASSOCIATIONS
@@ -36,6 +36,6 @@ module.exports = {
     OrderDetail,
     Product,
     Wishlist,
-    Cart
-  }
+    Cart,
+  },
 };

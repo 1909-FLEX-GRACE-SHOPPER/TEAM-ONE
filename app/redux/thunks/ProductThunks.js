@@ -32,21 +32,26 @@ export const postProduct = product => {
     return axios
       .post(`/api/products`, product, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       })
       .then(() => dispatch(fetchProducts()))
-      .then(() => dispatch(statusMessage({
-        status: 'success',
-        text: 'Product successfully added to store!'
-      })))
+      .then(() =>
+        dispatch(
+          statusMessage({
+            status: 'success',
+            text: 'Product successfully added to store!',
+          })
+        )
+      )
       .catch(() => {
-        dispatch(statusMessage({
-          status: 'fail',
-          text: 'Error creating a User'
-        }))
-      })
-
+        dispatch(
+          statusMessage({
+            status: 'fail',
+            text: 'Error creating a User',
+          })
+        );
+      });
   };
 };
 

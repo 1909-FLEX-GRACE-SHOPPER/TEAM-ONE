@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import CreditCard from "./CreditCard.js";
-import Shipping from "./Shipping.js";
-import Button from "react-bootstrap";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import CreditCard from './CreditCard.js';
+import Shipping from './Shipping.js';
+import Button from 'react-bootstrap';
 
 const Checkout = ({ orderDetails }) => {
   return (

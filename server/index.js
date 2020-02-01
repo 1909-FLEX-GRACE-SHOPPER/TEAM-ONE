@@ -4,7 +4,7 @@ const { db } = require('./db/index.js');
 const { seedUsers, seedProducts } = require('../seed.js');
 const cookieParser = require('cookie-parser');
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 const PORT = process.env.PORT || 3000;
 
@@ -24,4 +24,3 @@ db.sync({ force: true })
     });
   })
   .catch(error => console.log('error syncing db ', error));
-

@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import CartItem from "./CartItem.js";
-import Button from "react-bootstrap";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import CartItem from './CartItem.js';
+import Button from 'react-bootstrap';
 
 const ShoppingCart = ({ products }) => {
   return (

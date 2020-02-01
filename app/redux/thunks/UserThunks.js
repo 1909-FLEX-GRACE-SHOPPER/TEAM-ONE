@@ -18,25 +18,27 @@ export const fetchUser = (userId = null) => {
 //Sets the user to the created user after creating
 export const createUser = user => {
   return dispatch => {
-    return axios
-      .post(`/api/users`, user)
-      .then(res => {
-        dispatch(setUser(res.data))
-      .then(() => {
-        dispatch(statusMessage({
-          status: null,
-          text: '',
-        }))
-      })
-      .catch(() => {
-        dispatch(statusMessage({
-          status: 'fail',
-          text: 'Error creating a User'
-        }))
-      })
-    })
+    return axios.post(`/api/users`, user).then(res => {
+      dispatch(setUser(res.data))
+        .then(() => {
+          dispatch(
+            statusMessage({
+              status: null,
+              text: '',
+            })
+          );
+        })
+        .catch(() => {
+          dispatch(
+            statusMessage({
+              status: 'fail',
+              text: 'Error creating a User',
+            })
+          );
+        });
+    });
   };
-}
+};
 
 //Thunk for logging out a user.
 //Sets the user to null after logging out.

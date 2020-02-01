@@ -7,11 +7,13 @@ const { Product } = models;
 const paginate = require('./utils');
 
 router.get('/', paginate(Product), (req, res, next) => {
-  res.status(200).send(foundModels)
-  .catch(e => {
-    res.status(404);
-    next(e);
-  });
+  res
+    .status(200)
+    .send(foundModels)
+    .catch(e => {
+      res.status(404);
+      next(e);
+    });
 });
 
 router.get('/:id', (req, res, next) => {
@@ -31,8 +33,8 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const { productName, productDescription, unitPrice, inventory } = req.body;
 
-  if(req.files) {
-    const imageFile = req.files.productImage
+  if (req.files) {
+    const imageFile = req.files.productImage;
     imageFile
       .mv(
         path.join(
@@ -49,7 +51,7 @@ router.post('/', (req, res, next) => {
           productDescription,
           unitPrice: (unitPrice * 1).toFixed(2),
           inventory: inventory * 1 || 0,
-          productImage: `/uploads/${imageFile.name.split(' ').join('-')}`
+          productImage: `/uploads/${imageFile.name.split(' ').join('-')}`,
         });
       })
       .then(() => res.status(201).send('success creating'))
@@ -64,11 +66,11 @@ router.post('/', (req, res, next) => {
       unitPrice: (unitPrice * 1).toFixed(2),
       inventory: inventory * 1 || 0,
     })
-    .then(() => res.status(201).send('success creating'))
-    .catch(e => {
-      res.status(400);
-      next(e);
-    })
+      .then(() => res.status(201).send('success creating'))
+      .catch(e => {
+        res.status(400);
+        next(e);
+      });
   }
 });
 
@@ -94,7 +96,7 @@ router.put('/:id', (req, res, next) => {
         productName: productName || product.productName,
         productDescription: productDescription || product.productDescription,
         unitPrice: (unitPrice * 1).toFixed(2) || product.unitPrice,
-        inventory: inventory * 1 || product.inventory
+        inventory: inventory * 1 || product.inventory,
       })
     )
     .then(product => res.status(202).send(product))

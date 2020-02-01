@@ -1,7 +1,7 @@
-import React from "react";
-import Shipping from "./Shipping.js";
-import { Link } from "react-router-dom";
-import Button from "react-bootstrap";
+import React from 'react';
+import Shipping from './Shipping.js';
+import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap';
 
 const Confirmation = ({ orderDetails }) => {
   return (

@@ -7,19 +7,19 @@ const User = db.define('users', {
   id: {
     primaryKey: true,
     type: UUID,
-    defaultValue: UUIDV4
+    defaultValue: UUIDV4,
   },
   userType: {
     type: STRING,
     allowNull: false,
     //may need to update this later depends on how a user chooses his type
     validate: {
-      isIn: [['Guest', 'Existing customer', 'Admin']]
-    }
+      isIn: [['Guest', 'Existing customer', 'Admin']],
+    },
   },
   loggedIn: {
     type: BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
   },
   email: {
     type: STRING,
@@ -35,9 +35,9 @@ const User = db.define('users', {
       },
       isEmail: {
         arg: true,
-        msg: 'Email address must be valid'
-      }
-    }
+        msg: 'Email address must be valid',
+      },
+    },
   },
   password: {
     //password is not required to guest, but required to admin and existing customer
@@ -51,15 +51,15 @@ const User = db.define('users', {
         }
       },
       len: {
-        arg: [ 8, 20 ]
-      }
-    }
+        arg: [8, 20],
+      },
+    },
   },
   firstName: {
-    type: STRING
+    type: STRING,
   },
   lastName: {
-    type: STRING
+    type: STRING,
   },
   phone: {
     //TODO: Change this to String type to allow storing formating
@@ -67,86 +67,86 @@ const User = db.define('users', {
     validate: {
       isNumeric: {
         args: true,
-        msg: 'Phone number should only contain numbers'
+        msg: 'Phone number should only contain numbers',
       },
       len: {
         //we may want to change the length when we want to pursue internationalization
-        arg: 10
-      }
-    }
+        arg: 10,
+      },
+    },
   },
   shippingAddress: {
-    type: STRING
+    type: STRING,
   },
   shippingCity: {
-    type: STRING
+    type: STRING,
   },
   shippingState: {
-    type: STRING
+    type: STRING,
   },
   shippingZip: {
     type: INTEGER,
     validate: {
       isNumeric: {
         args: true,
-        msg: 'Shipping zip code should only contain numbers'
+        msg: 'Shipping zip code should only contain numbers',
       },
       len: {
-        arg: 5
-      }
-    }
+        arg: 5,
+      },
+    },
   },
   cardNumber: {
     type: BIGINT,
     validate: {
       isNumeric: {
         args: true,
-        msg: 'Card number should only contain numbers'
+        msg: 'Card number should only contain numbers',
       },
       len: {
-        arg: 16
-      }
-    }
+        arg: 16,
+      },
+    },
   },
   cardholder: {
-    type: STRING
+    type: STRING,
   },
   expirationDate: {
-    type: DATEONLY
+    type: DATEONLY,
   },
   securityCode: {
     type: INTEGER,
     validate: {
       isNumeric: {
         args: true,
-        msg: 'Security code should only contain numbers'
+        msg: 'Security code should only contain numbers',
       },
       len: {
-        arg: 3
-      }
-    }
+        arg: 3,
+      },
+    },
   },
   billingAddress: {
-    type: STRING
+    type: STRING,
   },
   billingCity: {
-    type: STRING
+    type: STRING,
   },
   billingState: {
-    type: STRING
+    type: STRING,
   },
   billingZip: {
     type: INTEGER,
     validate: {
       isNumeric: {
         args: true,
-        msg: 'Billing zip code should only contain numbers'
+        msg: 'Billing zip code should only contain numbers',
       },
       len: {
-        arg: 5
-      }
-    }
-  }
+        arg: 5,
+      },
+    },
+  },
 });
 
 module.exports = User;

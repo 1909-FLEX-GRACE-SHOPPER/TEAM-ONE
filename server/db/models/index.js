@@ -6,10 +6,10 @@ const Wishlist = require('./wishlist');
 const Cart = require('./cart');
 
 module.exports = {
-    User,
-    Order,
-    OrderDetail,
-    Product,
-    Wishlist,
-    Cart
-}
+  User,
+  Order,
+  OrderDetail,
+  Product,
+  Wishlist,
+  Cart,
+};

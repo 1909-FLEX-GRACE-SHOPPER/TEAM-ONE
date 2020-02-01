@@ -7,7 +7,7 @@ class WelcomeMessage extends React.Component {
   constructor() {
     super();
     this.state = {
-      showToast: false
+      showToast: false,
     };
   }
   toggleShow() {

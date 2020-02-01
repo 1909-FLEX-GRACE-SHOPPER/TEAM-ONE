@@ -9,7 +9,7 @@ class ProductPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      quantity: 0
+      quantity: 0,
     };
   }
   componentDidMount() {
@@ -57,7 +57,7 @@ class ProductPage extends React.Component {
                     onClick={() =>
                       postWishlist({
                         productId: singleProduct.id,
-                        userId: user.id
+                        userId: user.id,
                       })
                     }
                   >
@@ -88,12 +88,12 @@ class ProductPage extends React.Component {
 //TODO: Add cart thunk
 const mapState = ({ singleProduct, user }) => ({
   singleProduct,
-  user
+  user,
 });
 const mapDispatch = dispatch => {
   return {
     fetchSingleProduct: productId => dispatch(fetchSingleProduct(productId)),
-    postWishlist: item => dispatch(postWishlist(item))
+    postWishlist: item => dispatch(postWishlist(item)),
   };
 };
 
