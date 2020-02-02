@@ -11,6 +11,7 @@ class CartItem extends React.Component {
       productName: this.props.product.productName,
       cartId: this.props.product.id,
       quantity: this.props.product.productQuantity,
+      userId: this.props.product.userId,
       //TODO: remove product ID when product name can be rendered
       productId: this.props.product.productId
     };
@@ -21,7 +22,7 @@ class CartItem extends React.Component {
       const newQuantity = ev.target.value;
       this.setState({ quantity: newQuantity });
       await axios
-        .put(`/api/users/cart/${this.state.cartId}`, { newQuantity })
+        .put(`/api/users/${userId}/cart/${this.state.cartId}`, { newQuantity })
         .then(res => {
           return res.data;
         });

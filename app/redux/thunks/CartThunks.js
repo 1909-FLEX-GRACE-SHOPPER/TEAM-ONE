@@ -3,11 +3,11 @@ import axios from 'axios';
 import { statusMessage, _setCart, _removeItemFromCart } from '../actions';
 
 import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
-// TODO: add /${userId} into the route
+
 export function setCart() {
   return function thunk(dispatch) {
     return axios
-      .get('/api/users/cart')
+      .get('/api/users/:userId/cart')
       .then(res => res.data)
       .then(cart => {
         return dispatch(_setCart(cart));
@@ -24,11 +24,10 @@ export function setCart() {
   };
 }
 
-// TODO: add /${userId} into the route
 export function removeItemFromCart(item) {
   return function thunk(dispatch) {
     return axios
-      .delete(`/api/users/cart/${item.id}`)
+      .delete(`/api/users/:userId/cart/${item.id}`)
       .then(() => dispatch(_removeItemFromCart(item)))
       .catch(e => {
         console.error('Error removing item from Cart', e);

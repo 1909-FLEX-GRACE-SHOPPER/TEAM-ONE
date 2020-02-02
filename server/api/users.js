@@ -253,8 +253,8 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
       next(e);
     });
 });
-// TODO: add /:userId before /cart in route
-router.get('/cart', async (req, res, next) => {
+
+router.get('/:userId/cart', async (req, res, next) => {
   try {
     // let cart = await User.findByPk(req.params.userId, {
     //   include: [{ model: Cart }]
@@ -268,8 +268,7 @@ router.get('/cart', async (req, res, next) => {
 });
 
 //edit product quantity in cart
-// TODO: add /:userId before /cart in route
-router.put('/cart/:cartId', (req, res, next) => {
+router.put('/:userId/cart/:cartId', (req, res, next) => {
   const { newQuantity } = req.body;
 
   Cart.findByPk(req.params.cartId)
@@ -297,8 +296,7 @@ router.post('/:userId/cart', (req, res, next) => {
     .catch(e => res.status(400).next(e));
 });
 
-// TODO: add /:userId before /cart in route
-router.delete('/cart/:cartId', async (req, res, next) => {
+router.delete('/:userId/cart/:cartId', async (req, res, next) => {
   try {
     await Cart.destroy({
       where: { id: req.params.cartId }
