@@ -283,18 +283,6 @@ router.put('/:userId/cart/:cartId', (req, res, next) => {
       next(e);
     });
 });
-// insert products in user's cart table
-// TO DO #1: remove if add to cart exists
-// TO DO #2: decide if need to create subtotal for each product in cart
-router.post('/:userId/cart', (req, res, next) => {
-  const { productId, productQuantity } = req.body;
-
-  const { userId } = req.params;
-
-  Cart.create({ userId, productId, productQuantity })
-    .then(() => res.status(201))
-    .catch(e => res.status(400).next(e));
-});
 
 router.delete('/:userId/cart/:cartId', async (req, res, next) => {
   try {
