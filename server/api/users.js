@@ -271,7 +271,7 @@ router.get('/cart', async (req, res, next) => {
 // TODO: add /:userId before /cart in route
 router.put('/cart/:cartId', (req, res, next) => {
   const { newQuantity } = req.body;
-  console.log(newQuantity);
+
   Cart.findByPk(req.params.cartId)
     .then(cartItem =>
       cartItem.update({

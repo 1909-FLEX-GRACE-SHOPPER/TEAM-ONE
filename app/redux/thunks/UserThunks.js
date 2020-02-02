@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { setUser, logInSuccess, loggedInFail, statusMessage } from '../actions';
+import { setUser, logInSuccess, statusMessage } from '../actions';
 
 import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
@@ -126,9 +126,19 @@ export const logInUser = ({ email, password }) => {
       .then(user => {
         dispatch(logInSuccess());
         dispatch(setUser(user.data));
+      }).then(() => {
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Welcome to Juuls by Jewel'
+          })
+        );
       })
-      .catch(err => {
-        dispatch(loggedInFail(err));
+      .catch(() => {
+        dispatch(statusMessage({
+          status:FAIL,
+          text: 'There was an error logging in. Please try again'
+        }));
       });
   };
 };

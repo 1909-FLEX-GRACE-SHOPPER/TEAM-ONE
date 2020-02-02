@@ -4,7 +4,40 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
+  switchNavBar = params => {
+    switch (params.userType) {
+      case 'Existing customer':
+        return (
+          <Nav>
+            <Nav.Link href={`/user/${params.id}`}>
+              {' '}
+              {params.firstName} {params.lastName}{' '}
+            </Nav.Link>
+            <Button> Logout </Button>
+          </Nav>
+        );
+      case 'Admin':
+        return (
+          <Nav>
+            <Nav.Link href='/products/add'> Add a Product </Nav.Link>
+            <Nav.Link href={`/user/${params.id}`}>
+              {' '}
+              {params.firstName} {params.lastName}{' '}
+            </Nav.Link>
+            <Button> Logout </Button>
+          </Nav>
+        );
+      default:
+        return (
+          <Nav>
+            <Nav.Link href='/signup'> Sign Up </Nav.Link>
+            <Nav.Link href='/login'> Login </Nav.Link>
+          </Nav>
+        );
+    }
+  };
   render() {
+    const { user } = this.props;
     return (
       <Navbar bg='dark' variant='dark'>
         <Navbar.Brand>Logo</Navbar.Brand>
@@ -14,20 +47,19 @@ class Navigation extends Component {
           <Nav.Link href='/products'>Shop</Nav.Link>
         </Nav>
         <Nav>
-          <Nav.Link href='/:userId/cart'>Cart</Nav.Link>
+          <Nav.Link href={`/${user.id}/cart`}>Cart</Nav.Link>
           {/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
-          <Nav.Link to='/signup' href='/signup'>
-            {' '}
-            Sign Up{' '}
-          </Nav.Link>
-          <Nav.Link to='/login' href='/login'>
-            {' '}
-            Login{' '}
-          </Nav.Link>
+          {this.switchNavBar(user)}
         </Nav>
       </Navbar>
     );
   }
 }
 
-export default Navigation;
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(Navigation);
