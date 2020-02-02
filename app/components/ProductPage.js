@@ -6,6 +6,7 @@ import {
   fetchSimilarProducts
 } from '../redux/thunks/ProductThunks';
 import { postWishlist } from '../redux/thunks/WishlistThunks';
+import Product from './Product';
 import Button from 'react-bootstrap/Button';
 
 class ProductPage extends React.Component {
@@ -17,6 +18,7 @@ class ProductPage extends React.Component {
   }
   componentDidMount() {
     this.props.fetchSingleProduct(this.props.match.params.id);
+    this.props.fetchSimilarProducts(this.props.match.params.id);
   }
   render() {
     const { singleProduct, postWishlist, user, similarProducts } = this.props;

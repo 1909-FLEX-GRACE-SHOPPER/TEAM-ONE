@@ -32,7 +32,7 @@ export const singleProduct = (state = {}, action) => {
 export const similarProducts = (state = [], action) => {
   switch (action.type) {
     case SET_SIMILAR_PRODUCTS:
-      return action.similar_products;
+      return action.products;
     default:
       return state;
   }

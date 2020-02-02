@@ -25,6 +25,13 @@ export const setSingleProduct = product => {
   };
 };
 
+export const setSimilarProducts = products => {
+  return {
+    type: SET_SIMILAR_PRODUCTS,
+    products
+  };
+};
+
 export const setUser = user => {
   return {
     type: SET_USER,

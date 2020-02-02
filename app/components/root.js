@@ -29,7 +29,6 @@ class Root extends React.Component {
   }
   render() {
     const { status, text } = this.props.statusMessage;
-    console.log('USER IS ', this.props.user);
     return (
       <Router>
         <div>

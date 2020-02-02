@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-import { setProducts, setSingleProduct, statusMessage } from '../actions';
+import {
+  setProducts,
+  setSingleProduct,
+  statusMessage,
+  setSimilarProducts
+} from '../actions';
 
 import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
@@ -29,7 +34,7 @@ export const fetchSimilarProducts = productId => {
   return dispatch => {
     return axios
       .get(`/api/products/similar/${productId}`)
-      .then(res => dispatch(setProducts(res.data)))
+      .then(res => dispatch(setSimilarProducts(res.data)))
       .catch(e => {
         console.error(e);
         dispatch(

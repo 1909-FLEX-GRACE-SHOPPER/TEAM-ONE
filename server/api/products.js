@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const path = require('path');
-
+const { Op } = require('sequelize');
 const { models } = require('../db/index');
 const { Product } = models;
 
@@ -18,13 +18,22 @@ router.get('/', paginate(Product), (req, res, next) => {
 
 router.get('/similar/:id', (req, res, next) => {
   Product.findByPk(req.params.id)
-    .then(({ tags }) =>
-      Product.findAll({
+    .then(({ tags }) => {
+      return Product.findAll({
         where: {
-          tags
+          [Op.and]: [
+            {
+              tags
+            },
+            {
+              id: {
+                [Op.ne]: req.params.id
+              }
+            }
+          ]
         }
-      })
-    )
+      });
+    })
     .then(products => res.status(200).send(products))
     .catch(e => {
       res.status(400);
