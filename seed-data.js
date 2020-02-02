@@ -1,4 +1,5 @@
 const EXPIRATION_DATE = new Date('01/01/2024').toISOString();
+const bcrypt = require('bcrypt');
 
 const products = [
   {
@@ -87,7 +88,7 @@ const users = [
   {
     userType: 'Admin',
     email: 'cissy5120@gmail.com',
-    password: '123',
+    password: bcrypt.hashSync('123', 10),
     lastName: 'Bae',
     firstName: 'Cissy',
     phone: 2122222222,
@@ -107,7 +108,7 @@ const users = [
   {
     userType: 'Admin',
     email: 'nries1@gmail.com',
-    password: '123',
+    password: bcrypt.hashSync('123', 10),
     lastName: 'Ries',
     firstName: 'Nicolas',
     phone: 2122222222,
@@ -127,7 +128,7 @@ const users = [
   {
     userType: 'Admin',
     email: 'orockshel@gmail.com',
-    password: '123',
+    password: bcrypt.hashSync('123', 10),
     lastName: 'Orlock',
     firstName: 'Shel',
     phone: 2122222222,
@@ -147,7 +148,7 @@ const users = [
   {
     userType: 'Admin',
     email: 'raymond.ng47@gmail.com',
-    password: '123',
+    password:  bcrypt.hashSync('123', 10),
     lastName: 'Ng',
     firstName: 'Raymond',
     phone: 2122222222,
@@ -167,7 +168,7 @@ const users = [
   {
     userType: 'Existing customer',
     email: 'mojo.jojo@gmail.com',
-    password: '123',
+    password: bcrypt.hashSync('123', 10),
     lastName: 'Jojo',
     firstName: 'Mojo',
     phone: 2122222222,

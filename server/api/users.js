@@ -1,9 +1,8 @@
 const router = require('express').Router();
-
 const { models } = require('../db/index.js');
 const { User, Order } = models;
-
 const { paginate, UserObject } = require('./utils');
+const bcrypt = require('bcrypt');
 
 router.get('/session/:sessionId', (req, res, next) => {
   User.findOne({
@@ -33,7 +32,9 @@ router.get('/', paginate(User), (req, res, next) => {
 //Sets falsy fields in req.body that are allowed to be null to null
 router.post('/new', (req, res, next) => {
   const user = new UserObject(req.body);
-  User.create({ ...user, sessionId: req.cookies.session_id })
+  bcrypt.hash(user.password, 10).then((hash) => {
+    User.create({ ...user,sessionId: req.cookies.session_id, password:hash})
+})
     .then(newUser => {
       User.destroy({
         where: {
