@@ -20,6 +20,7 @@ class AddProductForm extends Component {
       inventory: '',
       file: [],
       fileName: '',
+      tags: '',
       errors: {
         fileError: '',
         unitPriceError: '',
@@ -116,7 +117,6 @@ class AddProductForm extends Component {
     e.preventDefault();
     const formData = new FormData();
     formData.append('productImage', this.state.file);
-
     Object.keys(this.state).forEach(key => {
       formData.append(`${[key]}`, this.state[key]);
     });
@@ -128,7 +128,8 @@ class AddProductForm extends Component {
       unitPrice: '',
       inventory: '',
       file: [],
-      fileName: ''
+      fileName: '',
+      tags: ''
     });
   };
 
@@ -139,6 +140,7 @@ class AddProductForm extends Component {
       unitPrice,
       inventory,
       fileName,
+      tags,
       errors: { fileError, unitPriceError, inventoryError }
     } = this.state;
     return (
@@ -164,6 +166,22 @@ class AddProductForm extends Component {
               name="productDescription"
               onChange={this.handleOnChange}
             />
+          </Group>
+
+          <Group controlId="tags">
+            <Label>Tags</Label>
+            <Control
+              as="select"
+              value={tags}
+              name="tags"
+              onChange={this.handleOnChange}
+            >
+              <option value="">None</option>
+              <option value="Pod">Pod</option>
+              <option value="Device">Device</option>
+              <option value="Charger">Charger</option>
+              <option value="Accessory">Accessory</option>
+            </Control>
           </Group>
 
           <Row
