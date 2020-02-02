@@ -93,7 +93,7 @@ export const cart = (state = [], action) => {
     case SET_CART:
       return action.cart;
     case REMOVE_ITEM_FROM_CART:
-      return state.filter(item => item.id !== action.cartItem.id);
+      return state.filter(item => item.id !== action.selectedItem.id);
     default:
       return state;
   }

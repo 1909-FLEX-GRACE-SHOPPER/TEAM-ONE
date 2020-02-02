@@ -6,11 +6,6 @@ import { connect } from 'react-redux';
 import { setCart, removeItemFromCart } from '../redux/thunks/CartThunks.js';
 
 class ShoppingCart extends React.Component {
-  constructor() {
-    super();
-    this.handleRemoveItem = this.handleRemoveItem.bind(this);
-  }
-
   componentDidMount() {
     this.props.fetchCart();
   }
@@ -35,25 +30,10 @@ class ShoppingCart extends React.Component {
           <ListGroup className='shopping-cart-product-list'>
             {cart.map(product => (
               <ListGroup.Item key={product.id}>
-                {/* <CartItem key={product.id} product={product} /> */}
-                {/* TODO: add link to single product page */}
-                <div className='cart-item'>
-                  <div>Product ID: {product.id}</div>
-                  <div className='cart-item-quantity-edit'>
-                    Quantity:
-                    <input
-                      type='number'
-                      className='cart-item-quantity-select'
-                      min='1'
-                      value={product.productQuantity}
-                    />
-                  </div>
-                  <div className='cart-item-subtotal'>Subtotal: </div>
-                  {/* TODO: make remove button work! */}
-                  <Button onClick={() => this.handleRemoveItem(product)}>
-                    Remove
-                  </Button>
-                </div>
+                <CartItem key={product.id} product={product} />
+                <Button onClick={() => this.handleRemoveItem(product)}>
+                  Remove
+                </Button>
               </ListGroup.Item>
             ))}
           </ListGroup>

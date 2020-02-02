@@ -72,10 +72,10 @@ export const _setCart = cart => {
   };
 };
 
-export const _removeItemFromCart = cartItem => {
+export const _removeItemFromCart = selectedItem => {
   return {
     type: REMOVE_ITEM_FROM_CART,
-    cartItem
+    selectedItem
   };
 };
 

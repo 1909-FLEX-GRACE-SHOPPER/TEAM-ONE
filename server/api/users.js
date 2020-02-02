@@ -268,13 +268,14 @@ router.get('/cart', async (req, res, next) => {
 });
 
 //edit product quantity in cart
-router.put('/:userId/cart/:cartId', (req, res, next) => {
-  const { productQuantity } = req.body;
-
+// TODO: add /:userId before /cart in route
+router.put('/cart/:cartId', (req, res, next) => {
+  const { newQuantity } = req.body;
+  console.log(newQuantity);
   Cart.findByPk(req.params.cartId)
-    .then(cart =>
-      cart.update({
-        productQuantity: productQuantity
+    .then(cartItem =>
+      cartItem.update({
+        productQuantity: newQuantity
       })
     )
     .then(() => res.status(202))
@@ -284,7 +285,8 @@ router.put('/:userId/cart/:cartId', (req, res, next) => {
     });
 });
 // insert products in user's cart table
-// TODO: decide if need to create subtotal for each product in cart
+// TO DO #1: remove if add to cart exists
+// TO DO #2: decide if need to create subtotal for each product in cart
 router.post('/:userId/cart', (req, res, next) => {
   const { productId, productQuantity } = req.body;
 
@@ -294,6 +296,7 @@ router.post('/:userId/cart', (req, res, next) => {
     .then(() => res.status(201))
     .catch(e => res.status(400).next(e));
 });
+
 // TODO: add /:userId before /cart in route
 router.delete('/cart/:cartId', async (req, res, next) => {
   try {
