@@ -7,19 +7,22 @@ class CartItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      productImage: this.props.productImage,
-      productName: this.props.productName,
-      quantity: this.props.productQuantity
+      // productImage: this.props.product.productImage,
+      // productName: this.props.product.productName,
+      quantity: this.props.product.productQuantity,
+      productId: this.props.product.productId
     };
   }
 
   render() {
-    const { productImage, productName, quantity } = this.state;
+    const { productImage, productName, quantity, productId } = this.state;
+    console.log(quantity);
     return (
       <div className='cart-item'>
         product
-        <img className='cart-item-image' src={productImage} />
-        <div className='cart-item-name'>{productName}</div>
+        {/* <img className='cart-item-image' src={productImage} /> */}
+        {/* <div className='cart-item-name'>{productName}</div> */}
+        <div className='cart-item-id'>{productId}</div>
         <div className='cart-item-quantity-edit'>
           {/* TODO: create an edit form */}
           <div className='cart-item-quantity'>Quantity: {quantity}</div>

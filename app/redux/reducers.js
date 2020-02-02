@@ -8,7 +8,6 @@ import {
   LOGIN_ERROR,
   SET_WISHLIST,
   SET_CART,
-  ADD_ITEM_TO_CART,
   REMOVE_ITEM_FROM_CART,
   STATUS_MESSAGE
 } from './constants';
@@ -93,10 +92,8 @@ export const cart = (state = [], action) => {
   switch (action.type) {
     case SET_CART:
       return action.cart;
-    case ADD_ITEM_TO_CART:
-      return [...state, action.product];
     case REMOVE_ITEM_FROM_CART:
-      return state.filter(product => product.id !== action.product.id);
+      return state.filter(item => item.id !== action.cartItem.id);
     default:
       return state;
   }

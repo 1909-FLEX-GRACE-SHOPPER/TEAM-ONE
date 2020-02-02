@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const { models } = require('../db/index.js');
-const { User, Order, Cart } = models;
+const { User, Order, Cart, Product } = models;
 
 const { paginate, UserObject } = require('./utils');
 
@@ -253,20 +253,18 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
       next(e);
     });
 });
-
-router.get('/:userId/cart', (req, res, next) => {
-  User.findByPk(req.params.userId, {
-    include: [
-      {
-        model: Cart
-      }
-    ]
-  })
-    .then(user => res.status(200).send(user))
-    .catch(e => {
-      res.status(404);
-      next(e);
-    });
+// TODO: add /:userId before /cart in route
+router.get('/cart', async (req, res, next) => {
+  try {
+    // let cart = await User.findByPk(req.params.userId, {
+    //   include: [{ model: Cart }]
+    // });
+    let cart = await Cart.findAll();
+    res.status(200).send(cart);
+  } catch (err) {
+    res.status(404);
+    next(err);
+  }
 });
 
 //edit product quantity in cart
@@ -296,12 +294,16 @@ router.post('/:userId/cart', (req, res, next) => {
     .then(() => res.status(201))
     .catch(e => res.status(400).next(e));
 });
-
-router.delete('/:userId/cart/:cartId', (req, res, next) => {
-  Cart.findByPk(req.params.cartId)
-    .then(product => product.destroy())
-    .then(() => res.status(200).send('Product deleted'))
-    .catch(e => res.status(400).next(e));
+// TODO: add /:userId before /cart in route
+router.delete('/cart/:cartId', async (req, res, next) => {
+  try {
+    await Cart.destroy({
+      where: { id: req.params.cartId }
+    });
+    res.status(202).send('Item deleted');
+  } catch (err) {
+    res.status(400).next(err);
+  }
 });
 
 module.exports = router;

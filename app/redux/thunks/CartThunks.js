@@ -2,19 +2,19 @@ import axios from 'axios';
 
 import {
   statusMessage,
-  setCart,
+  _setCart,
   addItemToCart,
   _removeItemFromCart
 } from '../actions';
 
 import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
-
-export function fetchCart(userId) {
+// TODO: add /${userId} into the route
+export function setCart() {
   return function thunk(dispatch) {
     return axios
-      .get(`/api/users/${userId}/cart`)
+      .get('/api/users/cart')
       .then(res => res.data)
-      .then(cart => dispatch(setCart(cart)))
+      .then(cart => dispatch(_setCart(cart)))
       .catch(e => {
         console.error('Error fetching Cart', e);
         dispatch(
@@ -37,13 +37,14 @@ export function addItemToCart() {
       .catch(e => console.error("Error adding Cart item", e));
   };
 }
+*/
 
-export function removeItemFromCart(product) {
+// TODO: add /${userId} into the route
+export function removeItemFromCart(item) {
   return function thunk(dispatch) {
     return axios
-      .delete(`/api/cart/remove/${productId}`)
-      .then(() => dispatch(_removeItemFromCart(product)))
-      .catch(e => console.error("Error removing Cart item", e));
+      .delete(`/api/cart/${item.id}`)
+      .then(() => dispatch(_removeItemFromCart(item)))
+      .catch(e => console.error('Error removing Cart item', e));
   };
 }
-*/
