@@ -16,6 +16,22 @@ router.get('/', paginate(Product), (req, res, next) => {
     });
 });
 
+router.get('/similar/:id', (req, res, next) => {
+  Product.findByPk(req.params.id)
+    .then(({ search_tags }) =>
+      Product.findAll({
+        where: {
+          tags: search_tags
+        }
+      })
+    )
+    .then(products => res.status(200).send(products))
+    .catch(e => {
+      res.status(400);
+      next(e);
+    });
+});
+
 router.get('/:id', (req, res, next) => {
   Product.findByPk(req.params.id)
     .then(product => {
