@@ -1,14 +1,15 @@
 const router = require('express').Router();
 
 const { models } = require('../db/index.js');
-const { User, Order } = models;
+const { User, Order, Session } = models;
 
 const { paginate, UserObject } = require('./utils');
 
 router.get('/session/:sessionId', (req, res, next) => {
+  const { sessionId } = req.params;
   User.findOne({
     where: {
-      sessionId: req.params.sessionId
+      sessionId
     }
   })
     .then(user => res.status(200).send(user))
@@ -117,14 +118,20 @@ router.post('/logout', (req, res, next) => {
   const { email, password } = req.body;
   User.update(
     {
-      loggedIn: false
+      sessionId: null
     },
     {
-      where: { email, password },
-      returning: true
+      where: { email, password }
     }
   )
-    .then(() => res.status(201))
+    .then(() => Session.create())
+    .then(session =>
+      User.create({
+        userType: 'Guest',
+        sessionId: session.id
+      })
+    )
+    .then(guest => res.status(201).send(guest))
     .catch(e => {
       res.status(401);
       next(e);
