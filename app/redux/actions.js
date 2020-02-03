@@ -8,7 +8,8 @@ import {
   SET_WISHLIST,
   LOGIN_SUCCCESS,
   LOGIN_ERROR,
-  STATUS_MESSAGE
+  SET_CART,
+  REMOVE_ITEM_FROM_CART
 } from './constants';
 
 export const setProducts = products => {
@@ -63,6 +64,26 @@ export const setWishlist = items => {
 export const logInSuccess = () => {
   return {
     type: LOGIN_SUCCCESS
+  };
+};
+
+export const loggedInFail = () => {
+  return {
+    type: LOGIN_ERROR
+  };
+};
+
+export const _setCart = cart => {
+  return {
+    type: SET_CART,
+    cart
+  };
+};
+
+export const _removeItemFromCart = selectedItem => {
+  return {
+    type: REMOVE_ITEM_FROM_CART,
+    selectedItem
   };
 };
 

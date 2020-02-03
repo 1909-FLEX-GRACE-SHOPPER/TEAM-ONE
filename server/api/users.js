@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { models } = require('../db/index.js');
-const { User, Order, Session } = models;
+const { User, Order, Cart, Product } = models;
 
 const { paginate, UserObject } = require('./utils');
 const bcrypt = require('bcrypt');
@@ -85,6 +85,9 @@ router.post('/login', (req, res, next) => {
         return res.status(404).send('User not found');
       } else {
         bcrypt.compare(req.body.password, user.password, (err, result) => {
+          if (err) {
+            console.log(err);
+          }
           if (result) {
             user
               .update({
@@ -107,7 +110,7 @@ router.post('/login', (req, res, next) => {
                   .status(202)
                   .send(user);
               })
-              .catch(err => res.status(401).send('Failure!'));
+              .catch(err => res.status(401).send('Failure! ', err));
           } else {
             return res.status(401).send('Incorrect password');
           }
@@ -266,6 +269,47 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
       res.status(304);
       next(e);
     });
+});
+
+router.get('/:userId/cart', async (req, res, next) => {
+  try {
+    // let cart = await User.findByPk(req.params.userId, {
+    //   include: [{ model: Cart }]
+    // });
+    let cart = await Cart.findAll();
+    res.status(200).send(cart);
+  } catch (err) {
+    res.status(404);
+    next(err);
+  }
+});
+
+//edit product quantity in cart
+router.put('/:userId/cart/:cartId', (req, res, next) => {
+  const { newQuantity } = req.body;
+
+  Cart.findByPk(req.params.cartId)
+    .then(cartItem =>
+      cartItem.update({
+        productQuantity: newQuantity
+      })
+    )
+    .then(() => res.status(202))
+    .catch(e => {
+      res.status(304);
+      next(e);
+    });
+});
+
+router.delete('/:userId/cart/:cartId', async (req, res, next) => {
+  try {
+    await Cart.destroy({
+      where: { id: req.params.cartId }
+    });
+    res.status(202).send('Item deleted');
+  } catch (err) {
+    res.status(400).next(err);
+  }
 });
 
 module.exports = router;
