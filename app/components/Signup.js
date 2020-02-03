@@ -117,14 +117,14 @@ class Signup extends Component {
     } = this.state;
 
     return (
-      <div className="container mt-4">
-        <div className="logo-medium"></div>
+      <div className='container mt-4'>
+        <div className='logo-medium'></div>
 
-        <Form className="signup-form">
+        <Form className='signup-form'>
           <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Group
               as={Col}
-              controlId="firstName"
+              controlId='firstName'
               style={{ width: 'calc(50% - 1rem)' }}
             >
               <Label>
@@ -134,8 +134,8 @@ class Signup extends Component {
                 </span>
               </Label>
               <Control
-                type="text"
-                name="firstName"
+                type='text'
+                name='firstName'
                 value={firstName}
                 onChange={this.handleOnChange}
               />
@@ -143,7 +143,7 @@ class Signup extends Component {
 
             <Group
               as={Col}
-              controlId="lastName"
+              controlId='lastName'
               style={{ width: 'calc(50% - 1rem)' }}
             >
               <Label>
@@ -153,43 +153,43 @@ class Signup extends Component {
                 </span>
               </Label>
               <Control
-                type="text"
-                name="lastName"
+                type='text'
+                name='lastName'
                 value={lastName}
                 onChange={this.handleOnChange}
               />
             </Group>
           </Row>
 
-          <Group controlId="username">
+          <Group controlId='username'>
             <Label>USER NAME</Label>
             <Control
-              type="text"
-              name="username"
+              type='text'
+              name='username'
               value={username}
               onChange={this.handleOnChange}
             />
             <p show={usernameError}>{usernameError}</p>
           </Group>
 
-          <Group controlId="email">
+          <Group controlId='email'>
             <Label>
               Email address{' '}
               <span style={{ color: 'red', fontSize: '10px' }}>*required</span>
             </Label>
             <Control
-              type="email"
-              name="email"
+              type='email'
+              name='email'
               value={email}
               onChange={this.handleOnChange}
             />
-            <Text className="text-muted">
+            <Text className='text-muted'>
               We'll never share your email with anyone else.
             </Text>
             <p show={emailError}>{emailError}</p>
           </Group>
 
-          <Group controlId="password">
+          <Group controlId='password'>
             <Label>
               PASSWORD{' '}
               <span style={{ color: 'red', fontSize: '10px' }}>
@@ -198,19 +198,19 @@ class Signup extends Component {
               </span>
             </Label>
             <Control
-              type="password"
-              name="password"
+              type='password'
+              name='password'
               value={password}
               onChange={this.handleOnChange}
             />
             <p show={passwordError}>{passwordError}</p>
           </Group>
 
-          <Group controlId="confirmPassword">
+          <Group controlId='confirmPassword'>
             <Label>CONFIRM PASSWORD</Label>
             <Control
-              type="password"
-              name="confirmPassword"
+              type='password'
+              name='confirmPassword'
               value={confirmPassword}
               onChange={this.handleOnChange}
             />
@@ -232,8 +232,8 @@ class Signup extends Component {
               passwordError ||
               confirmPasswordError
             }
-            variant="primary"
-            type="submit"
+            variant='primary'
+            type='submit'
             onClick={this.handleOnSubmit}
           >
             SIGN UP

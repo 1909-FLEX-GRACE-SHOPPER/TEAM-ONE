@@ -11,8 +11,8 @@ const Product = ({ product }) => {
           <div>${product.unitPrice}</div>
         </Card.Header>
         <Card.Img
-          variant="bottom"
-          className="product-image-small"
+          variant='bottom'
+          className='product-image-small'
           src={product.productImage}
         />
       </Card>

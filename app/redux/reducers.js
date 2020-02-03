@@ -7,8 +7,9 @@ import {
   LOGIN_SUCCCESS,
   LOGIN_ERROR,
   SET_WISHLIST,
-  STATUS_MESSAGE,
-  SET_SIMILAR_PRODUCTS
+  SET_CART,
+  REMOVE_ITEM_FROM_CART,
+  STATUS_MESSAGE
 } from './constants';
 
 export const products = (state = [], action) => {
@@ -96,6 +97,16 @@ export const wishlist = (state = [], action) => {
   }
 };
 
+export const cart = (state = [], action) => {
+  switch (action.type) {
+    case SET_CART:
+      return action.cart;
+    case REMOVE_ITEM_FROM_CART:
+      return state.filter(item => item.id !== action.selectedItem.id);
+    default:
+      return state;
+  }
+};
 export const statusMessage = (state = { status: null, text: '' }, action) => {
   switch (action.type) {
     case STATUS_MESSAGE:

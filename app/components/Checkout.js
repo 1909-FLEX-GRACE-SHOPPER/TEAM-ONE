@@ -1,12 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import CreditCard from "./CreditCard.js";
-import Shipping from "./Shipping.js";
-import Button from "react-bootstrap";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import CreditCard from './CreditCard.js';
+import Shipping from './Shipping.js';
+import Button from 'react-bootstrap';
 
 const Checkout = ({ orderDetails }) => {
   return (
-    <div className="checkout-page">
+    <div className='checkout-page'>
       <Link>Back</Link>
       <div>CHECKOUT - {orderDetails.userType}</div>
       <div>BILLING</div>

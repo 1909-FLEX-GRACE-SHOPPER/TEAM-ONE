@@ -7,11 +7,11 @@ import axios from 'axios';
 import rootReducer from './redux/index';
 
 const middleware = [
-    thunkMiddleware.withExtraArgument({ axios }),
-    createLogger({ collapsed: true }),
-]
+  thunkMiddleware.withExtraArgument({ axios }),
+  createLogger({ collapsed: true })
+];
 
 export default createStore(
-    rootReducer,
-    composeWithDevTools(applyMiddleware(...middleware))
-)
+  rootReducer,
+  composeWithDevTools(applyMiddleware(...middleware))
+);
