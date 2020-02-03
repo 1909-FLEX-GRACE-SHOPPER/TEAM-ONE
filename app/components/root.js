@@ -8,6 +8,7 @@ import {
   Redirect
 } from 'react-router-dom';
 import { fetchUser, createUser } from '../redux/thunks/UserThunks';
+import { createCart } from '../redux/thunks/CartThunks';
 import { connect } from 'react-redux';
 import Login from './Login';
 import Signup from './Signup';
@@ -24,9 +25,13 @@ import AddProductForm from './AddProductForm';
 
 class Root extends React.Component {
   componentDidMount() {
-    const { fetchUser } = this.props;
-    fetchUser(document.cookie.replace(/session_id=/, ''));
+    const { fetchUser, createCart } = this.props;
+    fetchUser(document.cookie.replace(/session_id=/, ''))
+    .then(() => {
+    createCart(this.props.user.id)
+    })
   }
+
   render() {
     const { status, text } = this.props.statusMessage;
     return (
@@ -62,7 +67,8 @@ const mapState = ({ user, statusMessage }) => ({ user, statusMessage });
 const mapDispatch = dispatch => {
   return {
     fetchUser: userId => dispatch(fetchUser(userId)),
-    createUser: user => dispatch(createUser(user))
+    createUser: user => dispatch(createUser(user)),
+    createCart: userId => dispatch(createCart(userId))
   };
 };
 

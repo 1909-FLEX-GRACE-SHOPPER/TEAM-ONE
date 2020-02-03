@@ -36,4 +36,18 @@ function UserObject(user) {
   this.userType = 'Existing customer';
 }
 
-module.exports = { paginate, UserObject };
+function CartObject(cart) {
+  this.shippingName = cart.shippingName || null;
+  this.shippingAddress = cart.shippingAddress || null;
+  this.shippingCity = cart.shippingCity || null;
+  this.shippingState = cart.shippingState || null;
+  this.shippingZip = cart.shippingZip || null;
+  this.shippingCountry = cart.shippingCountry || null;
+  this.shippingNotes = cart.shippingNotes || null;
+  this.cardHolder = cart.cardHolder || null;
+  this.cardNumber = cart.cardNumber || null;
+  this.securityCode = cart.securityCode || null;
+  this.expirationDate = cart.expirationDate || null;
+}
+
+module.exports = { paginate, UserObject, CartObject };

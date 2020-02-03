@@ -5,18 +5,23 @@ import { connect } from 'react-redux';
 
 import { setUser } from '../redux/actions';
 
-const { Row, Group, Label, Control, Col, Check } = Form;
+import { updateCart } from '../redux/thunks/CartThunks';
+
+const { Row, Group, Label, Control, Col } = Form;
 
 class ShippingForm extends Component {
   constructor() {
     super();
       this.state = {
+        shippingName: '',
         shippingAddress: '',
         shippingCity: '',
         shippingState: '',
         shippingZip: '',
         shippingCountry: '',
+        shippingNotes: '',
         errors: {
+          shippingNameError: '',
           shippingAddressError: '',
           shippingCityError: '',
           shippingStateError: '',
@@ -29,6 +34,24 @@ class ShippingForm extends Component {
   validate = (field, value) => {
     const { errors } = this.state
     switch(field) {
+      case 'shippingName':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingNameError: 'Required Field'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingNameError: ''
+            }
+          })
+        }
+        break;
+
       case 'shippingAddress':
         if(!value) {
           this.setState({
@@ -107,6 +130,23 @@ class ShippingForm extends Component {
           })
         }
         break;
+
+      case 'shippingCountry':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingCountryError: 'Required field',
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingCountryError: '',
+            }
+          })
+        }
       
       default:
         break;
@@ -118,28 +158,47 @@ class ShippingForm extends Component {
   }
 
   handleOnClick = e => {
-    e.preventDefault();
-    this.props.setUser({ ...this.props.user, shipping: { ...this.state } })
+    e.preventDefault()
+    this.props.updateCart( this.props.user.userId, this.state )
   }
 
   render() {
     const {
+      shippingName,
       shippingAddress,
       shippingCity,
       shippingState,
       shippingZip,
       shippingCountry,
+      shippingNotes,
       errors: {
+        shippingNameError,
         shippingAddressError,
         shippingCityError,
         shippingStateError,
         shippingZipError,
+        shippingCountryError,
       }
     } = this.state;
 
     return (
       <div>
         <h4>Shipping Information</h4>
+        <Group controlId='name'>
+          <Label>Name</Label>
+          <Control
+            name='shippingName'
+            value={ shippingName }
+            onChange={ this.handleOnChange }
+            isInvalid={ !!shippingNameError }
+          />
+          <Control.Feedback
+            type='invalid'
+            className='text-danger'
+          >
+            { shippingNameError }
+          </Control.Feedback>
+        </Group>
         <Group controlId='shippingAddress'>
           <Label>Address</Label>
           <Control
@@ -211,19 +270,58 @@ class ShippingForm extends Component {
               name='shippingCountry'
               value={ shippingCountry }
               onChange={ this.handleOnChange }
+              isInvalid={ !!shippingCountryError }
             />
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              { shippingCountryError }
+            </Control.Feedback>
           </Group>
         </Row>
-        <Button href='/checkout/confirmation' onClick={ this.handleOnClick } disabled={ true }>Proceed to Confirmation</Button>
+
+        <Group controlId='shippingNotes'>
+          <Label>Shipping Notes</Label>
+          <Control
+            as='textarea'
+            rows='4'
+            name='shippingNotes'
+            value={ shippingNotes }
+            onChange={ this.handleOnChange }
+            placeholder='Please leave by door, buzzer on right side, etc.'
+          />
+        </Group>
+        <Button
+          href='/checkout/confirmation'
+          onClick={ this.handleOnClick }
+          disabled={ 
+              Object.values(this.state.errors).every(value => value === '') &&
+              Object.keys(this.state).every(key => {
+                if(key !== 'shippingNotes') {
+                  return this.state[key] !== '';
+                } else {
+                  return true;
+                }
+              })
+              ? false
+              : true
+         }
+        >
+          Proceed to Confirmation
+        </Button>
       </div>
     )
   }
 }
 
+const mapState = ({ user }) => ({ user })
+
 const mapDispatch = dispatch => {
   return {
-    setUser: state => dispatch(setUser(state))
+    setUser: state => dispatch(setUser(state)),
+    updateCart: (userId, state) => dispatch(updateCart(userId, state))
   }
 }
 
-export default connect(null, mapDispatch)(ShippingForm);
+export default connect(mapState, mapDispatch)(ShippingForm);

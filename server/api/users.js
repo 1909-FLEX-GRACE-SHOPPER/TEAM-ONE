@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { User, Order, Cart, Product } = models;
 
-const { paginate, UserObject } = require('./utils');
+const { paginate, UserObject, CartObject } = require('./utils');
 const bcrypt = require('bcrypt');
 
 router.get('/session/:sessionId', (req, res, next) => {
@@ -271,18 +271,43 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
     });
 });
 
-router.get('/:userId/cart', async (req, res, next) => {
-  try {
-    // let cart = await User.findByPk(req.params.userId, {
-    //   include: [{ model: Cart }]
-    // });
-    let cart = await Cart.findAll();
-    res.status(200).send(cart);
-  } catch (err) {
-    res.status(404);
-    next(err);
-  }
+router.get('/:userId/cart', (req, res, next) => {
+  Cart.findOne({
+    where: { userId: req.params.userId }
+  })
+  .then(cart => res.status(200).send(cart))
+  .catch(e => {
+    res.status(404)
+    next(e)
+  })
 });
+
+router.post(`/:userId/cart`, (req, res, next) => {
+  Cart.create({
+    userId: req.params.userId
+  })
+  .then(cart => res.status(200).send(cart))
+  .catch(e => {
+    res.status(400);
+    next(e);
+  })
+})
+
+//edit cart for shipping and billing details
+router.put(`/:userId/cart`, (req, res, next) => {
+  const cartBody = new CartObject(req.body);
+  Cart.find({
+    where: { userId: req.params.userId }
+  })
+  .then(cart => {
+    cart.update({ cartBody })
+  })
+  .then(updatedCart => res.status(202).send(updatedCart))
+  .catch(e => {
+    res.status(304);
+    next(e);
+  })
+})
 
 //edit product quantity in cart
 router.put('/:userId/cart/:cartId', (req, res, next) => {

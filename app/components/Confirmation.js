@@ -15,8 +15,8 @@ class Confirmation extends Component {
   render() {
     return (
       <div className="confirmation-page">
-        <ConfirmationPlacard title={ 'Billing Information' } props={ this.props.user.billing } />
-        <ConfirmationPlacard title={ 'Shipping Information' } props={ this.props.user.shipping } />
+        {/* <ConfirmationPlacard title={ 'Billing Information' } props={ this.props.user.billing } />
+        <ConfirmationPlacard title={ 'Shipping Information' } props={ this.props.user.shipping } /> */}
         <Button onClick={ this.handleOnClick }>Confirm Order</Button>
       </div>
     );

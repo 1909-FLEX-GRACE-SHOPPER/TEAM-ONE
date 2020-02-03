@@ -30,7 +30,7 @@ class UserShippingInfo extends Component {
             null
           )
           : (
-            <div>
+            <div>     
               <p>{ shippingAddress }</p>
               <p>{ shippingCity }, { shippingState } { shippingZip }</p>
               <Button href='/checkout/confirmation' onClick={ this.handleConfirm }>Confirm this address</Button>

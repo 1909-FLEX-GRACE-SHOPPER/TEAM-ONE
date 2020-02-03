@@ -35,7 +35,7 @@ const Order = db.define('orders', {
     allowNull: false
   },
   shippingZip: {
-    type: INTEGER,
+    type: STRING,
     allowNull: false,
     validate: {
       isNumeric: {
@@ -48,15 +48,11 @@ const Order = db.define('orders', {
     }
   },
   cardNumber: {
-    type: BIGINT,
+    type: STRING,
     allowNull: false,
     validate: {
-      isNumeric: {
-        args: true,
-        msg: 'Card number should only contain numbers'
-      },
       len: {
-        arg: 16
+        arg: [13, 16]
       }
     }
   },
@@ -69,7 +65,7 @@ const Order = db.define('orders', {
     allowNull: false
   },
   securityCode: {
-    type: INTEGER,
+    type: STRING,
     allowNull: false,
     validate: {
       isNumeric: {
@@ -94,7 +90,7 @@ const Order = db.define('orders', {
     allowNull: false
   },
   billingZip: {
-    type: INTEGER,
+    type: STRING,
     allowNull: false,
     validate: {
       isNumeric: {

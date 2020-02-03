@@ -13,20 +13,11 @@ class BillingForm extends Component {
       cardNumber: '',
       securityCode: '',
       expirationDate: '',
-      billingAddress: '',
-      billingCity: '',
-      billingState: '',
-      billingZip: '',
-      billingCountry: '',
       errors: {
         cardHolderError: '',
         cardNumberError: '',
         securityCodeError: '',
         expirationDateError: '',
-        billingAddressError: '',
-        billingCityError: '',
-        billingStateError: '',
-        billingZipError: '',
       }
     }
   }
@@ -106,83 +97,6 @@ class BillingForm extends Component {
       case 'expirationDate':
         break;
 
-      case 'billingAddress':
-        if(!value) {
-          this.setState({
-            errors: {
-              ...errors,
-              billingAddressError: 'Required field'
-            }
-          })
-        } else {
-          this.setState({
-            errors: {
-              errors,
-              billingAddressError: ''
-            }
-          })
-        }
-        break;
-      case 'billingCity':
-        if(!value) {
-          this.setState({
-            errors: {
-              ...errors,
-              billingCityError: 'Required field'
-            }
-          })
-        } else {
-          this.setState({
-            errors: {
-              ...errors,
-              billingCityError: ''
-            }
-          })
-        }
-        break;
-
-      case 'billingState':
-        if(!value) {
-          this.setState({
-            errors: {
-              ...errors,
-              billingStateError: 'Required field'
-            }
-          })
-        } else {
-          this.setState({
-            errors: {
-              ...errors,
-              billingStateError: ''
-            }
-          })
-        }
-        break;
-
-      case 'billingZip': 
-        if(!value) {
-          this.setState({
-            errors: {
-              ...errors,
-              billingZipError: 'Required field'
-            }
-          })
-        } else if(!value.match(/^[0-9]{5}/)) {
-          this.setState({
-            errors: {
-              ...errors,
-              billingZipError: 'Invalid zip code'
-            }
-          })
-        } else {
-          this.setState({
-            errors: {
-              ...errors,
-              billingZipError: ''
-            }
-          })
-        }
-        break;
       default:
         break;
     }
@@ -194,17 +108,11 @@ class BillingForm extends Component {
 
   handleOnClick = e => {
     e.preventDefault();
-    this.props.setUser({ ...this.props.user, billing: { ...this.state } })
-    this.props.history.push('/checkout/shipping');
+    this.props.setUser({ ...this.props.user, ...this.state })
   }
 
   render() {
     const {
-      billingAddress,
-      billingCity,
-      billingState,
-      billingZip,
-      billingCountry,
       cardHolder,
       cardNumber,
       securityCode,
@@ -212,6 +120,8 @@ class BillingForm extends Component {
       errors: {
         cardHolderError,
         cardNumberError,
+        securityCodeError,
+        expirationDateError,
       }
     } = this.state
     return (
@@ -264,7 +174,14 @@ class BillingForm extends Component {
               name='securityCode'
               value={ securityCode }
               onChange={ this.handleOnChange }
+              isInvalid={ !!securityCodeError }
             />
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              { securityCodeError }
+            </Control.Feedback>
           </Group>
 
           <Group controlId='expirationDate'>
@@ -273,58 +190,18 @@ class BillingForm extends Component {
               name='expirationDate'
               value={ expirationDate }
               onChange={ this.handleOnChange }
+              isInvalid={ !!expirationDateError }
             />
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              { expirationDateError }
+            </Control.Feedback>
           </Group>
         </Row>
 
-        <Group controlId='billingAddress'>
-          <Label>Address</Label>
-          <Control
-            name='billingAddress'
-            value={ billingAddress }
-            onChange={ this.handleOnChange }
-          />
-        </Group>
-
-        <Row>
-          <Group as={ Col } controlId='billingCity'>
-            <Label>City</Label>
-            <Control
-              name='billingCity'
-              value={ billingCity }
-              onChange={ this.handleOnChange }
-            />
-          </Group>
-
-          <Group as={ Col } controlId='billingState'>
-            <Label>State</Label>
-            <Control
-              name='billingState'
-              value={ billingState }
-              onChange={ this.handleOnChange }
-            />
-          </Group>
-
-          <Group as={ Col } controlId='billingZip'>
-            <Label>Zip</Label>
-            <Control
-              name='billingZip'
-              value={ billingZip }
-              onChange={ this.handleOnChange }
-            />
-          </Group>
-
-          <Group as={ Col } controlId='billingCountry'>
-            <Label>Country</Label>
-            <Control
-              name='billingCountry'
-              value={ billingCountry }
-              onChange={ this.handleOnChange }
-            />
-          </Group>
-        </Row>
-
-        <Button onClick={ this.handleOnClick }>Proceed to Shipping</Button>
+        <Button href='/checkout/confirmation' onClick={ this.handleOnClick }>Proceed to Shipping</Button>
       </div>
     )
   }
