@@ -7,21 +7,18 @@ import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 //Thunk for fetching a user
 export const fetchUser = sessionId => {
   return dispatch => {
-    return (
-      axios
-        //.get(`/api/users/id/${userId}`)
-        .get(`/api/users/session/${sessionId}`)
-        .then(res => dispatch(setUser(res.data)))
-        .catch(e => {
-          console.error(e);
-          dispatch(
-            statusMessage({
-              status: FAIL,
-              text: COMMON_FAIL
-            })
-          );
-        })
-    );
+    return axios
+      .get(`/api/users/session/${sessionId}`)
+      .then(res => dispatch(setUser(res.data)))
+      .catch(e => {
+        console.error(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
   };
 };
 
@@ -55,11 +52,11 @@ export const createUser = user => {
 
 //Thunk for logging out a user.
 //Sets the user to null after logging out.
-export const logOutUser = ({ email, password }) => {
+export const logoutUser = ({ email, password }) => {
   return dispatch => {
     return axios
       .post(`/api/users/login`, { email, password })
-      .then(() => dispatch(setUser(null)))
+      .then(guest => dispatch(setUser(guest)))
       .catch(e => console.error('Error logging user out', e));
   };
 };
@@ -126,7 +123,8 @@ export const logInUser = ({ email, password }) => {
       .then(user => {
         dispatch(logInSuccess());
         dispatch(setUser(user.data));
-      }).then(() => {
+      })
+      .then(() => {
         dispatch(
           statusMessage({
             status: SUCCESS,
@@ -135,10 +133,12 @@ export const logInUser = ({ email, password }) => {
         );
       })
       .catch(() => {
-        dispatch(statusMessage({
-          status:FAIL,
-          text: 'There was an error logging in. Please try again'
-        }));
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: 'There was an error logging in. Please try again'
+          })
+        );
       });
   };
 };

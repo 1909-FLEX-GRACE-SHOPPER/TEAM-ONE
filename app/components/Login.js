@@ -54,7 +54,9 @@ class Login extends Component {
           </Form>
         ) : (
           <h2>
-            {`Hi ${this.props.user.firstName} Welcome to the Juul Store`} !
+            {`Hi ${this.props.user.firstName ||
+              `Stranger`} Welcome to the Juul Store`}{' '}
+            !
           </h2>
         )}
       </Fragment>
