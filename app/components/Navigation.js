@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, Button } from 'react-bootstrap';
 import { logoutUser } from '../redux/thunks/UserThunks';
-import axios from 'axios';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
