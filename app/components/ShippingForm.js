@@ -159,7 +159,7 @@ class ShippingForm extends Component {
 
   handleOnClick = e => {
     e.preventDefault()
-    this.props.updateCart( this.props.user.userId, this.state )
+    this.props.updateCart( this.props.user.id, this.state )
   }
 
   render() {

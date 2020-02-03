@@ -8,7 +8,10 @@ export function setCart(userId) {
   return function thunk(dispatch) {
     return axios
       .get(`/api/users/${ userId }/cart`)
-      .then(res => dispatch(_setCart(res.data)))
+      .then(res => {
+        console.log(res.data)
+        dispatch(_setCart(res.data))
+      })
       .catch(e => {
         console.error('Error fetching Cart', e);
         dispatch(

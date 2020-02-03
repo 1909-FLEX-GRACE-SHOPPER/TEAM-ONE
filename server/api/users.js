@@ -308,14 +308,16 @@ router.post(`/:userId/cart`, (req, res, next) => {
 
 //edit cart for shipping and billing details
 router.put(`/:userId/cart`, (req, res, next) => {
-  const cartBody = new CartObject(req.body);
-  Cart.find({
+  const cartBody = new CartObject(req.body)
+  Cart.findOne({
     where: { userId: req.params.userId }
   })
   .then(cart => {
-    cart.update({ cartBody })
+    cart.update({ ...cartBody })
   })
-  .then(updatedCart => res.status(202).send(updatedCart))
+  .then(() => {
+    res.status(202).send('Success')
+  })
   .catch(e => {
     res.status(304);
     next(e);
