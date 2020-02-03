@@ -1,14 +1,29 @@
 import React from 'react';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
-const CheckoutCrumb = () => {
+const CheckoutCrumb = ({ props: { location: { pathname }}}) => {
+  const routes = [
+    ['Cart', '/checkout/cart' ],
+    ['Billing', '/checkout/billing'],
+    ['Shipping', '/checkout/shipping'],
+    ['Confirmation', '/checkout/confirmation']
+  ];
+
   return (
     <Breadcrumb>
-      <Breadcrumb.Item href='/checkout/cart'>Cart</Breadcrumb.Item>
-      <p> - </p>
-      <Breadcrumb.Item href='/checkout/payment-information'>Shipping and Billing</Breadcrumb.Item>
-      <p> - </p>
-      <Breadcrumb.Item href='/checkout/confirmation'>Confirmation</Breadcrumb.Item>
+      {
+        routes.map(([routeKey, routeValue], idx) => {
+          return (
+          <Breadcrumb.Item
+            key={ idx }
+            active={ pathname === routeValue ? true : false }
+            href={ pathname !== routeValue ? routeValue : '' }
+            >
+              { routeKey }
+            </Breadcrumb.Item>
+            )
+        })
+      }
     </Breadcrumb>
   )
 }

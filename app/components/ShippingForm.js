@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
+
+import { setUser } from '../redux/actions';
 
 const { Row, Group, Label, Control, Col, Check } = Form;
 
@@ -13,42 +16,129 @@ class ShippingForm extends Component {
         shippingState: '',
         shippingZip: '',
         shippingCountry: '',
-        showFormOnExistingCustomer: false,
+        errors: {
+          shippingAddressError: '',
+          shippingCityError: '',
+          shippingStateError: '',
+          shippingZipError: '',
+          shippingCountryError: '',
+        }
       }
     }
 
-  handleOnChange = ({ target: { name, value }}) => {
-    this.setState({ [name]: value })
+  validate = (field, value) => {
+    const { errors } = this.state
+    switch(field) {
+      case 'shippingAddress':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingAddressError: 'Required Field'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingAddressError: ''
+            }
+          })
+        }
+        break;
+
+      case 'shippingCity':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingCityError: 'Required Field'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingCityError: ''
+            }
+          })
+        }
+        break;
+
+      case 'shippingState': 
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingStateError: 'Required field'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingStateError: ''
+            }
+          })
+        }
+        break;
+      
+      case 'shippingZip':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingZipError: 'Required field'
+            }
+          })
+        } else if(!value.match(/^[0-9]{5}$/)) {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingZipError: 'Invalid Zip Code'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              shippingZipError: ''
+            }
+          })
+        }
+        break;
+      
+      default:
+        break;
+    }
   }
 
-  handleOnCheck = () => {
-    this.setState({ showFormOnExistingCustomer: !this.showFormOnExistingCustomer })
+  handleOnChange = ({ target: { name, value }}) => {
+    this.setState({ [name]: value }, () => this.validate(name, value))
+  }
+
+  handleOnClick = e => {
+    e.preventDefault();
+    this.props.setUser({ ...this.props.user, shipping: { ...this.state } })
   }
 
   render() {
-    const { shippingAddress, shippingCity, shippingState, shippingZip, shippingCountry, showFormOnExistingCustomer } = this.state;
-    const { user } = this.props
-    console.log('USERTYPE', this.props)
+    const {
+      shippingAddress,
+      shippingCity,
+      shippingState,
+      shippingZip,
+      shippingCountry,
+      errors: {
+        shippingAddressError,
+        shippingCityError,
+        shippingStateError,
+        shippingZipError,
+      }
+    } = this.state;
+
     return (
-      <div> 
-          {
-      user.userType === 'Existing customer'
-      ? <div>
-          <p>{ user.shippingAddress }</p>
-          <p>{ user.shippingCity }</p>
-          <p>{ user.shippingState }</p>
-          <p>{ user.shippingZip }</p>
-          <p>HI!</p>
-          <Check
-            onChange={ this.handleOnCheck }
-          />
-          {
-            showFormOnExistingCustomer
-            ? <h3>Form component goes here</h3>
-            : null
-          }
-        </div>
-      : <div>
+      <div>
         <h4>Shipping Information</h4>
         <Group controlId='shippingAddress'>
           <Label>Address</Label>
@@ -56,7 +146,14 @@ class ShippingForm extends Component {
             name='shippingAddress'
             value={ shippingAddress }
             onChange={ this.handleOnChange }
+            isInvalid={ !!shippingAddressError }
           />
+          <Control.Feedback
+            type='invalid'
+            className='text-danger'
+          >
+            { shippingAddressError }
+          </Control.Feedback>
         </Group>
 
         <Row>
@@ -66,7 +163,14 @@ class ShippingForm extends Component {
               name='shippingCity'
               value={ shippingCity }
               onChange={ this.handleOnChange }
+              isInvalid={ !!shippingCityError }
             />
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              { shippingCityError }
+            </Control.Feedback>
           </Group>
 
           <Group as={ Col } controlId='shippingState'>
@@ -75,7 +179,14 @@ class ShippingForm extends Component {
               name='shippingState'
               value={ shippingState }
               onChange={ this.handleOnChange }
+              isInvalid={ !!shippingStateError }
             />
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              { shippingStateError }
+            </Control.Feedback>
           </Group>
 
           <Group as={ Col } controlId='shippingZip'>
@@ -84,7 +195,14 @@ class ShippingForm extends Component {
               name='shippingZip'
               value={ shippingZip }
               onChange={ this.handleOnChange }
+              isInvalid={ !!shippingZipError }
             />
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              { shippingZipError }
+            </Control.Feedback>
           </Group>
 
           <Group as={ Col } controlId='shippingCountry'>
@@ -96,13 +214,16 @@ class ShippingForm extends Component {
             />
           </Group>
         </Row>
+        <Button href='/checkout/confirmation' onClick={ this.handleOnClick } disabled={ true }>Proceed to Confirmation</Button>
       </div>
-      }
-    </div>
     )
   }
 }
 
-const mapState = ({ user }) => ({ user })
+const mapDispatch = dispatch => {
+  return {
+    setUser: state => dispatch(setUser(state))
+  }
+}
 
-export default connect(mapState)(ShippingForm);
+export default connect(null, mapDispatch)(ShippingForm);
