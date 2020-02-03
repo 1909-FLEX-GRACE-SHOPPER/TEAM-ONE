@@ -1,9 +1,9 @@
 const router = require('express').Router();
-
 const { models } = require('../db/index.js');
 const { User, Order, Session } = models;
 
 const { paginate, UserObject } = require('./utils');
+const bcrypt = require('bcrypt');
 
 router.get('/session/:sessionId', (req, res, next) => {
   const { sessionId } = req.params;
@@ -34,7 +34,15 @@ router.get('/', paginate(User), (req, res, next) => {
 //Sets falsy fields in req.body that are allowed to be null to null
 router.post('/new', (req, res, next) => {
   const user = new UserObject(req.body);
-  User.create({ ...user, sessionId: req.cookies.session_id })
+  bcrypt
+    .hash(req.body.password, 10)
+    .then(hashedPassword => {
+      User.create({
+        ...user,
+        sessionId: req.cookies.session_id,
+        password: hashedPassword
+      });
+    })
     .then(newUser => {
       User.destroy({
         where: {
@@ -64,47 +72,46 @@ router.post('/new', (req, res, next) => {
 
 //Finds the User in the table and attaches the cookie
 router.post('/login', (req, res, next) => {
-  const { email, password } = req.body;
   //TODO: merge the guest user's products and cart with the logged in user
   //   i.e: replace the guest user's id with the logged in user's id on all records!
   //Temporary solution: Delete the guest user before you log in the new user.
   User.findOne({
     where: {
-      email,
-      password
+      email: req.body.email
     }
   })
-    .then(userOrNull => {
-      if (userOrNull) {
-        User.update(
-          {
-            sessionId: req.cookies.session_id
-          },
-          {
-            where: { email, password },
-            returning: false
-          }
-        )
-          .then(() => {
-            User.destroy({
-              where: {
-                sessionId: req.cookies.session_id,
-                userType: 'Guest'
-              }
-            });
-          })
-          .then(() => {
-            return res
-              .cookie('session_id', req.cookies.session_id, {
-                path: '/',
-                expires: new Date(Date.now() + 1000 * 60 * 60)
-              })
-              .status(202)
-              .send(userOrNull);
-          })
-          .catch(e => res.status(401).send('Failure!'));
-      } else {
+    .then(user => {
+      if (!user) {
         return res.status(404).send('User not found');
+      } else {
+        bcrypt.compare(req.body.password, user.password, (err, result) => {
+          if (result) {
+            user
+              .update({
+                sessionId: req.cookies.session_id
+              })
+              .then(() => {
+                User.destroy({
+                  where: {
+                    sessionId: req.cookies.session_id,
+                    userType: 'Guest'
+                  }
+                });
+              })
+              .then(() => {
+                return res
+                  .cookie('session_id', req.cookies.session_id, {
+                    path: '/',
+                    expires: new Date(Date.now() + 1000 * 60 * 60)
+                  })
+                  .status(202)
+                  .send(user);
+              })
+              .catch(err => res.status(401).send('Failure!'));
+          } else {
+            return res.send.status(401)('Incorrect password');
+          }
+        });
       }
     })
     .catch(e => {
