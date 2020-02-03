@@ -28,28 +28,28 @@ class ProductPage extends React.Component {
           <div>Product Not Found. :(</div>
         ) : (
           <div>
-            <Link to='/products'>Back</Link>
-            <div className='product-page'>
-              <div className='product-hero'>
+            <Link to="/products">Back</Link>
+            <div className="product-page">
+              <div className="product-hero">
                 <img
-                  className='product-image-small'
+                  className="product-image-small"
                   src={singleProduct.productImage}
                 />
-                <div className='product-details'>
-                  <div className='product-name'>{singleProduct.name}</div>
-                  <div className='product-price'>{singleProduct.price}</div>
-                  <div className='product-quantity-select-container'>
+                <div className="product-details">
+                  <div className="product-name">{singleProduct.name}</div>
+                  <div className="product-price">{singleProduct.price}</div>
+                  <div className="product-quantity-select-container">
                     <input
-                      type='number'
-                      className='product-quantity-select'
+                      type="number"
+                      className="product-quantity-select"
                       max={singleProduct.inventory}
-                      min='0'
+                      min="0"
                       value={this.state.quantity}
                       onChange={e => {
                         this.setState({ quantity: e.target.value });
                       }}
                     />
-                    <div className='product-sub-total'>
+                    <div className="product-sub-total">
                       SUBTOTAL{' '}
                       {`$${(
                         this.state.quantity * singleProduct.unitPrice
@@ -68,27 +68,27 @@ class ProductPage extends React.Component {
                   >
                     ADD TO WISHLIST
                   </Button>
-                  <div className='product-description'>
+                  <div className="product-description">
                     {singleProduct.description}
                   </div>
-                  <div className='social-media-icons'>
+                  <div className="social-media-icons">
                     <div>TWITTER</div>
                     <div>INSTAGRAM</div>
                     <div>FACEBOOK</div>
                   </div>
                 </div>
               </div>
-              <div className='similar-products-container'>
+              <div className="similar-products-container">
                 <h5>SIMILAR PRODUCTS</h5>
                 <div>
-                  {similarProducts.length > 0
+                  {/* {similarProducts.length > 0
                     ? similarProducts.map(_sp => (
                         <Product
                           key={`simililar-product-${_sp.id}`}
                           product={_sp}
                         />
                       ))
-                    : 'No similar Products'}
+                    : 'No similar Products'} */}
                 </div>
               </div>
             </div>
