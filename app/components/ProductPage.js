@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchSingleProduct } from '../redux/thunks/ProductThunks';
+import {
+  fetchSingleProduct,
+  fetchSimilarProducts
+} from '../redux/thunks/ProductThunks';
 import { postWishlist } from '../redux/thunks/WishlistThunks';
+import Product from './Product';
 import Button from 'react-bootstrap/Button';
 
 class ProductPage extends React.Component {
@@ -14,9 +18,10 @@ class ProductPage extends React.Component {
   }
   componentDidMount() {
     this.props.fetchSingleProduct(this.props.match.params.id);
+    this.props.fetchSimilarProducts(this.props.match.params.id);
   }
   render() {
-    const { singleProduct, postWishlist, user } = this.props;
+    const { singleProduct, postWishlist, user, similarProducts } = this.props;
     return (
       <div>
         {!singleProduct ? (
@@ -75,6 +80,16 @@ class ProductPage extends React.Component {
               </div>
               <div className="similar-products-container">
                 <h5>SIMILAR PRODUCTS</h5>
+                <div>
+                  {similarProducts.length > 0
+                    ? similarProducts.map(_sp => (
+                        <Product
+                          key={`simililar-product-${_sp.id}`}
+                          product={_sp}
+                        />
+                      ))
+                    : 'No similar Products'}
+                </div>
               </div>
             </div>
           </div>
@@ -86,13 +101,16 @@ class ProductPage extends React.Component {
 
 //TODO: This should fetch similar products not just all products
 //TODO: Add cart thunk
-const mapState = ({ singleProduct, user }) => ({
+const mapState = ({ singleProduct, user, similarProducts }) => ({
   singleProduct,
-  user
+  user,
+  similarProducts
 });
 const mapDispatch = dispatch => {
   return {
     fetchSingleProduct: productId => dispatch(fetchSingleProduct(productId)),
+    fetchSimilarProducts: productId =>
+      dispatch(fetchSimilarProducts(productId)),
     postWishlist: item => dispatch(postWishlist(item))
   };
 };

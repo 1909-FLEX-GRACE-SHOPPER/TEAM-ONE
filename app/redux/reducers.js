@@ -8,6 +8,7 @@ import {
   LOGIN_ERROR,
   SET_WISHLIST,
   STATUS_MESSAGE,
+  SET_SIMILAR_PRODUCTS
 } from './constants';
 
 export const products = (state = [], action) => {
@@ -23,6 +24,15 @@ export const singleProduct = (state = {}, action) => {
   switch (action.type) {
     case SET_SINGLE_PRODUCT:
       return action.product;
+    default:
+      return state;
+  }
+};
+
+export const similarProducts = (state = [], action) => {
+  switch (action.type) {
+    case SET_SIMILAR_PRODUCTS:
+      return action.products;
     default:
       return state;
   }
@@ -89,8 +99,8 @@ export const wishlist = (state = [], action) => {
 export const statusMessage = (state = { status: null, text: '' }, action) => {
   switch (action.type) {
     case STATUS_MESSAGE:
-      return action.message
+      return action.message;
     default:
       return state;
   }
-}
+};

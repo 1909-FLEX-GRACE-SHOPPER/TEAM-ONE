@@ -2,6 +2,8 @@ export const SET_PRODUCTS = Symbol('SET_PRODUCTS');
 
 export const SET_SINGLE_PRODUCT = Symbol('SET_SINGLE_PRODUCT');
 
+export const SET_SIMILAR_PRODUCTS = Symbol('SET_SIMILAR_PRODUCTS');
+
 export const SET_USER = Symbol('SET_USER');
 
 export const SET_ORDERS = Symbol('SET_ORDERS');

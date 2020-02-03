@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const path = require('path');
-
+const { Op } = require('sequelize');
 const { models } = require('../db/index');
 const { Product } = models;
 
@@ -12,6 +12,31 @@ router.get('/', paginate(Product), (req, res, next) => {
     .send(foundModels)
     .catch(e => {
       res.status(404);
+      next(e);
+    });
+});
+
+router.get('/similar/:id', (req, res, next) => {
+  Product.findByPk(req.params.id)
+    .then(({ tags }) => {
+      return Product.findAll({
+        where: {
+          [Op.and]: [
+            {
+              tags
+            },
+            {
+              id: {
+                [Op.ne]: req.params.id
+              }
+            }
+          ]
+        }
+      });
+    })
+    .then(products => res.status(200).send(products))
+    .catch(e => {
+      res.status(400);
       next(e);
     });
 });
@@ -31,7 +56,13 @@ router.get('/:id', (req, res, next) => {
 //Sets falsy field in req.body.productDescription to be null.
 //Sets falsy field in req.body.inventory to 0.
 router.post('/', (req, res, next) => {
-  const { productName, productDescription, unitPrice, inventory } = req.body;
+  const {
+    productName,
+    productDescription,
+    unitPrice,
+    inventory,
+    tags
+  } = req.body;
 
   if (req.files) {
     const imageFile = req.files.productImage;
@@ -51,6 +82,7 @@ router.post('/', (req, res, next) => {
           productDescription,
           unitPrice: (unitPrice * 1).toFixed(2),
           inventory: inventory * 1 || 0,
+          tags,
           productImage: `/uploads/${imageFile.name.split(' ').join('-')}`
         });
       })
@@ -64,7 +96,8 @@ router.post('/', (req, res, next) => {
       productName,
       productDescription,
       unitPrice: (unitPrice * 1).toFixed(2),
-      inventory: inventory * 1 || 0
+      inventory: inventory * 1 || 0,
+      tags
     })
       .then(() => res.status(201).send('success creating'))
       .catch(e => {
