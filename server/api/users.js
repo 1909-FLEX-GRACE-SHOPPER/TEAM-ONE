@@ -109,7 +109,7 @@ router.post('/login', (req, res, next) => {
               })
               .catch(err => res.status(401).send('Failure!'));
           } else {
-            return res.send.status(401)('Incorrect password');
+            return res.status(401).send('Incorrect password');
           }
         });
       }
