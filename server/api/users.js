@@ -33,12 +33,12 @@ router.get('/', paginate(User), (req, res, next) => {
 router.post('/new', (req, res, next) => {
 	const user = new UserObject(req.body);
 	bcrypt
-		.hash(user.password, 10)
-		.then(hash => {
+		.hash(req.body.password, 10)
+		.then(hashedPassword => {
 			User.create({
 				...user,
 				sessionId: req.cookies.session_id,
-				password: hash
+				password: hashedPassword
 			});
 		})
 		.then(newUser => {

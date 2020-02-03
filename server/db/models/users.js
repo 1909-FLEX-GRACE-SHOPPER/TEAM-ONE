@@ -93,16 +93,7 @@ const User = db.define('users', {
     }
   },
   cardNumber: {
-    type: BIGINT,
-    validate: {
-      isNumeric: {
-        args: true,
-        msg: 'Card number should only contain numbers'
-      },
-      len: {
-        arg: 16
-      }
-    }
+    type: STRING,
   },
   cardholder: {
     type: STRING
@@ -111,16 +102,7 @@ const User = db.define('users', {
     type: DATEONLY
   },
   securityCode: {
-    type: INTEGER,
-    validate: {
-      isNumeric: {
-        args: true,
-        msg: 'Security code should only contain numbers'
-      },
-      len: {
-        arg: 3
-      }
-    }
+    type: STRING,
   },
   billingAddress: {
     type: STRING
