@@ -283,13 +283,26 @@ router.get('/:userId/cart', (req, res, next) => {
 });
 
 router.post(`/:userId/cart`, (req, res, next) => {
-  Cart.create({
-    userId: req.params.userId
+  Cart.findOne({
+    where: { userId: req.params.userId }
   })
-  .then(cart => res.status(200).send(cart))
+  .then(cartOrNull => {
+    if(!cartOrNull) {
+      Cart.create({
+        userId: req.params.userId
+      })
+      .then(cart => res.status(200).send(cart))
+      .catch(e => {
+        res.status(400);
+        next(e);
+      })
+    } else {
+      res.status(200).send(cartOrNull)
+    }
+  })
   .catch(e => {
-    res.status(400);
-    next(e);
+    res.status(404)
+    next(e)
   })
 })
 
