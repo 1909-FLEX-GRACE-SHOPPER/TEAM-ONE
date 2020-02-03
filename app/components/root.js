@@ -35,22 +35,22 @@ class Root extends React.Component {
           <Navigation />
           <ToastComponent status={status} message={text} />
           <Switch>
-            <Route exact path="/" component={WelcomeMessage} />
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
-            <Route exact path="/products" component={Products} />
-            <Route exact path="/products/add" component={AddProductForm} />
-            <Route path="/products/:id" component={ProductPage} />
-            <Route path="/shoppingcart/:userId?" /*component={ShoppingCart}*/ />
+            <Route exact path='/' component={WelcomeMessage} />
+            <Route path='/login' component={Login} />
+            <Route path='/signup' component={Signup} />
+            <Route exact path='/products' component={Products} />
+            <Route exact path='/products/add' component={AddProductForm} />
+            <Route path='/products/:id' component={ProductPage} />
+            <Route exact path='/:userId/cart' component={ShoppingCart} />
             <Route
-              path="/orders/:orderId/checkout/:userId?" /*component={Checkout} */
+              path='/orders/:orderId/checkout/:userId?' /*component={Checkout} */
             />
             <Route
-              path="/orders/:orderId/confirmation/:userId?" /*component={Confirmation} */
+              path='/orders/:orderId/confirmation/:userId?' /*component={Confirmation} */
             />
-            <Route path="/wishlist/:userId" component={Wishlist} />
-            <Route path="/user/:id" /*component={UserPage}*/ />
-            <Redirect to="/" />
+            <Route path='/wishlist/:userId' component={Wishlist} />
+            <Route path='/user/:id' /*component={UserPage}*/ />
+            <Redirect to='/' />
           </Switch>
         </div>
       </Router>

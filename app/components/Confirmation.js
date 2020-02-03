@@ -1,11 +1,11 @@
-import React from "react";
-import Shipping from "./Shipping.js";
-import { Link } from "react-router-dom";
-import Button from "react-bootstrap";
+import React from 'react';
+import Shipping from './Shipping.js';
+import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap';
 
 const Confirmation = ({ orderDetails }) => {
   return (
-    <div className="confirmation-page">
+    <div className='confirmation-page'>
       <div>CART - PAYMENT - CONFIRMATION</div>
       <Link>BACK</Link>
       <div>Confirmation</div>

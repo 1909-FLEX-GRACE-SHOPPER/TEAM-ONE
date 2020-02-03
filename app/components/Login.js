@@ -28,28 +28,28 @@ class Login extends Component {
           <Form>
             <Form.Group>
               <Form.Label>Email Address</Form.Label>
-              <Col sm="5">
+              <Col sm='5'>
                 <Form.Control
-                  name="email"
-                  type="email"
-                  placeholder="Enter email"
+                  name='email'
+                  type='email'
+                  placeholder='Enter email'
                   onChange={this.handleChange}
                 />
               </Col>
             </Form.Group>
             <Form.Group>
               <Form.Label> Password</Form.Label>
-              <Col sm="5">
+              <Col sm='5'>
                 <Form.Control
-                  name="password"
-                  type="password"
-                  placeholder="Password"
+                  name='password'
+                  type='password'
+                  placeholder='Password'
                   onChange={this.handleChange}
                 />
               </Col>
             </Form.Group>
             <div>{authError ? authError : null}</div>
-            <Nav.Link href="/signup"> Sign up </Nav.Link>
+            <Nav.Link href='/signup'> Sign up </Nav.Link>
             <Button onClick={this.onSubmit}> Log In! </Button>
           </Form>
         ) : (

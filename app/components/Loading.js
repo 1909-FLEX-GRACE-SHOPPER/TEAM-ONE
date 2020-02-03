@@ -6,8 +6,8 @@ const Loading = ({ message }) => {
     <div>
       <div>Image</div>
       <div>{message}</div>
-      <Spinner animation="border" role="status">
-        <span className="sr-only">Loading...</span>
+      <Spinner animation='border' role='status'>
+        <span className='sr-only'>Loading...</span>
       </Spinner>
     </div>
   );
