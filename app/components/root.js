@@ -50,9 +50,6 @@ class Root extends React.Component {
             <Route
               path="/checkout" component={ Checkout }
             />
-            <Route
-              path='/orders/:orderId/confirmation/:userId?' /*component={Confirmation} */
-            />
             <Route path='/wishlist/:userId' component={Wishlist} />
             <Route path='/user/:id' /*component={UserPage}*/ />
             <Redirect to='/' />

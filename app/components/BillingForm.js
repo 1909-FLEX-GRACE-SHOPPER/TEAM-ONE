@@ -5,6 +5,8 @@ const { Row, Group, Col, Control, Label } = Form;
 import Button from 'react-bootstrap/Button';
 import { updateCart } from '../redux/thunks/CartThunks';
 
+import { SUCCESS } from '../redux/thunks/utils';
+
 class BillingForm extends Component {
   constructor() {
     super();
@@ -109,6 +111,11 @@ class BillingForm extends Component {
   handleOnClick = e => {
     e.preventDefault();
     this.props.updateCart(this.props.user.id , this.state)
+    .then(() => {
+      if(this.props.statusMessage.status === SUCCESS) {
+        this.props.history.push('/checkout/shipping')
+      }
+    })
   }
 
   render() {
@@ -207,7 +214,6 @@ class BillingForm extends Component {
         </Row>
 
         <Button
-          href='/checkout/confirmation'
           onClick={ this.handleOnClick }
           disabled={
             Object.values(this.state.errors).every(value => value === '') &&
@@ -223,7 +229,7 @@ class BillingForm extends Component {
   }
 }
 
-const mapState = ({ user }) => ({ user })
+const mapState = ({ user, statusMessage }) => ({ user, statusMessage })
 
 const mapDispatch = dispatch => {
   return {

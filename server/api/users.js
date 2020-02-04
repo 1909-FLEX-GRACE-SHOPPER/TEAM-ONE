@@ -312,9 +312,7 @@ router.put(`/:userId/cart`, (req, res, next) => {
   Cart.findOne({
     where: { userId: req.params.userId }
   })
-  .then(cart => {
-    cart.update({ ...cartBody })
-  })
+  .then(cart => cart.update(cartBody))
   .then(() => {
     res.status(202).send('Success')
   })

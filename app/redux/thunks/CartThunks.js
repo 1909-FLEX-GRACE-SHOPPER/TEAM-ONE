@@ -9,7 +9,6 @@ export function setCart(userId) {
     return axios
       .get(`/api/users/${ userId }/cart`)
       .then(res => {
-        console.log(res.data)
         dispatch(_setCart(res.data))
       })
       .catch(e => {
@@ -25,7 +24,6 @@ export function setCart(userId) {
 }
 
 export const createCart = userId => {
-  console.log('ID', userId)
   return dispatch => {
     return axios
       .post(`/api/users/${ userId }/cart`)

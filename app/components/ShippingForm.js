@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
+const { Row, Group, Label, Control, Col } = Form;
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 
 import { updateCart } from '../redux/thunks/CartThunks';
 
-const { Row, Group, Label, Control, Col } = Form;
+import { SUCCESS } from '../redux/thunks/utils';
 
 class ShippingForm extends Component {
   constructor() {
@@ -158,6 +159,10 @@ class ShippingForm extends Component {
   handleOnClick = e => {
     e.preventDefault()
     this.props.updateCart( this.props.user.id, this.state )
+    .then(() => {
+      if(this.props.statusMessage.status === SUCCESS)
+      this.props.history.push('/checkout/confirmation')
+    })
   }
 
   render() {
@@ -291,7 +296,6 @@ class ShippingForm extends Component {
           />
         </Group>
         <Button
-          href='/checkout/confirmation'
           onClick={ this.handleOnClick }
           disabled={ 
               Object.values(this.state.errors).every(value => value === '') &&
@@ -313,7 +317,7 @@ class ShippingForm extends Component {
   }
 }
 
-const mapState = ({ user }) => ({ user })
+const mapState = ({ user, statusMessage }) => ({ user, statusMessage })
 
 const mapDispatch = dispatch => {
   return {

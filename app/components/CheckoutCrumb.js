@@ -12,10 +12,10 @@ const CheckoutCrumb = ({ props: { location: { pathname }}}) => {
   return (
     <Breadcrumb>
       {
-        routes.map(([routeKey, routeValue], idx) => {
+        routes.map(([routeKey, routeValue]) => {
           return (
           <Breadcrumb.Item
-            key={ idx }
+            key={ routeKey }
             active={ pathname === routeValue ? true : false }
             href={ pathname !== routeValue ? routeValue : '' }
             >
