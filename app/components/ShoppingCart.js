@@ -1,22 +1,61 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import CartItem from "./CartItem.js";
-import Button from "react-bootstrap";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import CartItem from './CartItem.js';
+import { Button, ListGroup } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { setCart, removeItemFromCart } from '../redux/thunks/CartThunks.js';
 
-const ShoppingCart = ({ products }) => {
-  return (
-    <div className="shopping-cart">
-      <Link>BACK</Link>
-      <div>SHOPPING CART</div>
-      <div className="shopping-cart-product-listing">
-        {products.map(_product => (
-          <CartItem product={_product} />
-        ))}
-      </div>
-      <div>TOTAL</div>
-      <Button>CHECKOUT</Button>
-    </div>
-  );
+class ShoppingCart extends React.Component {
+  componentDidMount() {
+    this.props.fetchCart();
+  }
+
+  handleRemoveItem = async item => {
+    await this.props.removeItem(item);
+  };
+
+  render() {
+    const { cart } = this.props;
+    if (cart.length === 0) {
+      return (
+        <div className='shopping-cart'>
+          <h4>SHOPPING CART</h4>
+          <p>Your cart is empty.</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className='shopping-cart'>
+          <h4>SHOPPING CART</h4>
+          <ListGroup className='shopping-cart-product-list'>
+            {cart.map(product => (
+              <ListGroup.Item key={product.id}>
+                <CartItem key={product.id} product={product} />
+                <Button onClick={() => this.handleRemoveItem(product)}>
+                  Remove
+                </Button>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+          {/* TODO: reflect total cost */}
+          <div>TOTAL: </div>
+          <Link to='/checkout'>CHECKOUT</Link>
+        </div>
+      );
+    }
+  }
+}
+
+const mapState = state => {
+  const cart = state.cart;
+  return { cart };
 };
 
-export default ShoppingCart;
+const mapDispatch = dispatch => {
+  return {
+    fetchCart: () => dispatch(setCart()),
+    removeItem: item => dispatch(removeItemFromCart(item))
+  };
+};
+
+export default connect(mapState, mapDispatch)(ShoppingCart);

@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-import { setProducts, setSingleProduct, statusMessage } from '../actions';
+import {
+  setProducts,
+  setSingleProduct,
+  statusMessage,
+  setSimilarProducts
+} from '../actions';
 
 import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
@@ -11,14 +16,33 @@ import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 export const fetchProducts = () => {
   return dispatch => {
     return axios
-      .get(`/api/products`)
+      .get('/api/products')
       .then(res => dispatch(setProducts(res.data)))
       .catch(e => {
-        console.error(e)
-        dispatch(statusMessage({
-          status: FAIL,
-          text: COMMON_FAIL,
-        }))
+        console.error(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
+  };
+};
+
+export const fetchSimilarProducts = productId => {
+  return dispatch => {
+    return axios
+      .get(`/api/products/similar/${productId}`)
+      .then(res => dispatch(setSimilarProducts(res.data)))
+      .catch(e => {
+        console.error(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
       });
   };
 };
@@ -30,11 +54,13 @@ export const fetchSingleProduct = productId => {
       .get(`/api/products/${productId}`)
       .then(res => dispatch(setSingleProduct(res.data)))
       .catch(e => {
-        console.error(e)
-        dispatch(statusMessage({
-          status: FAIL,
-          text: COMMON_FAIL,
-        }))
+        console.error(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
       });
   };
 };
@@ -44,26 +70,29 @@ export const fetchSingleProduct = productId => {
 export const postProduct = product => {
   return dispatch => {
     return axios
-      .post(`/api/products`, product, {
+      .post('/api/products', product, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
       .then(() => {
-        dispatch(fetchProducts())
-        dispatch(statusMessage({
-          status: SUCCESS,
-          text: 'Product successfully added to the shop.'
-        }))
+        dispatch(fetchProducts());
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Product successfully added to the shop.'
+          })
+        );
       })
       .catch(e => {
-        console.log(e)
-        dispatch(statusMessage({
-          status: FAIL,
-          text: 'There was an error creating a new product. Try again later.'
-        }))
-      })
-
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: 'There was an error creating a new product. Try again later.'
+          })
+        );
+      });
   };
 };
 
@@ -74,18 +103,22 @@ export const deleteProduct = productId => {
     return axios
       .delete(`/api/products/${productId}`)
       .then(() => {
-        dispatch(fetchProducts())
-        dispatch(statusMessage({
-          status: SUCCESS,
-          text: 'Product deleted from the shop.'
-        }))
+        dispatch(fetchProducts());
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Product deleted from the shop.'
+          })
+        );
       })
       .catch(e => {
-        console.log(e)
-        dispatch(statusMessage({
-          status: FAIL,
-          text: COMMON_FAIL,
-        }))
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
       });
   };
 };
@@ -97,18 +130,22 @@ export const updateProduct = (productId, product) => {
     return axios
       .put(`/api/products/${productId}`, product)
       .then(res => {
-        dispatch(setSingleProduct(res.data))
-        dispatch(statusMessage({
-          status: SUCCESS,
-          text: 'Product updated.',
-        }))
+        dispatch(setSingleProduct(res.data));
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Product updated.'
+          })
+        );
       })
       .catch(e => {
-        console.log(e)
-        dispatch(statusMessage({
-          status: FAIL,
-          text: COMMON_FAIL,
-        }))
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
       });
   };
 };

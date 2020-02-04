@@ -1,27 +1,87 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, Button } from 'react-bootstrap';
+import { logoutUser } from '../redux/thunks/UserThunks';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
-	render() {
-		return (
-			<Navbar bg='dark' variant='dark'>
-				<Navbar.Brand>Logo</Navbar.Brand>
-				<Nav className='mr-auto'>
-					<Nav.Link href='/home'>Home</Nav.Link>
-					<Nav.Link href='/about'>About</Nav.Link>
-					<Nav.Link href='/products'>Shop</Nav.Link>
-				</Nav>
-				<Nav>
-					<Nav.Link href='/shoppingcart/:userId'>Cart</Nav.Link>
-					{/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
-					<Nav.Link to='/signup' href='/signup'> Sign Up </Nav.Link>
-					<Nav.Link to='/login' href='/login'> Login </Nav.Link>
-				</Nav>
-			</Navbar>
-		);
-	}
+  switchNavBar = params => {
+    const { logoutUser, user } = this.props;
+    switch (params.userType) {
+      case 'Existing customer':
+        return (
+          <Nav>
+            <Nav.Link href={`/user/${params.id}`}>
+              {' '}
+              {params.firstName} {params.lastName}{' '}
+            </Nav.Link>
+            <Button
+              onClick={() => {
+                logoutUser(user);
+              }}
+            >
+              {' '}
+              Logout{' '}
+            </Button>
+          </Nav>
+        );
+      case 'Admin':
+        return (
+          <Nav>
+            <Nav.Link href="/products/add"> Add a Product </Nav.Link>
+            <Nav.Link href={`/user/${params.id}`}>
+              {' '}
+              {params.firstName} {params.lastName}{' '}
+            </Nav.Link>
+            <Button
+              onClick={() => {
+                logoutUser(user);
+              }}
+            >
+              {' '}
+              Logout{' '}
+            </Button>
+          </Nav>
+        );
+      default:
+        return (
+          <Nav>
+            <Nav.Link href="/signup"> Sign Up </Nav.Link>
+            <Nav.Link href="/login"> Login </Nav.Link>
+          </Nav>
+        );
+    }
+  };
+  render() {
+    const { user } = this.props;
+    return (
+      <Navbar bg="dark" variant="dark">
+        <Navbar.Brand>Logo</Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link href="/home">Home</Nav.Link>
+          <Nav.Link href="/about">About</Nav.Link>
+          <Nav.Link href="/products">Shop</Nav.Link>
+        </Nav>
+        <Nav>
+          <Nav.Link href={`/${user.id}/cart`}>Cart</Nav.Link>
+          {/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
+          {this.switchNavBar(user)}
+        </Nav>
+      </Navbar>
+    );
+  }
 }
 
-export default Navigation;
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+const mapDispatch = dispatch => {
+  return {
+    logoutUser: user => dispatch(logoutUser(user))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatch)(Navigation);

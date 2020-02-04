@@ -15,22 +15,22 @@ class Products extends React.Component {
     const PRODUCTS_PER_PAGE = 10;
     return (
       <div>
-        <div className="product-search-and-pagination">
-          <div className="filter-and-sort">
-            <Form.Control as="select" id="filter-by">
-              <option value="">Filter By</option>
-              <option value="option 1">Option 1</option>
-              <option value="option 2">Option 2</option>
+        <div className='product-search-and-pagination'>
+          <div className='filter-and-sort'>
+            <Form.Control as='select' id='filter-by'>
+              <option value=''>Filter By</option>
+              <option value='option 1'>Option 1</option>
+              <option value='option 2'>Option 2</option>
             </Form.Control>
-            <Form.Control as="select" id="sort-by">
-              <option value="">Sort By</option>
-              <option value="option 1">Option 1</option>
-              <option value="option 2">Option 2</option>
+            <Form.Control as='select' id='sort-by'>
+              <option value=''>Sort By</option>
+              <option value='option 1'>Option 1</option>
+              <option value='option 2'>Option 2</option>
             </Form.Control>
           </div>
           <PageSelect pages={products.length / PRODUCTS_PER_PAGE} />
         </div>
-        <div className="all-products-container">
+        <div className='all-products-container'>
           {products.length === 0
             ? 'No products'
             : products.map(_product => (
