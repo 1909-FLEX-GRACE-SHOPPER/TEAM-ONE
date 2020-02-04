@@ -16,9 +16,11 @@ router.get('/items/:userId', (req, res, next) => {
       next(e);
     });
 });
-
+//TODO #1: may add userId to the route
+//TODO #2: may create instance including userId
 router.post('/add', (req, res, next) => {
-  Wishlist.create(req.body.wishlist_item)
+  const productId = req.body.productId;
+  Wishlist.create({ productId: productId })
     .then(item => res.status(201).send(item))
     .catch(e => {
       res.status(400);

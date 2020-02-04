@@ -273,10 +273,16 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
 
 router.get('/:userId/cart', async (req, res, next) => {
   try {
+    // cart is a user object including cart array
     // let cart = await User.findByPk(req.params.userId, {
     //   include: [{ model: Cart }]
     // });
+
+    // let cart = await Cart.findAll({
+    //   where: { userId: req.params.userId }
+    // });
     let cart = await Cart.findAll();
+    //console.log(cart);
     res.status(200).send(cart);
   } catch (err) {
     res.status(404);

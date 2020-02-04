@@ -7,6 +7,7 @@ class CartItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      //TODO: input product details into this component
       productImage: this.props.product.productImage,
       productName: this.props.product.productName,
       cartId: this.props.product.id,
