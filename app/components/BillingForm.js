@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 const { Row, Group, Col, Control, Label } = Form;
 import Button from 'react-bootstrap/Button';
-import { setUser } from '../redux/actions'
+import { updateCart } from '../redux/thunks/CartThunks';
 
 class BillingForm extends Component {
   constructor() {
@@ -108,7 +108,7 @@ class BillingForm extends Component {
 
   handleOnClick = e => {
     e.preventDefault();
-    this.props.setUser({ ...this.props.user, ...this.state })
+    this.props.updateCart(this.props.user.id , this.state)
   }
 
   render() {
@@ -135,7 +135,12 @@ class BillingForm extends Component {
             onChange={ this.handleOnChange }
             isInvalid={ !!cardHolderError }
           />
-          <Control.Feedback type='invalid' className='text-danger'>{ cardHolderError }</Control.Feedback>
+          <Control.Feedback
+            type='invalid'
+            className='text-danger'
+          >
+            { cardHolderError }
+          </Control.Feedback>
         </Group>
         <Row 
           style={
@@ -201,7 +206,18 @@ class BillingForm extends Component {
           </Group>
         </Row>
 
-        <Button href='/checkout/confirmation' onClick={ this.handleOnClick }>Proceed to Shipping</Button>
+        <Button
+          href='/checkout/confirmation'
+          onClick={ this.handleOnClick }
+          disabled={
+            Object.values(this.state.errors).every(value => value === '') &&
+            Object.values(this.state).every(value => value !== '')
+            ? false
+            : true
+          }
+        >
+          Proceed to Shipping
+        </Button>
       </div>
     )
   }
@@ -211,7 +227,7 @@ const mapState = ({ user }) => ({ user })
 
 const mapDispatch = dispatch => {
   return {
-    setUser: state => dispatch(setUser(state))
+    updateCart: (userId, state) => dispatch(updateCart(userId, state))
   }
 }
 

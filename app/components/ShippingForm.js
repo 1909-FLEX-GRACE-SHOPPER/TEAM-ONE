@@ -3,8 +3,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 
-import { setUser } from '../redux/actions';
-
 import { updateCart } from '../redux/thunks/CartThunks';
 
 const { Row, Group, Label, Control, Col } = Form;
@@ -319,7 +317,6 @@ const mapState = ({ user }) => ({ user })
 
 const mapDispatch = dispatch => {
   return {
-    setUser: state => dispatch(setUser(state)),
     updateCart: (userId, state) => dispatch(updateCart(userId, state))
   }
 }
