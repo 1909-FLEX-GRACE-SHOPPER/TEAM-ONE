@@ -29,7 +29,7 @@ Order.belongsTo(User);
 Product.belongsToMany(Order, { through: OrderDetail });
 Order.belongsToMany(Product, { through: OrderDetail });
 
-//Sessions 
+//Sessions
 Session.hasOne(User);
 User.belongsTo(Session);
 

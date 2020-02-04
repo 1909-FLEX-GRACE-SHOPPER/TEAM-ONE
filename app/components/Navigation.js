@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 class Navigation extends Component {
   switchNavBar = params => {
     const { logoutUser, user } = this.props;
-    console.log(logoutUser);
     switch (params.userType) {
       case 'Existing customer':
         return (
@@ -64,7 +63,7 @@ class Navigation extends Component {
           <Nav.Link href="/products">Shop</Nav.Link>
         </Nav>
         <Nav>
-          <Nav.Link href={`/shoppingcart/${user.id}`}>Cart</Nav.Link>
+          <Nav.Link href={`/${user.id}/cart`}>Cart</Nav.Link>
           {/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
           {this.switchNavBar(user)}
         </Nav>

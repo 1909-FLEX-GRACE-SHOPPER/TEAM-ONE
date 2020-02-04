@@ -8,8 +8,8 @@ import {
   orderDetails,
   authentication,
   wishlist,
-  statusMessage,
-  similarProducts
+  cart,
+  statusMessage
 } from './reducers';
 
 export default combineReducers({
@@ -20,6 +20,6 @@ export default combineReducers({
   orderDetails,
   authentication,
   wishlist,
-  statusMessage,
-  similarProducts
+  cart,
+  statusMessage
 });

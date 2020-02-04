@@ -44,7 +44,7 @@ class Products extends React.Component {
           </div>
           <PageSelect pages={products.length / PRODUCTS_PER_PAGE} />
         </div>
-        <div className="all-products-container">
+        <div className='all-products-container'>
           {products.length === 0
             ? 'No products'
             : products.map(_product =>
