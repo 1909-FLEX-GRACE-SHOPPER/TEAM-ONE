@@ -9,7 +9,8 @@ import {
   SET_WISHLIST,
   SET_CART,
   REMOVE_ITEM_FROM_CART,
-  STATUS_MESSAGE
+  STATUS_MESSAGE,
+  SET_SIMILAR_PRODUCTS
 } from './constants';
 
 export const products = (state = [], action) => {
