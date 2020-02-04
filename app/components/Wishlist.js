@@ -39,7 +39,8 @@ class Wishlist extends React.Component {
                 {wishlist.map(item => (
                   <ListGroup.Item key={item.id}>
                     {/* bring in associated product */}
-                    <WishlistItem key={item.id} item={item} product={product} />
+                    <WishlistItem key={item.id} />
+
                     <Button onClick={() => this.handleRemoveItem(item)}>
                       Remove
                     </Button>
