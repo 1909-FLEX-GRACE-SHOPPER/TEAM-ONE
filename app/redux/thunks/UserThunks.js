@@ -55,7 +55,7 @@ export const createUser = user => {
 export const logoutUser = ({ email, password }) => {
   return dispatch => {
     return axios
-      .post(`/api/users/login`, { email, password })
+      .post(`/api/users/logout`, { email, password })
       .then(guest => dispatch(setUser(guest)))
       .catch(e => console.error('Error logging user out', e));
   };
