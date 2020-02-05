@@ -5,6 +5,7 @@ import {
   fetchSingleProduct,
   fetchSimilarProducts
 } from '../redux/thunks/ProductThunks';
+import { updateCart } from '../redux/thunks/CartThunks';
 import { postWishlist } from '../redux/thunks/WishlistThunks';
 import Product from './Product';
 import Button from 'react-bootstrap/Button';
@@ -21,19 +22,16 @@ class ProductPage extends React.Component {
     this.props.fetchSimilarProducts(this.props.match.params.id);
   }
 
-  handleAddToCart = async (productId, quantity) => {
-    console.log('calling handleAddToCart');
-    console.log(productId);
-    console.log(quantity);
-    await this.props.addToCart(productId, quantity);
+  handleAddToCart = async ({ productId, userId, productQuantity }) => {
+    await this.props.addToCart(productId, userId, productQuantity);
   };
 
-  postWishlist = async (productId, userId) => {
+  postWishlist = async ({ productId, userId }) => {
     await this.props.postWishlist(productId, userId);
   };
 
   render() {
-    const { singleProduct, postWishlist, user, similarProducts } = this.props;
+    const { singleProduct, user, similarProducts } = this.props;
     return (
       <div>
         {!singleProduct ? (
@@ -71,10 +69,11 @@ class ProductPage extends React.Component {
                   <Button
                     disabled={this.state.quantity === 0}
                     onClick={() => {
-                      this.handleAddToCart(
-                        singleProduct.id,
-                        this.state.quantity
-                      );
+                      this.handleAddToCart({
+                        productId: singleProduct.id,
+                        userId: user.id,
+                        productQuantity: this.state.quantity
+                      });
                     }}
                   >
                     ADD TO CART
@@ -82,7 +81,7 @@ class ProductPage extends React.Component {
                   <Button
                     disabled={user.userType === 'Guest'}
                     onClick={() =>
-                      postWishlist({
+                      this.postWishlist({
                         productId: singleProduct.id,
                         userId: user.id
                       })
@@ -135,7 +134,8 @@ const mapDispatch = dispatch => {
       dispatch(fetchSimilarProducts(productId)),
     postWishlist: (productId, userId) =>
       dispatch(postWishlist(productId, userId)),
-    addToCart: product => dispatch(addToCart(product))
+    addToCart: (productId, userId, productQuantity) =>
+      dispatch(updateCart(productId, userId, productQuantity))
   };
 };
 

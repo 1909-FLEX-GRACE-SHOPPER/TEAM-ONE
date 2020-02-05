@@ -8,7 +8,7 @@ import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 export const fetchWishlist = userId => {
   return dispatch => {
     return axios
-      .get(`/api/wishlist/items/${userId}`)
+      .get(`/api/users/${userId}/wishlist`)
       .then(res => {
         dispatch(setWishlist(res.data));
       })
@@ -23,11 +23,11 @@ export const fetchWishlist = userId => {
       });
   };
 };
-
+//TODO: add userId to path
 export const postWishlist = (productId, userId) => {
   return dispatch => {
     return axios
-      .post(`/api/wishlist/add`, productId)
+      .post(`/api/users/wishlist`, productId)
       .then(() => {
         dispatch(fetchWishlist(userId));
         dispatch(
@@ -49,10 +49,10 @@ export const postWishlist = (productId, userId) => {
   };
 };
 
-export const deleteWishlist = item => {
+export const deleteWishlist = (item, userId) => {
   return dispatch => {
     return axios
-      .delete(`/api/wishlist/remove/${item.id}`)
+      .delete(`/api/users/${userId}/wishlist/${item.id}`)
       .then(() => dispatch(fetchWishlist(item.userId)))
       .catch(e => {
         console.log('Error removing item from wishlist', e);

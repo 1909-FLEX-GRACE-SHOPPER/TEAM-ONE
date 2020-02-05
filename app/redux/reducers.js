@@ -92,7 +92,7 @@ export const authentication = (
 export const wishlist = (state = [], action) => {
   switch (action.type) {
     case SET_WISHLIST:
-      return action.wishlist;
+      return action.items;
     default:
       return state;
   }
