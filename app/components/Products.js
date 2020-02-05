@@ -13,7 +13,7 @@ class Products extends React.Component {
     };
   }
   componentDidMount() {
-    this.props.fetchProducts();
+    this.props.fetchProducts(this.props.match.params.page);
   }
   filterProducts(tag) {
     this.setState({ tag });
@@ -64,7 +64,7 @@ class Products extends React.Component {
 const mapState = ({ products }) => ({ products });
 const mapDispatch = dispatch => {
   return {
-    fetchProducts: () => dispatch(fetchProducts())
+    fetchProducts: page => dispatch(fetchProducts(page))
   };
 };
 

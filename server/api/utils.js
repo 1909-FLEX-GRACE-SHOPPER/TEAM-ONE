@@ -1,7 +1,6 @@
 //Pagination middleware.
 const paginate = model => {
   return (req, res, next) => {
-    console.log(req.params.limit, ' ', req.params.page);
     const limit = Number(req.params.limit) || 10;
     const offset = req.params.page * limit || 0;
     model

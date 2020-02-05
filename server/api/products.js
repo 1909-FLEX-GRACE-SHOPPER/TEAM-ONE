@@ -3,10 +3,9 @@ const path = require('path');
 const { Op } = require('sequelize');
 const { models } = require('../db/index');
 const { Product } = models;
-
 const { paginate } = require('./utils');
 
-router.get('/:limit/:page', paginate(Product), (req, res, next) => {
+router.get('/limit/:limit/page/:page', paginate(Product), (req, res, next) => {
   res
     .status(200)
     .send(foundModels)
