@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { models } = require('../db/index.js');
-const { User, Order, Cart, Product } = models;
+const { User, Order, Cart, Product, Session } = models;
 
 const { paginate, UserObject, OrderObject, CartObject } = require('./utils');
 const bcrypt = require('bcrypt');
