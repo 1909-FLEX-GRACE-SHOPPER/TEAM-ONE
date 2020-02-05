@@ -1,9 +1,9 @@
 //Pagination middleware.
 const paginate = model => {
   return (req, res, next) => {
-    const limit = req.query.limit * 1 || 10;
-    const offset = req.query.page * limit || 0;
-
+    console.log(req.params.limit, ' ', req.params.page);
+    const limit = Number(req.params.limit) || 10;
+    const offset = req.params.page * limit || 0;
     model
       .findAndCountAll({
         offset,
