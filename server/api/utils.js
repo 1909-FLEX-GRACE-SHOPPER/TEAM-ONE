@@ -1,4 +1,5 @@
 //Pagination middleware.
+//TODO: Return data when the limit is less than the number of rows on a "page" of the table
 const paginate = model => {
   return (req, res, next) => {
     const limit = Number(req.params.limit) || 10;
