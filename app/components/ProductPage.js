@@ -103,14 +103,14 @@ class ProductPage extends React.Component {
               <div className='similar-products-container'>
                 <h5>SIMILAR PRODUCTS</h5>
                 <div>
-                  {/* {similarProducts.length > 0
+                  {similarProducts.length > 0
                     ? similarProducts.map(_sp => (
                         <Product
                           key={`simililar-product-${_sp.id}`}
                           product={_sp}
                         />
                       ))
-                    : 'No similar Products'} */}
+                    : 'No similar Products'}
                 </div>
               </div>
             </div>

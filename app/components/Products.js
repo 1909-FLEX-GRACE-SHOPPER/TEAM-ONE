@@ -4,6 +4,7 @@ import PageSelect from './PageSelect.js';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../redux/thunks/ProductThunks.js';
 import Form from 'react-bootstrap/Form';
+import { ITEMS_PER_PAGE } from '../redux/constants';
 
 class Products extends React.Component {
   constructor() {
@@ -13,7 +14,7 @@ class Products extends React.Component {
     };
   }
   componentDidMount() {
-    this.props.fetchProducts();
+    this.props.fetchProducts(this.props.match.params.page);
   }
   filterProducts(tag) {
     this.setState({ tag });
@@ -21,8 +22,10 @@ class Products extends React.Component {
   render() {
     let { products } = this.props;
     const { tag } = this.state;
-    products = products.rows || [];
-    const PRODUCTS_PER_PAGE = 10;
+    const productsThisPage = products.rows || [];
+    const totalProducts = products.count || 0;
+    const selectedPage = this.props.match.params.page;
+    const { history } = this.props;
     return (
       <div>
         <div className="product-search-and-pagination">
@@ -42,12 +45,16 @@ class Products extends React.Component {
               <option value="Pod">Pod</option>
             </Form.Control>
           </div>
-          <PageSelect pages={products.length / PRODUCTS_PER_PAGE} />
+          <PageSelect
+            pages={Math.floor(totalProducts / ITEMS_PER_PAGE)}
+            selectedPage={selectedPage}
+            history={history}
+          />
         </div>
         <div className="all-products-container">
-          {products.length === 0
+          {productsThisPage.length === 0
             ? 'No products'
-            : products.map(_product =>
+            : productsThisPage.map(_product =>
                 tag === '' || _product.tags === tag ? (
                   <Product key={`product-${_product.id}`} product={_product} />
                 ) : (
@@ -55,7 +62,11 @@ class Products extends React.Component {
                 )
               )}
         </div>
-        <PageSelect pages={products.length / PRODUCTS_PER_PAGE} />
+        <PageSelect
+          pages={Math.floor(totalProducts / ITEMS_PER_PAGE)}
+          selectedPage={selectedPage}
+          history={history}
+        />
       </div>
     );
   }
@@ -64,7 +75,7 @@ class Products extends React.Component {
 const mapState = ({ products }) => ({ products });
 const mapDispatch = dispatch => {
   return {
-    fetchProducts: () => dispatch(fetchProducts())
+    fetchProducts: page => dispatch(fetchProducts(page))
   };
 };
 
