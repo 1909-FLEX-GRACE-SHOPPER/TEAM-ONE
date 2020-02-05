@@ -27,6 +27,7 @@ export const fetchOrders = userId => {
 //Thunk for creating a new order.
 //Refetches orders after creating.
 export const postOrder = (userId, order) => {
+  console.log(order)
   return dispatch => {
     return axios
       .post(`/api/users/${userId}/orders`, order)
@@ -35,7 +36,7 @@ export const postOrder = (userId, order) => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: 'Order added'
+            text: 'Your order has been received and is currently being processed.'
           })
         );
       })

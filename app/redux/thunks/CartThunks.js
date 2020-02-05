@@ -67,6 +67,23 @@ export const updateCart = (userId, payload) => {
   }
 }
 
+export const deleteCart = userId => {
+  return dispatch => {
+    return axios
+      .delete(`/api/users/${ userId }/cart`)
+      .then(() => dispatch(setCart(userId)))
+      .catch(e => {
+        console.error('Error deleting cart', e)
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL,
+          })
+        )
+      })
+  }
+}
+
 export function removeItemFromCart(item) {
   return function thunk(dispatch) {
     return axios

@@ -37,17 +37,36 @@ function UserObject(user) {
 }
 
 function CartObject(cart) {
-  this.shippingName = cart.shippingName || null;
-  this.shippingAddress = cart.shippingAddress || null;
-  this.shippingCity = cart.shippingCity || null;
-  this.shippingState = cart.shippingState || null;
-  this.shippingZip = cart.shippingZip || null;
+  this.shippingName = cart.shippingName;
+  this.shippingAddress = cart.shippingAddress;
+  this.shippingCity = cart.shippingCity;
+  this.shippingState = cart.shippingState;
+  this.shippingZip = cart.shippingZip;
   this.shippingCountry = cart.shippingCountry || null;
   this.shippingNotes = cart.shippingNotes || null;
-  this.cardHolder = cart.cardHolder || null;
-  this.cardNumber = cart.cardNumber || null;
-  this.securityCode = cart.securityCode || null;
-  this.expirationDate = cart.expirationDate || null;
+  this.cardHolder = cart.cardHolder;
+  this.cardNumber = cart.cardNumber;
+  this.securityCode = cart.securityCode;
+  if(cart.expirationDate) {
+    this.expirationDate = `${ cart.expirationDate.month } / ${ cart.expirationDate.year }`;
+  }
 }
 
-module.exports = { paginate, UserObject, CartObject };
+
+function OrderObject(id, order) {
+  this.userId = id;
+  this.orderCost = 100.00;
+  this.shippingName = order.shippingName;
+  this.shippingAddress = order.shippingAddress;
+  this.shippingCity = order.shippingCity;
+  this.shippingState = order.shippingState;
+  this.shippingZip = order.shippingZip;
+  this.shippingCountry = order.shippingCountry || null;
+  this.shippingNotes = order.shippingNotes || null;
+  this.cardHolder = order.cardHolder;
+  this.cardNumber = order.cardNumber;
+  this.securityCode = order.securityCode;
+  this.expirationDate = order.expirationDate;
+}
+
+module.exports = { paginate, UserObject, CartObject, OrderObject };

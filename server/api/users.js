@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { User, Order, Cart, Product } = models;
 
-const { paginate, UserObject, CartObject } = require('./utils');
+const { paginate, UserObject, OrderObject, CartObject } = require('./utils');
 const bcrypt = require('bcrypt');
 
 router.get('/session/:sessionId', (req, res, next) => {
@@ -224,15 +224,8 @@ router.get('/:userId/orders', (req, res, next) => {
 
 //Creates a new order for a specific User.
 router.post('/:userId/orders', (req, res, next) => {
-  const { shippingAddress, orderCost } = req.body;
-
-  const { userId } = req.params;
-
-  Order.create({
-    userId,
-    shippingAddress,
-    orderCost: (orderCost * 1).toFixed(2)
-  })
+  const orderBody = new OrderObject(req.params.userId, req.body);
+  Order.create(orderBody)
     .then(() => res.status(201))
     .catch(e => {
       res.status(400);

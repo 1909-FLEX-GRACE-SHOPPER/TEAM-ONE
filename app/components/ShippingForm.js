@@ -9,8 +9,8 @@ import { updateCart } from '../redux/thunks/CartThunks';
 import { SUCCESS } from '../redux/thunks/utils';
 
 class ShippingForm extends Component {
-  constructor() {
-    super();
+  constructor(history) {
+    super(history);
       this.state = {
         shippingName: '',
         shippingAddress: '',
@@ -191,7 +191,7 @@ class ShippingForm extends Component {
           <Label>Name</Label>
           <Control
             name='shippingName'
-            value={ shippingName }
+            value={ this.props.cart.shippingName || shippingName }
             onChange={ this.handleOnChange }
             isInvalid={ !!shippingNameError }
           />
@@ -206,7 +206,7 @@ class ShippingForm extends Component {
           <Label>Address</Label>
           <Control
             name='shippingAddress'
-            value={ shippingAddress }
+            value={ this.props.cart.shippingAddress || shippingAddress }
             onChange={ this.handleOnChange }
             isInvalid={ !!shippingAddressError }
           />
@@ -223,7 +223,7 @@ class ShippingForm extends Component {
             <Label>City</Label>
             <Control
               name='shippingCity'
-              value={ shippingCity }
+              value={ this.props.cart.shippingCity || shippingCity }
               onChange={ this.handleOnChange }
               isInvalid={ !!shippingCityError }
             />
@@ -239,7 +239,7 @@ class ShippingForm extends Component {
             <Label>State</Label>
             <Control
               name='shippingState'
-              value={ shippingState }
+              value={ this.props.cart.shippingState || shippingState }
               onChange={ this.handleOnChange }
               isInvalid={ !!shippingStateError }
             />
@@ -255,7 +255,7 @@ class ShippingForm extends Component {
             <Label>Zip</Label>
             <Control
               name='shippingZip'
-              value={ shippingZip }
+              value={ this.props.cart.shippingZip || shippingZip }
               onChange={ this.handleOnChange }
               isInvalid={ !!shippingZipError }
             />
@@ -271,7 +271,7 @@ class ShippingForm extends Component {
             <Label>Country</Label>
             <Control
               name='shippingCountry'
-              value={ shippingCountry }
+              value={ this.props.cart.shippingCountry || shippingCountry }
               onChange={ this.handleOnChange }
               isInvalid={ !!shippingCountryError }
             />
@@ -290,7 +290,7 @@ class ShippingForm extends Component {
             as='textarea'
             rows='4'
             name='shippingNotes'
-            value={ shippingNotes }
+            value={ this.props.cart.shippingNotes || shippingNotes }
             onChange={ this.handleOnChange }
             placeholder='Please leave by door, buzzer on right side, etc.'
           />
@@ -317,7 +317,7 @@ class ShippingForm extends Component {
   }
 }
 
-const mapState = ({ user, statusMessage }) => ({ user, statusMessage })
+const mapState = ({ user, cart, statusMessage }) => ({ user, cart, statusMessage })
 
 const mapDispatch = dispatch => {
   return {
