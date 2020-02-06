@@ -23,6 +23,8 @@ class ProductPage extends React.Component {
   }
 
   handleAddToCart = async ({ productId, userId, productQuantity }) => {
+    console.log('calling handleAddtoCart');
+    console.log(userId);
     await this.props.addToCart(productId, userId, productQuantity);
   };
 

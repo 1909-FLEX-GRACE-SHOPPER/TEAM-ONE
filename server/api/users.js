@@ -110,7 +110,7 @@ router.post('/login', (req, res, next) => {
                   .status(202)
                   .send(user);
               })
-              .catch(err => res.status(401).send('Failure! ', err));
+              .catch(err => res.status(401).send({ err }));
           } else {
             return res.status(401).send('Incorrect password');
           }

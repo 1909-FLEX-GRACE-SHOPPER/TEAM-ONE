@@ -30,12 +30,12 @@ export const postWishlist = (productId, userId) => {
       .post(`/api/users/wishlist`, productId)
       .then(() => {
         dispatch(fetchWishlist(userId));
-        dispatch(
-          statusMessage({
-            status: SUCCESS,
-            text: 'Wishlist item added.'
-          })
-        );
+        // dispatch(
+        //   statusMessage({
+        //     status: SUCCESS,
+        //     text: 'Wishlist item added.'
+        //   })
+        // );
       })
       .catch(e => {
         console.log('Error adding wishlist', e);
