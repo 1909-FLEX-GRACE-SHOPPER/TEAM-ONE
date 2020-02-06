@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import UserShippingInfo from './UserShippingInfo'
 import ShippingForm from './ShippingForm';
 
-const Shipping = () => {
+const Shipping = ({ history }) => {
   return (
     <div>
       <UserShippingInfo />
-      <ShippingForm />
+      <ShippingForm history={ history }/>
     </div>
   )
 };

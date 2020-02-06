@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../database.js');
 
-const { UUID, UUIDV4, INTEGER, STRING } = Sequelize;
+const { UUID, UUIDV4, INTEGER, STRING, TEXT } = Sequelize;
 
 const Cart = db.define('cart', {
   id: {
@@ -43,6 +43,10 @@ const Cart = db.define('cart', {
     type: STRING
   },
 
+  shippingNotes: {
+    type: TEXT
+  },
+
   cardNumber: {
     type: STRING,
     validate: {
@@ -52,7 +56,7 @@ const Cart = db.define('cart', {
     }
   },
 
-  cardholder: {
+  cardHolder: {
     type: STRING,
   },
 

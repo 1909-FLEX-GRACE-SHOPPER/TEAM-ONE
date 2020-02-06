@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import Form from 'react-bootstrap/Form';
 const { Row, Group, Col, Control, Label } = Form;
 import Button from 'react-bootstrap/Button';
-import { setUser } from '../redux/actions'
+
+import { updateCart } from '../redux/thunks/CartThunks';
+
+import { SUCCESS } from '../redux/thunks/utils';
 
 class BillingForm extends Component {
-  constructor() {
-    super();
+  constructor(history) {
+    super(history);
     this.state = {
       cardHolder: '',
       cardNumber: '',
       securityCode: '',
-      expirationDate: '',
+      expirationDate: {
+        month: '',
+        year: '',
+      },
       errors: {
         cardHolderError: '',
         cardNumberError: '',
@@ -23,7 +30,12 @@ class BillingForm extends Component {
   }
 
   validate = (field, value) => {
-    const { errors } = this.state;
+    const { expirationDate, errors } = this.state;
+
+    const expirationMonth = parseInt(expirationDate.month)
+    const currentMonth = parseInt(moment().format('MM'))
+    const expirationYear = parseInt(expirationDate.year)
+    const currentYear = parseInt(moment().format('YY'))
 
     switch(field) {
       case 'cardHolder':
@@ -94,7 +106,44 @@ class BillingForm extends Component {
         }
         break;
 
-      case 'expirationDate':
+      case 'month':
+        if(expirationYear < currentYear ||
+          (expirationYear == currentYear &&
+            expirationMonth < currentMonth)) {
+              this.setState({
+                errors: {
+                  ...errors,
+                  expirationDateError: 'Invalid Date',
+                }
+              })
+          } else {
+            this.setState({
+              errors: {
+                ...errors,
+                expirationDateError: '',
+              }
+            })
+          }
+        break;
+
+        case 'year':
+        if(expirationYear < currentYear ||
+          (expirationYear == currentYear &&
+            expirationMonth < currentMonth)) {
+              this.setState({
+                errors: {
+                  ...errors,
+                  expirationDateError: 'Invalid Date',
+                }
+              })
+          } else {
+            this.setState({
+              errors: {
+                ...errors,
+                expirationDateError: '',
+              }
+            })
+          }
         break;
 
       default:
@@ -103,12 +152,26 @@ class BillingForm extends Component {
   }
 
   handleOnChange = ({ target: { name, value }}) => {
-    this.setState({ [name]: value }, () => this.validate(name, value))
+    if(name === 'month' || name === 'year') {
+      this.setState({
+        expirationDate: {
+          ...this.state.expirationDate,
+          [name]: value,
+        },
+      }, () => this.validate(name,value))
+    } else {
+      this.setState({ [name]: value }, () => this.validate(name, value))
+    }
   }
 
   handleOnClick = e => {
     e.preventDefault();
-    this.props.setUser({ ...this.props.user, ...this.state })
+    this.props.updateCart(this.props.user.id , this.state)
+    .then(() => {
+      if(this.props.statusMessage.status === SUCCESS) {
+        this.props.history.push('/checkout/shipping')
+      }
+    })
   }
 
   render() {
@@ -116,7 +179,10 @@ class BillingForm extends Component {
       cardHolder,
       cardNumber,
       securityCode,
-      expirationDate,
+      expirationDate: {
+        month,
+        year,
+      },
       errors: {
         cardHolderError,
         cardNumberError,
@@ -124,6 +190,9 @@ class BillingForm extends Component {
         expirationDateError,
       }
     } = this.state
+
+    const currentYear = parseInt(moment().format('YY'))
+
     return (
       <div>
         <h3>Billing Information</h3>
@@ -131,12 +200,18 @@ class BillingForm extends Component {
           <Label>Name as it appears on Card</Label>
           <Control
             name='cardHolder'
-            value={ cardHolder }
+            value={ this.props.cart.cardHolder || cardHolder }
             onChange={ this.handleOnChange }
             isInvalid={ !!cardHolderError }
           />
-          <Control.Feedback type='invalid' className='text-danger'>{ cardHolderError }</Control.Feedback>
+          <Control.Feedback
+            type='invalid'
+            className='text-danger'
+          >
+            { cardHolderError }
+          </Control.Feedback>
         </Group>
+        
         <Row 
           style={
             {
@@ -156,7 +231,7 @@ class BillingForm extends Component {
             <Label>Credit Card Number</Label>
             <Control
               name='cardNumber'
-              value={ cardNumber }
+              value={ this.props.cart. cardNumber || cardNumber }
               onChange={ this.handleOnChange }
               isInvalid={ !!cardNumberError }
             />
@@ -183,35 +258,105 @@ class BillingForm extends Component {
               { securityCodeError }
             </Control.Feedback>
           </Group>
-
-          <Group controlId='expirationDate'>
-            <Label>Expiration Date</Label>
-            <Control
-              name='expirationDate'
-              value={ expirationDate }
-              onChange={ this.handleOnChange }
-              isInvalid={ !!expirationDateError }
-            />
-            <Control.Feedback
-              type='invalid'
-              className='text-danger'
-            >
-              { expirationDateError }
-            </Control.Feedback>
-          </Group>
         </Row>
 
-        <Button href='/checkout/confirmation' onClick={ this.handleOnClick }>Proceed to Shipping</Button>
+        <Group 
+          controlId='expirationDate'
+          style={
+            {
+              display: 'flex',
+            }
+          }
+        >
+          <Label>Expiration Date</Label>
+          <Control
+            as='select'
+            name='month'
+            value={ month }
+            onChange={ this.handleOnChange }
+            isInvalid={ !!expirationDateError }
+          >
+          <option value='MM'>None</option>
+            {
+              new Array(12).fill('').map((item, idx) => {
+                return (
+                  <option
+                    key={ idx }
+                    value={
+                      idx + 1 < 10 
+                      ? `0${ idx + 1}`
+                      : `${ idx + 1 }`
+                    }
+                  >
+                    {
+                      idx + 1 < 10 
+                        ? `0${ idx + 1}`
+                        : `${ idx + 1 }`
+                    }        
+                  </option>
+                )
+              })
+            }
+          </Control>
+          /
+          <Control
+            as='select'
+            name='year'
+            value={ year }
+            onChange={ this.handleOnChange }
+            isInvalid={ !!expirationDateError }
+          >
+          <option value='YY'>None</option>
+            {
+              new Array(5).fill('').map((item, idx) => {
+                return (
+                  <option
+                    key={ idx }
+                    value = {
+                      currentYear + idx < 10 
+                      ? `0${ currentYear + idx }`
+                      : `${ currentYear + idx }`
+                    }
+                  >
+                    {
+                      currentYear + idx < 10 
+                      ? `0${ currentYear + idx }`
+                      : `${ currentYear + idx }`
+                    }
+                  </option>
+                )
+              })
+            } 
+          </Control>
+          <Control.Feedback
+            type='invalid'
+            className='danger-text'
+          >
+            { expirationDateError }
+          </Control.Feedback>
+        </Group>
+
+        <Button
+          onClick={ this.handleOnClick }
+          disabled={
+            Object.values(this.state.errors).every(value => value === '') &&
+            Object.values(this.state).every(value => value !== '')
+            ? false
+            : true
+          }
+        >
+          Proceed to Shipping
+        </Button>
       </div>
     )
   }
 }
 
-const mapState = ({ user }) => ({ user })
+const mapState = ({ user, cart, statusMessage }) => ({ user, cart, statusMessage })
 
 const mapDispatch = dispatch => {
   return {
-    setUser: state => dispatch(setUser(state))
+    updateCart: (userId, state) => dispatch(updateCart(userId, state))
   }
 }
 

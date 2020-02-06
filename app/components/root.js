@@ -18,6 +18,8 @@ import Product from './Product';
 import ShoppingCart from './ShoppingCart';
 import Checkout from './Checkout';
 import Confirmation from './Confirmation';
+import Gallery from './PhotoGallery';
+import About from './About';
 import Wishlist from './Wishlist';
 import ToastComponent from './Toasts';
 import CardSection from './CardSection'
@@ -27,20 +29,20 @@ import AddProductForm from './AddProductForm';
 class Root extends React.Component {
   componentDidMount() {
     const { fetchUser, createCart } = this.props;
-    fetchUser(document.cookie.replace(/session_id=/, ''))
-    .then(() => {
-    createCart(this.props.user.id)
-    })
+    fetchUser(document.cookie.replace(/session_id=/, '')).then(() => {
+      createCart(this.props.user.id);
+    });
   }
 
   render() {
     const { status, text } = this.props.statusMessage;
     return (
-      <Router>
+      <Router forceRefresh={true}>
         <div>
           <Navigation />
           <ToastComponent status={status} message={text} />
           <Switch>
+<<<<<<< HEAD
             <Route exact path='/' component={WelcomeMessage} />
             <Route path='/login' component={Login} />
             <Route path='/signup' component={Signup} />
@@ -56,6 +58,21 @@ class Root extends React.Component {
             <Route path='/wishlist/:userId' component={Wishlist} />
             <Route path='/user/:id' /*component={UserPage}*/ />
             <Redirect to='/' />
+=======
+            <Route exact path="/" component={WelcomeMessage} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/gallery" component={Gallery} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <Route exact path="/products/page/:page" component={Products} />
+            <Route exact path="/products/add" component={AddProductForm} />
+            <Route path="/products/:id" component={ProductPage} />
+            <Route exact path="/:userId/cart" component={ShoppingCart} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/wishlist/:userId" component={Wishlist} />
+            <Route path="/user/:id" /*component={UserPage}*/ />
+            <Redirect to="/" />
+>>>>>>> 211d6252b20aca6cf7ffbef966508d59bac0ccff
           </Switch>
         </div>
       </Router>

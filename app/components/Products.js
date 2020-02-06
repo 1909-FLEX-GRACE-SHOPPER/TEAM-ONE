@@ -4,40 +4,69 @@ import PageSelect from './PageSelect.js';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../redux/thunks/ProductThunks.js';
 import Form from 'react-bootstrap/Form';
+import { ITEMS_PER_PAGE } from '../redux/constants';
 
 class Products extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      tag: ''
+    };
+  }
   componentDidMount() {
-    this.props.fetchProducts();
+    this.props.fetchProducts(this.props.match.params.page);
+  }
+  filterProducts(tag) {
+    this.setState({ tag });
   }
   render() {
     let { products } = this.props;
-    products = products.rows || [];
-    const PRODUCTS_PER_PAGE = 10;
+    const { tag } = this.state;
+    const productsThisPage = products.rows || [];
+    const totalProducts = products.count || 0;
+    const selectedPage = this.props.match.params.page;
+    const { history } = this.props;
     return (
       <div>
-        <div className='product-search-and-pagination'>
-          <div className='filter-and-sort'>
-            <Form.Control as='select' id='filter-by'>
-              <option value=''>Filter By</option>
-              <option value='option 1'>Option 1</option>
-              <option value='option 2'>Option 2</option>
-            </Form.Control>
-            <Form.Control as='select' id='sort-by'>
-              <option value=''>Sort By</option>
-              <option value='option 1'>Option 1</option>
-              <option value='option 2'>Option 2</option>
+        <div className="product-search-and-pagination">
+          <div className="filter-and-sort">
+            <Form.Label>Filters</Form.Label>
+            <Form.Control
+              as="select"
+              id="filter-by"
+              onChange={e => {
+                this.filterProducts(e.target.value);
+              }}
+            >
+              <option value="">None</option>
+              <option value="Accessory">Accessory</option>
+              <option value="Charger">Charger</option>
+              <option value="Device">Device</option>
+              <option value="Pod">Pod</option>
             </Form.Control>
           </div>
-          <PageSelect pages={products.length / PRODUCTS_PER_PAGE} />
+          <PageSelect
+            pages={Math.floor(totalProducts / ITEMS_PER_PAGE)}
+            selectedPage={selectedPage}
+            history={history}
+          />
         </div>
-        <div className='all-products-container'>
-          {products.length === 0
+        <div className="all-products-container">
+          {productsThisPage.length === 0
             ? 'No products'
-            : products.map(_product => (
-                <Product key={`product-${_product.id}`} product={_product} />
-              ))}
+            : productsThisPage.map(_product =>
+                tag === '' || _product.tags === tag ? (
+                  <Product key={`product-${_product.id}`} product={_product} />
+                ) : (
+                  ''
+                )
+              )}
         </div>
-        <PageSelect pages={products.length / PRODUCTS_PER_PAGE} />
+        <PageSelect
+          pages={Math.floor(totalProducts / ITEMS_PER_PAGE)}
+          selectedPage={selectedPage}
+          history={history}
+        />
       </div>
     );
   }
@@ -46,7 +75,7 @@ class Products extends React.Component {
 const mapState = ({ products }) => ({ products });
 const mapDispatch = dispatch => {
   return {
-    fetchProducts: () => dispatch(fetchProducts())
+    fetchProducts: page => dispatch(fetchProducts(page))
   };
 };
 
