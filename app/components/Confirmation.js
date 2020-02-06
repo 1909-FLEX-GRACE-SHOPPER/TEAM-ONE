@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 
@@ -11,7 +11,6 @@ import { postOrder } from '../redux/thunks/OrderThunks';
 import { SUCCESS } from '../redux/thunks/utils';
 
 class Confirmation extends Component {
-
   handleOnClick = e => {
     e.preventDefault();
     this.props.postOrder({ userId: this.props.user.id, cart: this.props.cart })
@@ -28,21 +27,23 @@ class Confirmation extends Component {
       <div className="confirmation-page">
         <BillingConfirmation />
         <ShippingConfirmation />
-        <Button 
-          onClick={ this.handleOnClick }
+        <Button
+          onClick={this.handleOnClick}
           disabled={
             Object.keys(this.props.cart).every(key => {
-              if(key === 'shippingNotes'||
-              key === 'shippingCountry' ||
-              key === 'productId' ||
-              key === 'productQuantity') {
+              if (
+                key === 'shippingNotes' ||
+                key === 'shippingCountry' ||
+                key === 'productId' ||
+                key === 'productQuantity'
+              ) {
                 return true;
               } else {
-                return !!this.props.cart[key]
+                return !!this.props.cart[key];
               }
             })
-            ? false
-            : true
+              ? false
+              : true
           }
         >
           Confirm Order
@@ -50,7 +51,7 @@ class Confirmation extends Component {
       </div>
     );
   }
-};
+}
 
 const mapState = ({ user, cart, statusMessage }) => ({ user, cart,statusMessage });
 
@@ -58,7 +59,7 @@ const mapDispatch = dispatch => {
   return {
     deleteCart: userId => dispatch(deleteCart(userId)),
     postOrder: (userId, cart) => dispatch(postOrder(userId, cart))
-  }
-}
+  };
+};
 
 export default connect(mapState, mapDispatch)(Confirmation);

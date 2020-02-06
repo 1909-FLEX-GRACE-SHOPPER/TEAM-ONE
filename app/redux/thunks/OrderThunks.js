@@ -37,12 +37,12 @@ export const postOrder = order => {
         dispatch(
           statusMessage({
             status: SUCCESS,
-            text: 'Your order has been received and is currently being processed.'
+            text:
+              'Your order has been received and is currently being processed.'
           })
         );
       })
       .catch(e => {
-        console.log(e);
         dispatch(
           statusMessage({
             status: FAIL,
