@@ -12,6 +12,8 @@ export const SET_ORDER_DETAILS = Symbol('SET_ORDER_DETAILS');
 
 export const SET_WISHLIST = Symbol('SET_WISHLIST');
 
+export const STATUS_MESSAGE = Symbol('STATUS_MESSAGE');  
+  
 export const LOGIN_SUCCCESS = Symbol('LOGIN_SUCCESS');
 
 export const LOGIN_ERROR = Symbol('LOGIN_ERROR');

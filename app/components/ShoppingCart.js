@@ -15,7 +15,8 @@ class ShoppingCart extends React.Component {
   };
 
   render() {
-    const { cart } = this.props;
+    const cart = this.props;
+    console.log(cart);
     if (cart.length === 0) {
       return (
         <div className='shopping-cart'>
@@ -48,7 +49,7 @@ class ShoppingCart extends React.Component {
 
 const mapState = state => {
   const cart = state.cart;
-  return { cart };
+  return cart;
 };
 
 const mapDispatch = dispatch => {

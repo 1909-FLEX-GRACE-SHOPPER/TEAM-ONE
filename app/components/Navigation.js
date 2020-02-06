@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, Button } from 'react-bootstrap';
 import { logoutUser } from '../redux/thunks/UserThunks';
-import axios from 'axios';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
@@ -17,7 +16,7 @@ class Navigation extends Component {
             </Nav.Link>
             <Button
               onClick={() => {
-                logoutUser(user);
+                logoutUser(user.id);
               }}
             >
               {' '}
@@ -35,7 +34,7 @@ class Navigation extends Component {
             </Nav.Link>
             <Button
               onClick={() => {
-                logoutUser(user);
+                logoutUser(user.id);
               }}
             >
               {' '}
@@ -61,6 +60,7 @@ class Navigation extends Component {
           <Nav.Link href='/home'>Home</Nav.Link>
           <Nav.Link href='/about'>About</Nav.Link>
           <Nav.Link href='/products/page/1'>Shop</Nav.Link>
+          <Nav.Link href='/gallery'>Photo Booth</Nav.Link>
         </Nav>
         <Nav>
           <Nav.Link href={`/${user.id}/cart`}>Cart</Nav.Link>
@@ -81,7 +81,7 @@ const mapStateToProps = state => {
 
 const mapDispatch = dispatch => {
   return {
-    logoutUser: user => dispatch(logoutUser(user))
+    logoutUser: userId => dispatch(logoutUser(userId))
   };
 };
 

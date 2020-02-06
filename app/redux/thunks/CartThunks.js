@@ -10,9 +10,8 @@ export function setCart(userId) {
     console.log(userId);
     return axios
       .get(`/api/users/${userId}/cart`)
-      .then(res => res.data)
-      .then(cart => {
-        return dispatch(_setCart(cart));
+      .then(res => {
+        dispatch(_setCart(res.data));
       })
       .catch(e => {
         console.error('Error fetching Cart', e);
@@ -39,12 +38,31 @@ export function addToCart(productId, userId, productQuantity) {
   };
 }
 
-export const updateCart = (productId, userId, payload) => {
+export const createCart = userId => {
+  return dispatch => {
+    return axios
+      .post(`/api/users/${userId}/cart`)
+      .then(() => {
+        dispatch(setCart(userId));
+      })
+      .catch(e => {
+        console.error('Error creating cart', e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
+  };
+};
+
+export const updateCart = (userId, payload) => {
   return dispatch => {
     return axios
       .put(`/api/users/${userId}/cart`, payload)
       .then(() => {
-        dispatch(setCart(cartId));
+        dispatch(setCart(userId));
         dispatch(
           statusMessage({
             status: SUCCESS,
@@ -54,6 +72,23 @@ export const updateCart = (productId, userId, payload) => {
       })
       .catch(e => {
         console.error('Error updating cart', e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
+  };
+};
+
+export const deleteCart = userId => {
+  return dispatch => {
+    return axios
+      .delete(`/api/users/${userId}/cart`)
+      .then(() => dispatch(setCart(userId)))
+      .catch(e => {
+        console.error('Error deleting cart', e);
         dispatch(
           statusMessage({
             status: FAIL,
