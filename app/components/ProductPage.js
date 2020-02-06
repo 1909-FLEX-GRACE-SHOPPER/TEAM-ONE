@@ -5,7 +5,7 @@ import {
   fetchSingleProduct,
   fetchSimilarProducts
 } from '../redux/thunks/ProductThunks';
-import { updateCart } from '../redux/thunks/CartThunks';
+import { addToCart } from '../redux/thunks/CartThunks';
 import { postWishlist } from '../redux/thunks/WishlistThunks';
 import Product from './Product';
 import Button from 'react-bootstrap/Button';
@@ -23,8 +23,6 @@ class ProductPage extends React.Component {
   }
 
   handleAddToCart = async ({ productId, userId, productQuantity }) => {
-    console.log('calling handleAddtoCart');
-    console.log(userId);
     await this.props.addToCart(productId, userId, productQuantity);
   };
 
@@ -137,7 +135,7 @@ const mapDispatch = dispatch => {
     postWishlist: (productId, userId) =>
       dispatch(postWishlist(productId, userId)),
     addToCart: (productId, userId, productQuantity) =>
-      dispatch(updateCart(productId, userId, productQuantity))
+      dispatch(addToCart(productId, userId, productQuantity))
   };
 };
 

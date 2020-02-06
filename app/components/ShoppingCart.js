@@ -7,7 +7,7 @@ import { setCart, removeItemFromCart } from '../redux/thunks/CartThunks.js';
 
 class ShoppingCart extends React.Component {
   componentDidMount() {
-    this.props.fetchCart();
+    this.props.fetchCart(this.props.match.params.userId);
   }
 
   handleRemoveItem = async item => {
@@ -53,7 +53,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    fetchCart: () => dispatch(setCart()),
+    fetchCart: userId => dispatch(setCart(userId)),
     removeItem: item => dispatch(removeItemFromCart(item))
   };
 };

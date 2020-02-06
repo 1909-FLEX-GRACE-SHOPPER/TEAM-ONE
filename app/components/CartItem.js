@@ -34,6 +34,7 @@ class CartItem extends React.Component {
 
   render() {
     const { productImage, productName, quantity, productId } = this.state;
+    console.log(quantity);
     return (
       <div className='cart-item'>
         <img className='cart-item-image' src={productImage} />

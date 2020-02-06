@@ -6,6 +6,8 @@ import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
 export function setCart(userId) {
   return function thunk(dispatch) {
+    console.log('calling setCart thunk');
+    console.log(userId);
     return axios
       .get(`/api/users/${userId}/cart`)
       .then(res => res.data)
@@ -24,10 +26,23 @@ export function setCart(userId) {
   };
 }
 
-export const updateCart = (productId, userId, productQuantity) => {
+export function addToCart(productId, userId, productQuantity) {
+  return function thunk(dispatch) {
+    return axios
+      .post(`/api/users/cart/add`, { productId, userId, productQuantity })
+      .then(() => {
+        return dispatch(setCart(userId));
+      })
+      .catch(e => {
+        console.log('Error adding to cart', e);
+      });
+  };
+}
+
+export const updateCart = (productId, userId, payload) => {
   return dispatch => {
     return axios
-      .put(`/api/users/${userId}/cart`, productId, productQuantity)
+      .put(`/api/users/${userId}/cart`, payload)
       .then(() => {
         dispatch(setCart(cartId));
         dispatch(

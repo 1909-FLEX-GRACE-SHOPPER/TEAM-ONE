@@ -283,6 +283,23 @@ router.get('/:userId/cart', async (req, res, next) => {
   }
 });
 
+router.post('/cart/add', async (req, res, next) => {
+  try {
+    const productId = req.body.productId;
+    const productQuantity = req.body.productQuantity;
+    const userId = req.body.userId;
+    console.log(req.body);
+    Cart.create({
+      productId: productId,
+      productQuantity: productQuantity,
+      userId: userId
+    });
+  } catch (err) {
+    res.status(400);
+    next(err);
+  }
+});
+
 router.post('/:userId/cart', (req, res, next) => {
   Cart.findOne({
     where: { userId: req.params.userId }
