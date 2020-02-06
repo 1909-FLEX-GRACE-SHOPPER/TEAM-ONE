@@ -288,7 +288,6 @@ router.post('/cart/add', async (req, res, next) => {
     const productId = req.body.productId;
     const productQuantity = req.body.productQuantity;
     const userId = req.body.userId;
-    console.log(req.body);
     Cart.create({
       productId: productId,
       productQuantity: productQuantity,
