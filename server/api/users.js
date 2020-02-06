@@ -208,12 +208,8 @@ router.put('/:id', (req, res, next) => {
 //Finds and serves a single user based on a primary key.
 //Eager loads associated orders.
 router.get('/:userId/orders', (req, res, next) => {
-  User.findByPk(req.params.userId, {
-    include: [
-      {
-        model: Order
-      }
-    ]
+  Order.findOne({
+    where: { userId: req.params.userId }
   })
     .then(user => res.status(200).send(user))
     .catch(e => {
@@ -226,7 +222,9 @@ router.get('/:userId/orders', (req, res, next) => {
 router.post('/:userId/orders', (req, res, next) => {
   const orderBody = new OrderObject(req.params.userId, req.body);
   Order.create(orderBody)
-    .then(() => res.status(201))
+    .then(() => {
+      res.status(201).send('success')
+    })
     .catch(e => {
       res.status(400);
       next(e);
@@ -307,10 +305,23 @@ router.put(`/:userId/cart`, (req, res, next) => {
   })
   .then(cart => cart.update(cartBody))
   .then(() => {
-    res.status(202).send('Success')
+    res.status(202).send('updated')
   })
   .catch(e => {
     res.status(304);
+    next(e);
+  })
+})
+
+//Route for deleting a cart.
+router.delete(`/:userId/cart`, (req, res, next) => {
+  Cart.findOne({
+    where: { userId: req.params.userId }
+  })
+  .then(cart => cart.destroy())
+  .then(() => res.status(202).send({}))
+  .catch(e => {
+    res.status(404)
     next(e);
   })
 })

@@ -10,8 +10,10 @@ import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 export const fetchOrders = userId => {
   return dispatch => {
     return axios
-      .get(`/api/users/${userId}/orders`)
-      .then(res => dispatch(setOrders(res.data)))
+      .get(`/api/users/${ userId }/orders`)
+      .then(res => {
+        dispatch(setOrders(res.data))
+      })
       .catch(e => {
         console.log(e);
         dispatch(
@@ -26,13 +28,12 @@ export const fetchOrders = userId => {
 
 //Thunk for creating a new order.
 //Refetches orders after creating.
-export const postOrder = (userId, order) => {
-  console.log(order)
+export const postOrder = order => {
   return dispatch => {
     return axios
-      .post(`/api/users/${userId}/orders`, order)
+      .post(`/api/orders`, order)
       .then(() => {
-        dispatch(fetchOrders(userId));
+        dispatch(fetchOrders(order.userId));
         dispatch(
           statusMessage({
             status: SUCCESS,

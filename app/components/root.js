@@ -14,10 +14,9 @@ import Login from './Login';
 import Signup from './Signup';
 import Products from './Products';
 import ProductPage from './ProductPage';
-import Product from './Product';
 import ShoppingCart from './ShoppingCart';
 import Checkout from './Checkout';
-import Confirmation from './Confirmation';
+import Receipt from './Receipt';
 import Wishlist from './Wishlist';
 import ToastComponent from './Toasts';
 
@@ -47,9 +46,8 @@ class Root extends React.Component {
             <Route exact path='/products/add' component={AddProductForm} />
             <Route path='/products/:id' component={ProductPage} />
             <Route exact path='/:userId/cart' component={ShoppingCart} />
-            <Route
-              path="/checkout" component={ Checkout }
-            />
+            <Route path='/checkout' component={ Checkout }/>
+            <Route path='/receipt' component={ Receipt } />
             <Route path='/wishlist/:userId' component={Wishlist} />
             <Route path='/user/:id' /*component={UserPage}*/ />
             <Redirect to='/' />
