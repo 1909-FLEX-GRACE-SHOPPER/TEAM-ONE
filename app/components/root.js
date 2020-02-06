@@ -20,6 +20,7 @@ import Checkout from './Checkout';
 import Confirmation from './Confirmation';
 import Wishlist from './Wishlist';
 import ToastComponent from './Toasts';
+import CardSection from './CardSection'
 
 import AddProductForm from './AddProductForm';
 
@@ -47,9 +48,8 @@ class Root extends React.Component {
             <Route exact path='/products/add' component={AddProductForm} />
             <Route path='/products/:id' component={ProductPage} />
             <Route exact path='/:userId/cart' component={ShoppingCart} />
-            <Route
-              path="/checkout" component={ Checkout }
-            />
+            <Route path="/checkout" component={ Checkout } />
+            <Route exact path='/stripe' component={ CardSection }/>
             <Route
               path='/orders/:orderId/confirmation/:userId?' /*component={Confirmation} */
             />
