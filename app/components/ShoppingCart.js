@@ -56,6 +56,6 @@ const mapDispatch = dispatch => {
     fetchCart: () => dispatch(setCart()),
     removeItem: item => dispatch(removeItemFromCart(item))
   };
-};
+}
 
 export default connect(mapState, mapDispatch)(ShoppingCart);

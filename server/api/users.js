@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { User, Order, Cart, Product, Session } = models;
 
-const { paginate, UserObject } = require('./utils');
+const { paginate, UserObject, OrderObject, CartObject } = require('./utils');
 const bcrypt = require('bcrypt');
 
 router.get('/session/:sessionId', (req, res, next) => {
@@ -124,14 +124,14 @@ router.post('/login', (req, res, next) => {
 });
 
 //Logs out a User
-router.post('/logout', (req, res, next) => {
-  const { email, password } = req.body;
+router.post('/logout/:userId', (req, res, next) => {
+  const id = req.params.userId;
   User.update(
     {
       sessionId: null
     },
     {
-      where: { email, password }
+      where: { id }
     }
   )
     .then(() => Session.create())
@@ -141,7 +141,9 @@ router.post('/logout', (req, res, next) => {
         sessionId: session.id
       })
     )
-    .then(guest => res.status(201).send(guest))
+    .then(guest => {
+      return res.status(201).send(guest);
+    })
     .catch(e => {
       res.status(401);
       next(e);
@@ -224,17 +226,11 @@ router.get('/:userId/orders', (req, res, next) => {
 
 //Creates a new order for a specific User.
 router.post('/:userId/orders', (req, res, next) => {
-  const { shippingAddress, orderCost } = req.body;
-
-  const { userId } = req.params;
-
-  Order.create({
-    userId,
-    shippingAddress,
-    orderCost: (orderCost * 1).toFixed(2)
-  })
+  const orderBody = new OrderObject(req.params.userId, req.body);
+  Order.create(orderBody)
     .then(() => res.status(201))
     .catch(e => {
+      console.log('ERROR CREATING ORDER ', e);
       res.status(400);
       next(e);
     });
@@ -271,17 +267,55 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
     });
 });
 
-router.get('/:userId/cart', async (req, res, next) => {
-  try {
-    // let cart = await User.findByPk(req.params.userId, {
-    //   include: [{ model: Cart }]
-    // });
-    let cart = await Cart.findAll();
-    res.status(200).send(cart);
-  } catch (err) {
-    res.status(404);
-    next(err);
-  }
+router.get('/:userId/cart', (req, res, next) => {
+  Cart.findOne({
+    where: { userId: req.params.userId }
+  })
+    .then(cart => res.status(200).send(cart))
+    .catch(e => {
+      res.status(404);
+      next(e);
+    });
+});
+
+router.post(`/:userId/cart`, (req, res, next) => {
+  Cart.findOne({
+    where: { userId: req.params.userId }
+  })
+    .then(cartOrNull => {
+      if (!cartOrNull) {
+        Cart.create({
+          userId: req.params.userId
+        })
+          .then(cart => res.status(200).send(cart))
+          .catch(e => {
+            res.status(400);
+            next(e);
+          });
+      } else {
+        res.status(200).send(cartOrNull);
+      }
+    })
+    .catch(e => {
+      res.status(404);
+      next(e);
+    });
+});
+
+//edit cart for shipping and billing details
+router.put(`/:userId/cart`, (req, res, next) => {
+  const cartBody = new CartObject(req.body);
+  Cart.findOne({
+    where: { userId: req.params.userId }
+  })
+    .then(cart => cart.update(cartBody))
+    .then(() => {
+      res.status(202).send('Success');
+    })
+    .catch(e => {
+      res.status(304);
+      next(e);
+    });
 });
 
 //edit product quantity in cart
@@ -308,6 +342,7 @@ router.delete('/:userId/cart/:cartId', async (req, res, next) => {
     });
     res.status(202).send('Item deleted');
   } catch (err) {
+    console.log('ERROR DELETING CART ', err);
     res.status(400).next(err);
   }
 });
