@@ -9,7 +9,11 @@ export function setCart(userId) {
     return axios
       .get(`/api/users/${userId}/cart`)
       .then(res => {
-        dispatch(_setCart(res.data));
+        if(res.data === '') {
+          dispatch(_setCart({}))
+        } else {
+          dispatch(_setCart(res.data))
+        }
       })
       .catch(e => {
         console.error('Error fetching Cart', e);

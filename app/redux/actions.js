@@ -77,7 +77,7 @@ export const loggedInFail = () => {
 export const _setCart = cart => {
   return {
     type: SET_CART,
-    cart
+    cart,
   };
 };
 
