@@ -11,7 +11,7 @@ class Navigation extends Component {
       case 'Existing customer':
         return (
           <Nav>
-            <Nav.Link href={`/user/${params.id}`}>
+            <Nav.Link href={`/user/${params.id}/orders`}>
               {' '}
               {params.firstName} {params.lastName}{' '}
             </Nav.Link>
@@ -29,7 +29,7 @@ class Navigation extends Component {
         return (
           <Nav>
             <Nav.Link href="/products/add"> Add a Product </Nav.Link>
-            <Nav.Link href={`/user/${params.id}`}>
+            <Nav.Link href={`/user/${params.id}/orders`}>
               {' '}
               {params.firstName} {params.lastName}{' '}
             </Nav.Link>

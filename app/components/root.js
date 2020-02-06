@@ -21,6 +21,7 @@ import Wishlist from './Wishlist';
 import ToastComponent from './Toasts';
 
 import AddProductForm from './AddProductForm';
+import UserPage from './UserPage';
 
 class Root extends React.Component {
   componentDidMount() {
@@ -49,7 +50,7 @@ class Root extends React.Component {
               path='/orders/:orderId/confirmation/:userId?' /*component={Confirmation} */
             />
             <Route path='/wishlist/:userId' component={Wishlist} />
-            <Route path='/user/:id' /*component={UserPage}*/ />
+            <Route path='/user/:id/orders' component={UserPage} />
             <Redirect to='/' />
           </Switch>
         </div>
