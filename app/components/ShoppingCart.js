@@ -15,7 +15,7 @@ class ShoppingCart extends React.Component {
   };
 
   render() {
-    const cart = this.props;
+    const { cart, product } = this.props;
     console.log(cart);
     if (cart.length === 0) {
       return (
@@ -29,10 +29,10 @@ class ShoppingCart extends React.Component {
         <div className='shopping-cart'>
           <h4>SHOPPING CART</h4>
           <ListGroup className='shopping-cart-product-list'>
-            {cart.map(product => (
-              <ListGroup.Item key={product.id}>
-                <CartItem key={product.id} product={product} />
-                <Button onClick={() => this.handleRemoveItem(product)}>
+            {cart.map(item => (
+              <ListGroup.Item key={item.id}>
+                <CartItem key={item.id} item={item} />
+                <Button onClick={() => this.handleRemoveItem(item)}>
                   Remove
                 </Button>
               </ListGroup.Item>
@@ -49,7 +49,7 @@ class ShoppingCart extends React.Component {
 
 const mapState = state => {
   const cart = state.cart;
-  return cart;
+  return { cart };
 };
 
 const mapDispatch = dispatch => {

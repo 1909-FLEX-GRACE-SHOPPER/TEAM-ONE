@@ -267,19 +267,8 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
     });
 });
 
-// router.get('/:userId/cart', async (req, res, next) => {
-//   try {
-//     let cart = await Cart.findAll({
-//       where: { userId: req.params.userId }
-//     });
-//     res.status(200).send(cart);
-//   } catch (err) {
-//     res.status(404);
-//     next(err);
-//   }
-
 router.get('/:userId/cart', (req, res, next) => {
-  Cart.findOne({
+  Cart.findAll({
     where: { userId: req.params.userId }
   })
     .then(cart => res.status(200).send(cart))
