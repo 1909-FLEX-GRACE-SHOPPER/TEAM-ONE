@@ -7,16 +7,18 @@ import {
   setSimilarProducts
 } from '../actions';
 
+import { ITEMS_PER_PAGE } from '../constants';
+
 import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
 //TODO: Delete console.log on deployment
 
 //Thunk for fetching all products.
 //Do you think we could initialize id to null, and reuse this thunk to make a call for a single product?
-export const fetchProducts = () => {
+export const fetchProducts = page => {
   return dispatch => {
     return axios
-      .get('/api/products')
+      .get(`/api/products/limit/${ITEMS_PER_PAGE}/page/${page}`)
       .then(res => dispatch(setProducts(res.data)))
       .catch(e => {
         console.error(e);

@@ -34,7 +34,7 @@ class Root extends React.Component {
   render() {
     const { status, text } = this.props.statusMessage;
     return (
-      <Router>
+      <Router forceRefresh={true}>
         <div>
           <Navigation />
           <ToastComponent status={status} message={text} />
