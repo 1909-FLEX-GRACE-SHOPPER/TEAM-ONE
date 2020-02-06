@@ -42,23 +42,6 @@ class Root extends React.Component {
           <Navigation />
           <ToastComponent status={status} message={text} />
           <Switch>
-<<<<<<< HEAD
-            <Route exact path='/' component={WelcomeMessage} />
-            <Route path='/login' component={Login} />
-            <Route path='/signup' component={Signup} />
-            <Route exact path='/products' component={Products} />
-            <Route exact path='/products/add' component={AddProductForm} />
-            <Route path='/products/:id' component={ProductPage} />
-            <Route exact path='/:userId/cart' component={ShoppingCart} />
-            <Route path="/checkout" component={ Checkout } />
-            <Route exact path='/stripe' component={ CardSection }/>
-            <Route
-              path='/orders/:orderId/confirmation/:userId?' /*component={Confirmation} */
-            />
-            <Route path='/wishlist/:userId' component={Wishlist} />
-            <Route path='/user/:id' /*component={UserPage}*/ />
-            <Redirect to='/' />
-=======
             <Route exact path="/" component={WelcomeMessage} />
             <Route exact path="/about" component={About} />
             <Route exact path="/gallery" component={Gallery} />
@@ -70,10 +53,10 @@ class Root extends React.Component {
             <Route exact path="/:userId/cart" component={ShoppingCart} />
             <Route path="/checkout" component={Checkout} />
             <Route path='/receipt' component={ Receipt } />
+            <Route exact path='/stripe' component={ CardSection }/>
             <Route path="/wishlist/:userId" component={Wishlist} />
             <Route path="/user/:id" /*component={UserPage}*/ />
             <Redirect to="/" />
->>>>>>> 211d6252b20aca6cf7ffbef966508d59bac0ccff
           </Switch>
         </div>
       </Router>
