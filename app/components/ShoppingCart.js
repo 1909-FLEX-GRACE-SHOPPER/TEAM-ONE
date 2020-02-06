@@ -15,8 +15,10 @@ class ShoppingCart extends React.Component {
   };
 
   render() {
-    const { cart, product } = this.props;
+    const { cart } = this.props;
     console.log(cart);
+    let total = 0;
+    total += cart.map(item => parseInt(item.subtotal));
     if (cart.length === 0) {
       return (
         <div className='shopping-cart'>
@@ -39,7 +41,7 @@ class ShoppingCart extends React.Component {
             ))}
           </ListGroup>
           {/* TODO: reflect total cost */}
-          <div>TOTAL: </div>
+          <div>TOTAL: {total}</div>
           <Link to='/checkout'>CHECKOUT</Link>
         </div>
       );

@@ -9,6 +9,7 @@ class CartItem extends React.Component {
       productImage: '',
       productName: '',
       price: '',
+      subtotal: this.props.item.subtotal,
       cartId: this.props.item.id,
       quantity: this.props.item.productQuantity,
       userId: this.props.item.userId,
@@ -37,9 +38,16 @@ class CartItem extends React.Component {
   handleEditQuantity = async ev => {
     try {
       const newQuantity = ev.target.value;
-      this.setState({ quantity: newQuantity });
+      const newSubtotal = this.state.price * newQuantity;
+      this.setState({
+        quantity: newQuantity,
+        subtotal: newSubtotal
+      });
       await axios
-        .put(`/api/users/${userId}/cart/${this.state.cartId}`, { newQuantity })
+        .put(`/api/users/${this.state.userId}/cart/${this.state.cartId}`, {
+          newQuantity,
+          newSubtotal
+        })
         .then(res => {
           return res.data;
         });

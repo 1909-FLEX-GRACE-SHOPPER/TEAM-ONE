@@ -296,12 +296,13 @@ router.post('/cart/add', async (req, res, next) => {
 
 //edit product quantity in cart
 router.put('/:userId/cart/:cartId', (req, res, next) => {
-  const { newQuantity } = req.body;
+  const { newQuantity, newSubtotal } = req.body;
 
   Cart.findByPk(req.params.cartId)
     .then(cartItem =>
       cartItem.update({
-        productQuantity: newQuantity
+        productQuantity: newQuantity,
+        subtotal: newSubtotal
       })
     )
     .then(() => res.status(202))
