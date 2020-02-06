@@ -8,13 +8,19 @@ import BillingConfirmation from './BillingConfirmation.js';
 import { deleteCart } from '../redux/thunks/CartThunks';
 import { postOrder } from '../redux/thunks/OrderThunks';
 
+import { SUCCESS } from '../redux/thunks/utils';
+
 class Confirmation extends Component {
   handleOnClick = e => {
     e.preventDefault();
-    console.log('CART IS ', this.props.cart);
-    this.props.postOrder(this.props.user.id, this.props.cart);
-    this.props.deleteCart(this.props.user.id);
-  };
+    this.props.postOrder({ userId: this.props.user.id, cart: this.props.cart })
+    .then(() => this.props.deleteCart(this.props.user.id))
+    .then(() => {
+      if(this.props.statusMessage.status === SUCCESS) {
+        this.props.history.push('/receipt');
+      }
+    })
+  }
 
   render() {
     return (
@@ -47,7 +53,7 @@ class Confirmation extends Component {
   }
 }
 
-const mapState = ({ user, cart }) => ({ user, cart });
+const mapState = ({ user, cart, statusMessage }) => ({ user, cart,statusMessage });
 
 const mapDispatch = dispatch => {
   return {

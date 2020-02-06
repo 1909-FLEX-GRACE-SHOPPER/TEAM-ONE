@@ -3,7 +3,7 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { Order, OrderDetail, User } = models;
 
-const { paginate } = require('./utils');
+const { paginate, OrderObject } = require('./utils');
 
 //Finds and servers all orders
 router.get('/', paginate(Order), (req, res, next) => {
@@ -15,6 +15,19 @@ router.get('/', paginate(Order), (req, res, next) => {
       next(e);
     });
 });
+
+//Create new order
+router.post('/', (req, res, next) => {
+  const orderBody = new OrderObject(req.body.userId, req.body.cart)
+  Order.create(orderBody)
+  .then(order => {
+    res.status(201).send(order)
+  })
+  .catch(e => {
+    res.status(400)
+    next(e);
+  })
+})
 
 //Finds and serves a single order based on a primary key.
 //Eager loads associated user.
