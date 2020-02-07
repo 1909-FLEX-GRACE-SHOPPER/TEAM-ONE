@@ -6,15 +6,15 @@ import { fetchWishlist, deleteWishlist } from '../redux/thunks/WishlistThunks';
 import WishlistItem from './WishlistItem.js';
 
 class Wishlist extends React.Component {
-  componentDidMount() {
-    if (
-      this.props.user.userType !== 'Guest' &&
-      this.props.user.userType !== undefined
-    ) {
-      console.log(this.props.match.params.userId);
-      this.props.fetchWishlist(this.props.match.params.userId);
-    }
+  constructor() {
+    super();
   }
+  componentDidMount() {
+    console.log(this.props);
+    this.props.fetchWishlist(this.props.match.params.userId);
+  }
+
+  //TODO: make wishlist render "create an account" after log out
 
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
@@ -36,14 +36,12 @@ class Wishlist extends React.Component {
             </div>
           ) : (
             <div>
-              <Link>Back</Link>
+              <Link to='/products/page/1'>Back</Link>
               <h4>WISHLIST</h4>
               <ListGroup className='wishlist-product-list'>
                 {wishlist.map(item => (
                   <ListGroup.Item key={item.id}>
-                    {/* bring in associated product */}
-                    <WishlistItem key={item.id} />
-
+                    <WishlistItem key={item.id} item={item} />
                     <Button onClick={() => this.handleRemoveItem(item)}>
                       Remove
                     </Button>
@@ -58,7 +56,12 @@ class Wishlist extends React.Component {
   }
 }
 
-const mapState = ({ wishlist, user }) => ({ wishlist, user });
+const mapState = state => {
+  const wishlist = state.wishlist;
+  const user = state.user;
+  return { wishlist, user };
+};
+
 const mapDispatch = dispatch => {
   return {
     fetchWishlist: userId => dispatch(fetchWishlist(userId)),
