@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { models } = require('../db/index.js');
-const { User, Order, Cart, Product, Session } = models;
+const { User, Order, Cart, Product, Session, Wishlist } = models;
 
 const {
   paginate,
@@ -214,12 +214,8 @@ router.put('/:id', (req, res, next) => {
 //Finds and serves a single user based on a primary key.
 //Eager loads associated orders.
 router.get('/:userId/orders', (req, res, next) => {
-  User.findByPk(req.params.userId, {
-    include: [
-      {
-        model: Order
-      }
-    ]
+  Order.findOne({
+    where: { userId: req.params.userId }
   })
     .then(user => res.status(200).send(user))
     .catch(e => {
@@ -232,7 +228,9 @@ router.get('/:userId/orders', (req, res, next) => {
 router.post('/:userId/orders', (req, res, next) => {
   const orderBody = new OrderObject(req.params.userId, req.body);
   Order.create(orderBody)
-    .then(() => res.status(201))
+    .then(() => {
+      res.status(201).send('success')
+    })
     .catch(e => {
       console.log('ERROR CREATING ORDER ', e);
       res.status(400);
@@ -272,7 +270,7 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
 });
 
 router.get('/:userId/cart', (req, res, next) => {
-  Cart.findOne({
+  Cart.findAll({
     where: { userId: req.params.userId }
   })
     .then(cart => res.status(200).send(cart))
@@ -280,6 +278,52 @@ router.get('/:userId/cart', (req, res, next) => {
       res.status(404);
       next(e);
     });
+});
+
+router.post('/cart/add', async (req, res, next) => {
+  try {
+    const productId = req.body.productId;
+    const productQuantity = req.body.productQuantity;
+    const userId = req.body.userId;
+    Cart.create({
+      productId: productId,
+      productQuantity: productQuantity,
+      userId: userId
+    });
+  } catch (err) {
+    res.status(400);
+    next(err);
+  }
+});
+
+//edit product quantity in cart
+router.put('/:userId/cart/:cartId', (req, res, next) => {
+  const { newQuantity, newSubtotal } = req.body;
+
+  Cart.findByPk(req.params.cartId)
+    .then(cartItem =>
+      cartItem.update({
+        productQuantity: newQuantity,
+        subtotal: newSubtotal
+      })
+    )
+    .then(() => res.status(202))
+    .catch(e => {
+      res.status(304);
+      next(e);
+    });
+});
+
+router.delete('/:userId/cart/:cartId', async (req, res, next) => {
+  try {
+    await Cart.destroy({
+      where: { id: req.params.cartId }
+    });
+    res.status(202).send('Item deleted');
+  } catch (err) {
+    console.log('ERROR DELETING CART ', err);
+    res.status(400).next(err);
+  }
 });
 
 router.post(`/:userId/cart`, (req, res, next) => {
@@ -312,43 +356,66 @@ router.put(`/:userId/cart`, (req, res, next) => {
   Cart.findOne({
     where: { userId: req.params.userId }
   })
-    .then(cart => cart.update(cartBody))
-    .then(() => {
-      res.status(202).send('Success');
-    })
+  .then(cart => cart.update(cartBody))
+  .then(() => {
+    res.status(202).send('updated')
+  })
+  .catch(e => {
+    res.status(304);
+    next(e);
+  })
+})
+
+//Route for deleting a cart.
+router.delete(`/:userId/cart`, (req, res, next) => {
+  Cart.findOne({
+    where: { userId: req.params.userId }
+  })
+  .then(cart => cart.destroy())
+  .then(() => res.status(202).send({}))
+  .catch(e => {
+    res.status(404)
+    next(e);
+  })
+})
+
+router.get('/:userId/wishlist', (req, res, next) => {
+  Wishlist.findAll({
+    where: {
+      userId: req.params.userId
+    }
+  })
+    .then(wishlist => res.status(200).send(wishlist))
     .catch(e => {
-      res.status(304);
+      res.status(400);
+      next(e);
+    });
+});
+//TODO: remove console.log
+//TODO: add userId to path
+router.post('/wishlist', (req, res, next) => {
+  console.log('calling post wishlist api');
+  console.log(req.body);
+
+  const productId = req.body.productId;
+  const userId = req.params.userId;
+
+  Wishlist.create({ productId: productId, userId: userId })
+    .then(item => res.status(201).send(item))
+    .catch(e => {
+      res.status(400);
       next(e);
     });
 });
 
-//edit product quantity in cart
-router.put('/:userId/cart/:cartId', (req, res, next) => {
-  const { newQuantity } = req.body;
-
-  Cart.findByPk(req.params.cartId)
-    .then(cartItem =>
-      cartItem.update({
-        productQuantity: newQuantity
-      })
-    )
-    .then(() => res.status(202))
+router.delete('/:userId/wishlist/:wishlistId', (req, res, next) => {
+  Wishlist.findByPk(req.params.wishlistId)
+    .then(item => item.destroy())
+    .then(() => res.status(200).send('Item deleted'))
     .catch(e => {
-      res.status(304);
+      res.status(400);
       next(e);
     });
-});
-
-router.delete('/:userId/cart/:cartId', async (req, res, next) => {
-  try {
-    await Cart.destroy({
-      where: { id: req.params.cartId }
-    });
-    res.status(202).send('Item deleted');
-  } catch (err) {
-    console.log('ERROR DELETING CART ', err);
-    res.status(400).next(err);
-  }
 });
 
 module.exports = router;
