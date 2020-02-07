@@ -225,7 +225,7 @@ router.post('/:userId/orders', (req, res, next) => {
   const orderBody = new OrderObject(req.params.userId, req.body);
   Order.create(orderBody)
     .then(() => {
-      res.status(201).send('success')
+      res.status(201).send('success');
     })
     .catch(e => {
       console.log('ERROR CREATING ORDER ', e);
@@ -352,28 +352,28 @@ router.put(`/:userId/cart`, (req, res, next) => {
   Cart.findOne({
     where: { userId: req.params.userId }
   })
-  .then(cart => cart.update(cartBody))
-  .then(() => {
-    res.status(202).send('updated')
-  })
-  .catch(e => {
-    res.status(304);
-    next(e);
-  })
-})
+    .then(cart => cart.update(cartBody))
+    .then(() => {
+      res.status(202).send('updated');
+    })
+    .catch(e => {
+      res.status(304);
+      next(e);
+    });
+});
 
 //Route for deleting a cart.
 router.delete(`/:userId/cart`, (req, res, next) => {
   Cart.findOne({
     where: { userId: req.params.userId }
   })
-  .then(cart => cart.destroy())
-  .then(() => res.status(202).send({}))
-  .catch(e => {
-    res.status(404)
-    next(e);
-  })
-})
+    .then(cart => cart.destroy())
+    .then(() => res.status(202).send({}))
+    .catch(e => {
+      res.status(404);
+      next(e);
+    });
+});
 
 router.get('/:userId/wishlist', (req, res, next) => {
   Wishlist.findAll({
@@ -394,7 +394,7 @@ router.post('/wishlist', (req, res, next) => {
   console.log(req.body);
 
   const productId = req.body.productId;
-  const userId = req.params.userId;
+  const userId = req.body.userId;
 
   Wishlist.create({ productId: productId, userId: userId })
     .then(item => res.status(201).send(item))

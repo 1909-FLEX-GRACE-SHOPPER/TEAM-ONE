@@ -11,6 +11,7 @@ class Wishlist extends React.Component {
       this.props.user.userType !== 'Guest' &&
       this.props.user.userType !== undefined
     ) {
+      console.log(this.props.match.params.userId);
       this.props.fetchWishlist(this.props.match.params.userId);
     }
   }
@@ -20,7 +21,9 @@ class Wishlist extends React.Component {
   };
 
   render() {
-    const { wishlist, user, product } = this.props;
+    const { wishlist, user } = this.props;
+    console.log('calling Wishlist render');
+    console.log(wishlist);
     if (user.userType === 'Guest') {
       return <div>Please create an account to create a wishlist.</div>;
     } else {
