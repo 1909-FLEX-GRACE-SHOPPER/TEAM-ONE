@@ -1,7 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import UserShippingInfo from './UserShippingInfo'
+import ShippingForm from './ShippingForm';
 
-const Shipping = ({ shippingAddress }) => {
-  <div>This is the address display</div>;
+const Shipping = ({ history }) => {
+  return (
+    <div>
+      <UserShippingInfo />
+      <ShippingForm history={ history }/>
+    </div>
+  )
 };
 
-export default Shipping;
+const mapState = ({ user }) => ({ user })
+
+export default connect(mapState)(Shipping);

@@ -52,11 +52,15 @@ export const createUser = user => {
 
 //Thunk for logging out a user.
 //Sets the user to null after logging out.
-export const logoutUser = ({ email, password }) => {
+export const logoutUser = userId => {
   return dispatch => {
     return axios
-      .post(`/api/users/login`, { email, password })
-      .then(guest => dispatch(setUser(guest)))
+      .post(`/api/users/logout/${userId}`)
+      .then(guest => {
+        console.log(guest);
+        console.log(guest.data);
+        dispatch(setUser(guest.data));
+      })
       .catch(e => console.error('Error logging user out', e));
   };
 };

@@ -1,9 +1,12 @@
+const { models } = require('../db/index.js');
+const { User, Order, Cart } = models;
+
 //Pagination middleware.
+//TODO: Return data when the limit is less than the number of rows on a "page" of the table
 const paginate = model => {
   return (req, res, next) => {
-    const limit = req.query.limit * 1 || 10;
-    const offset = req.query.page * limit || 0;
-
+    const limit = Number(req.params.limit) || 10;
+    const offset = req.params.page * limit || 0;
     model
       .findAndCountAll({
         offset,
@@ -36,4 +39,95 @@ function UserObject(user) {
   this.userType = 'Existing customer';
 }
 
-module.exports = { paginate, UserObject };
+function CartObject(cart) {
+  this.shippingName = cart.shippingName;
+  this.shippingAddress = cart.shippingAddress;
+  this.shippingCity = cart.shippingCity;
+  this.shippingState = cart.shippingState;
+  this.shippingZip = cart.shippingZip;
+  this.shippingCountry = cart.shippingCountry || null;
+  this.shippingNotes = cart.shippingNotes || null;
+  this.cardHolder = cart.cardHolder;
+  this.cardNumber = cart.cardNumber;
+  this.securityCode = cart.securityCode;
+  if (cart.expirationDate) {
+    this.expirationDate = `${cart.expirationDate.month} / ${cart.expirationDate.year}`;
+  }
+}
+
+function OrderObject(id, order) {
+  this.userId = id;
+  this.orderCost = 100.0;
+  this.shippingName = order.shippingName;
+  this.shippingAddress = order.shippingAddress;
+  this.shippingCity = order.shippingCity;
+  this.shippingState = order.shippingState;
+  this.shippingZip = order.shippingZip;
+  this.shippingCountry = order.shippingCountry || null;
+  this.shippingNotes = order.shippingNotes || null;
+  this.cardHolder = order.cardHolder;
+  this.cardNumber = order.cardNumber;
+  this.securityCode = order.securityCode;
+  this.expirationDate = order.expirationDate;
+}
+
+// Update the orders table and cart table so that
+// any orders or cart items that used to belong to
+// the guest will belong to the new user
+const mergeAndDestroyUser = async (newUser, guestUserInfo) => {
+  const guestUser = await User.findOne({
+    where: { ...guestUserInfo }
+  });
+  console.log('FOUND GUEST USER');
+  try {
+    await User.destroy({
+      where: {
+        ...guestUserInfo
+      }
+    });
+    console.log('DESTROYED USER');
+  } catch (e) {
+    console.log('FAILED TO DESTROY GUEST USER');
+    console.error(e);
+    return new Error(e);
+  }
+  try {
+    await Order.update(
+      { userId: newUser.id },
+      {
+        where: {
+          userId: guestUser.id
+        }
+      }
+    );
+    console.log('UPDATED ORDERS');
+  } catch (e) {
+    console.log('FAILED TO UPDATE ORDERS FOR NEW USER');
+    console.error(e);
+    return new Error(e);
+  }
+  try {
+    await Cart.update(
+      { userId: newUser.id },
+      {
+        where: {
+          userId: guestUser.id
+        }
+      }
+    );
+    console.log('UPDATED CART');
+  } catch (e) {
+    console.log('FAILED TO UPDATE CART FOR NEW USER');
+    console.error(e);
+    return new Error(e);
+  }
+  return newUser;
+};
+
+module.exports = {
+  paginate,
+  UserObject,
+  CartObject,
+  OrderObject,
+  mergeAndDestroyUser
+};
