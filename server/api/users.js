@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { models } = require('../db/index.js');
-const { User, Order, Cart, Product, Session } = models;
+const { User, Order, Cart, Product, Session, Wishlist } = models;
 
 const { paginate, UserObject, OrderObject, CartObject } = require('./utils');
 const bcrypt = require('bcrypt');
@@ -110,7 +110,7 @@ router.post('/login', (req, res, next) => {
                   .status(202)
                   .send(user);
               })
-              .catch(err => res.status(401).send('Failure! ', err));
+              .catch(err => res.status(401).send({ err }));
           } else {
             return res.status(401).send('Incorrect password');
           }
@@ -266,7 +266,7 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
 });
 
 router.get('/:userId/cart', (req, res, next) => {
-  Cart.findOne({
+  Cart.findAll({
     where: { userId: req.params.userId }
   })
     .then(cart => res.status(200).send(cart))
@@ -274,6 +274,52 @@ router.get('/:userId/cart', (req, res, next) => {
       res.status(404);
       next(e);
     });
+});
+
+router.post('/cart/add', async (req, res, next) => {
+  try {
+    const productId = req.body.productId;
+    const productQuantity = req.body.productQuantity;
+    const userId = req.body.userId;
+    Cart.create({
+      productId: productId,
+      productQuantity: productQuantity,
+      userId: userId
+    });
+  } catch (err) {
+    res.status(400);
+    next(err);
+  }
+});
+
+//edit product quantity in cart
+router.put('/:userId/cart/:cartId', (req, res, next) => {
+  const { newQuantity, newSubtotal } = req.body;
+
+  Cart.findByPk(req.params.cartId)
+    .then(cartItem =>
+      cartItem.update({
+        productQuantity: newQuantity,
+        subtotal: newSubtotal
+      })
+    )
+    .then(() => res.status(202))
+    .catch(e => {
+      res.status(304);
+      next(e);
+    });
+});
+
+router.delete('/:userId/cart/:cartId', async (req, res, next) => {
+  try {
+    await Cart.destroy({
+      where: { id: req.params.cartId }
+    });
+    res.status(202).send('Item deleted');
+  } catch (err) {
+    console.log('ERROR DELETING CART ', err);
+    res.status(400).next(err);
+  }
 });
 
 router.post(`/:userId/cart`, (req, res, next) => {
@@ -329,33 +375,43 @@ router.delete(`/:userId/cart`, (req, res, next) => {
     });
 });
 
-//edit product quantity in cart
-router.put('/:userId/cart/:cartId', (req, res, next) => {
-  const { newQuantity } = req.body;
-
-  Cart.findByPk(req.params.cartId)
-    .then(cartItem =>
-      cartItem.update({
-        productQuantity: newQuantity
-      })
-    )
-    .then(() => res.status(202))
+router.get('/:userId/wishlist', (req, res, next) => {
+  Wishlist.findAll({
+    where: {
+      userId: req.params.userId
+    }
+  })
+    .then(wishlist => res.status(200).send(wishlist))
     .catch(e => {
-      res.status(304);
+      res.status(400);
+      next(e);
+    });
+});
+//TODO: remove console.log
+//TODO: add userId to path
+router.post('/wishlist', (req, res, next) => {
+  console.log('calling post wishlist api');
+  console.log(req.body);
+
+  const productId = req.body.productId;
+  const userId = req.params.userId;
+
+  Wishlist.create({ productId: productId, userId: userId })
+    .then(item => res.status(201).send(item))
+    .catch(e => {
+      res.status(400);
       next(e);
     });
 });
 
-router.delete('/:userId/cart/:cartId', async (req, res, next) => {
-  try {
-    await Cart.destroy({
-      where: { id: req.params.cartId }
+router.delete('/:userId/wishlist/:wishlistId', (req, res, next) => {
+  Wishlist.findByPk(req.params.wishlistId)
+    .then(item => item.destroy())
+    .then(() => res.status(200).send('Item deleted'))
+    .catch(e => {
+      res.status(400);
+      next(e);
     });
-    res.status(202).send('Item deleted');
-  } catch (err) {
-    console.log('ERROR DELETING CART ', err);
-    res.status(400).next(err);
-  }
 });
 
 module.exports = router;

@@ -7,7 +7,7 @@ import { setCart, removeItemFromCart } from '../redux/thunks/CartThunks.js';
 
 class ShoppingCart extends React.Component {
   componentDidMount() {
-    this.props.fetchCart();
+    this.props.fetchCart(this.props.match.params.userId);
   }
 
   handleRemoveItem = async item => {
@@ -16,6 +16,9 @@ class ShoppingCart extends React.Component {
 
   render() {
     const { cart } = this.props;
+    console.log(cart);
+    let total = 0;
+    total += cart.map(item => parseInt(item.subtotal));
     if (cart.length === 0) {
       return (
         <div className='shopping-cart'>
@@ -28,17 +31,17 @@ class ShoppingCart extends React.Component {
         <div className='shopping-cart'>
           <h4>SHOPPING CART</h4>
           <ListGroup className='shopping-cart-product-list'>
-            {cart.map(product => (
-              <ListGroup.Item key={product.id}>
-                <CartItem key={product.id} product={product} />
-                <Button onClick={() => this.handleRemoveItem(product)}>
+            {cart.map(item => (
+              <ListGroup.Item key={item.id}>
+                <CartItem key={item.id} item={item} />
+                <Button onClick={() => this.handleRemoveItem(item)}>
                   Remove
                 </Button>
               </ListGroup.Item>
             ))}
           </ListGroup>
           {/* TODO: reflect total cost */}
-          <div>TOTAL: </div>
+          <div>TOTAL: {total}</div>
           <Link to='/checkout'>CHECKOUT</Link>
         </div>
       );
@@ -53,9 +56,9 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    fetchCart: () => dispatch(setCart()),
+    fetchCart: userId => dispatch(setCart(userId)),
     removeItem: item => dispatch(removeItemFromCart(item))
   };
-}
+};
 
 export default connect(mapState, mapDispatch)(ShoppingCart);
