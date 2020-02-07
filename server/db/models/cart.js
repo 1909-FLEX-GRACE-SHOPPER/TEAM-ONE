@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../database.js');
 
-const { UUID, UUIDV4, INTEGER, STRING, TEXT } = Sequelize;
+const { UUID, UUIDV4, INTEGER, STRING, TEXT, DECIMAL } = Sequelize;
 
 const Cart = db.define('cart', {
   id: {
@@ -11,7 +11,12 @@ const Cart = db.define('cart', {
   },
 
   productQuantity: {
-    type: INTEGER,
+    type: INTEGER
+  },
+
+  subtotal: {
+    type: DECIMAL(10, 2),
+    defaultValue: 0
   },
 
   shippingName: {
@@ -19,7 +24,7 @@ const Cart = db.define('cart', {
   },
 
   shippingAddress: {
-    type: STRING,
+    type: STRING
   },
 
   shippingCity: {
@@ -57,11 +62,11 @@ const Cart = db.define('cart', {
   },
 
   cardHolder: {
-    type: STRING,
+    type: STRING
   },
 
   expirationDate: {
-    type: STRING,
+    type: STRING
   },
 
   securityCode: {
@@ -71,7 +76,7 @@ const Cart = db.define('cart', {
         arg: 3
       }
     }
-  },
+  }
 });
 
 module.exports = Cart;

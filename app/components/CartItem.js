@@ -1,28 +1,53 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Product from './Product';
 import axios from 'axios';
 
 class CartItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      productImage: this.props.product.productImage,
-      productName: this.props.product.productName,
-      cartId: this.props.product.id,
-      quantity: this.props.product.productQuantity,
-      userId: this.props.product.userId,
-      //TODO: remove product ID when product name can be rendered
-      productId: this.props.product.productId
+      productImage: '',
+      productName: '',
+      price: '',
+      subtotal: this.props.item.subtotal,
+      cartId: this.props.item.id,
+      quantity: this.props.item.productQuantity,
+      userId: this.props.item.userId,
+      productId: this.props.item.productId
     };
+  }
+
+  componentDidMount() {
+    try {
+      const { productId } = this.state;
+      axios
+        .get(`/api/products/${productId}`)
+        .then(res => res.data)
+        .then(product => {
+          this.setState({
+            productImage: product.productImage,
+            productName: product.productName,
+            price: product.unitPrice
+          });
+        });
+    } catch (err) {
+      err => console.log(err);
+    }
   }
 
   handleEditQuantity = async ev => {
     try {
       const newQuantity = ev.target.value;
-      this.setState({ quantity: newQuantity });
+      const newSubtotal = this.state.price * newQuantity;
+      this.setState({
+        quantity: newQuantity,
+        subtotal: newSubtotal
+      });
       await axios
-        .put(`/api/users/${userId}/cart/${this.state.cartId}`, { newQuantity })
+        .put(`/api/users/${this.state.userId}/cart/${this.state.cartId}`, {
+          newQuantity,
+          newSubtotal
+        })
         .then(res => {
           return res.data;
         });
@@ -32,15 +57,19 @@ class CartItem extends React.Component {
   };
 
   render() {
-    const { productImage, productName, quantity, productId } = this.state;
+    const {
+      productImage,
+      productName,
+      quantity,
+      price,
+      productId
+    } = this.state;
     return (
       <div className='cart-item'>
         <img className='cart-item-image' src={productImage} />
         <div className='cart-item-name'>
           <Link to={`/products/${productId}`}>{productName}</Link>
         </div>
-        {/* //TODO: remove product ID when product name can be rendered */}
-        <div className='cart-item-id'>Product ID: {productId}</div>
         <div className='cart-item-quantity-edit'>
           Quantity:
           <input
@@ -51,7 +80,9 @@ class CartItem extends React.Component {
             onChange={ev => this.handleEditQuantity(ev)}
           />
         </div>
-        <div className='cart-item-subtotal'>Subtotal: </div>
+        <div className='cart-item-subtotal'>
+          Subtotal: {`$${(price * quantity).toFixed(2)}`}{' '}
+        </div>
       </div>
     );
   }

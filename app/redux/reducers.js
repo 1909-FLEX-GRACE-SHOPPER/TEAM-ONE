@@ -8,6 +8,7 @@ import {
   LOGIN_ERROR,
   SET_WISHLIST,
   SET_CART,
+  ADD_TO_CART,
   REMOVE_ITEM_FROM_CART,
   STATUS_MESSAGE,
   SET_SIMILAR_PRODUCTS
@@ -92,7 +93,7 @@ export const authentication = (
 export const wishlist = (state = [], action) => {
   switch (action.type) {
     case SET_WISHLIST:
-      return action.wishlist;
+      return action.items;
     default:
       return state;
   }

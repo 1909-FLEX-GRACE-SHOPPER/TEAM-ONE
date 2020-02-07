@@ -47,15 +47,14 @@ function CartObject(cart) {
   this.cardHolder = cart.cardHolder;
   this.cardNumber = cart.cardNumber;
   this.securityCode = cart.securityCode;
-  if(cart.expirationDate) {
-    this.expirationDate = `${ cart.expirationDate.month } / ${ cart.expirationDate.year }`;
+  if (cart.expirationDate) {
+    this.expirationDate = `${cart.expirationDate.month} / ${cart.expirationDate.year}`;
   }
 }
 
-
 function OrderObject(id, order) {
   this.userId = id;
-  this.orderCost = 100.00;
+  this.orderCost = 100.0;
   this.shippingName = order.shippingName;
   this.shippingAddress = order.shippingAddress;
   this.shippingCity = order.shippingCity;

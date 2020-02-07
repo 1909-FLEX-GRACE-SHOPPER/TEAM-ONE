@@ -8,7 +8,7 @@ import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 export const fetchWishlist = userId => {
   return dispatch => {
     return axios
-      .get(`/api/wishlist/items/${userId}`)
+      .get(`/api/users/${userId}/wishlist`)
       .then(res => {
         dispatch(setWishlist(res.data));
       })
@@ -23,22 +23,22 @@ export const fetchWishlist = userId => {
       });
   };
 };
-
-export const postWishlist = item => {
+//TODO: add userId to path
+export const postWishlist = (productId, userId) => {
   return dispatch => {
     return axios
-      .post(`/api/wishlist/add`, item)
+      .post(`/api/users/wishlist`, productId)
       .then(() => {
-        dispatch(fetchWishlist(item.userId));
-        dispatch(
-          statusMessage({
-            status: SUCCESS,
-            text: 'Wishlist item added.'
-          })
-        );
+        dispatch(fetchWishlist(userId));
+        // dispatch(
+        //   statusMessage({
+        //     status: SUCCESS,
+        //     text: 'Wishlist item added.'
+        //   })
+        // );
       })
       .catch(e => {
-        console.log(e);
+        console.log('Error adding wishlist', e);
         dispatch(
           statusMessage({
             status: FAIL,
@@ -49,11 +49,19 @@ export const postWishlist = item => {
   };
 };
 
-export const deleteWishlist = item => {
+export const deleteWishlist = (item, userId) => {
   return dispatch => {
     return axios
-      .delete(`/api/wishlist/remove/${item.id}`)
+      .delete(`/api/users/${userId}/wishlist/${item.id}`)
       .then(() => dispatch(fetchWishlist(item.userId)))
-      .catch(e => console.log('Error deleting WL item ', e));
+      .catch(e => {
+        console.log('Error removing item from wishlist', e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
   };
 };
