@@ -2,7 +2,13 @@ const router = require('express').Router();
 const { models } = require('../db/index.js');
 const { User, Order, Cart, Product, Session, Wishlist } = models;
 
-const { paginate, UserObject, OrderObject, CartObject } = require('./utils');
+const {
+  paginate,
+  UserObject,
+  OrderObject,
+  CartObject,
+  mergeAndDestroyUser
+} = require('./utils');
 const bcrypt = require('bcrypt');
 
 router.get('/session/:sessionId', (req, res, next) => {
@@ -37,32 +43,30 @@ router.post('/new', (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10)
     .then(hashedPassword => {
-      User.create({
+      return User.create({
         ...user,
         sessionId: req.cookies.session_id,
         password: hashedPassword
       });
     })
-    .then(newUser => {
-      User.destroy({
-        where: {
-          sessionId: req.cookies.session_id,
-          userType: 'Guest'
-        }
+    .then(newUser =>
+      mergeAndDestroyUser(newUser, {
+        sessionId: req.cookies.session_id,
+        userType: 'Guest'
       })
-        .then(() =>
-          res
-            .status(201)
-            .cookie('session_id', req.cookies.session_id, {
-              path: '/',
-              expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
-            })
-            .send(newUser)
-        )
-        .catch(e => {
-          res.status(400);
-          next(e);
-        });
+    )
+    .then(newUser =>
+      res
+        .status(201)
+        .cookie('session_id', req.cookies.session_id, {
+          path: '/',
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+        })
+        .send(newUser)
+    )
+    .catch(e => {
+      res.status(400);
+      next(e);
     })
     .catch(e => {
       res.status(400);
