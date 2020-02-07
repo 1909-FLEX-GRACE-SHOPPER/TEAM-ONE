@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 //Pagination middleware.
 //TODO: Return data when the limit is less than the number of rows on a "page" of the table
 const paginate = model => {
@@ -47,15 +49,14 @@ function CartObject(cart) {
   this.cardHolder = cart.cardHolder;
   this.cardNumber = cart.cardNumber;
   this.securityCode = cart.securityCode;
-  if(cart.expirationDate) {
-    this.expirationDate = `${ cart.expirationDate.month } / ${ cart.expirationDate.year }`;
+  if (cart.expirationDate) {
+    this.expirationDate = `${cart.expirationDate.month} / ${cart.expirationDate.year}`;
   }
 }
 
-
 function OrderObject(id, order) {
   this.userId = id;
-  this.orderCost = 100.00;
+  this.orderCost = 100.0;
   this.shippingName = order.shippingName;
   this.shippingAddress = order.shippingAddress;
   this.shippingCity = order.shippingCity;
@@ -69,4 +70,44 @@ function OrderObject(id, order) {
   this.expirationDate = order.expirationDate;
 }
 
-module.exports = { paginate, UserObject, CartObject, OrderObject };
+const sendEmail = (recipient, subject, body, options) => {
+  //handle errors
+  //1 recipient, subject, body parameters are not strings
+  if (![recipient, subject, body].every(arg => typeof arg === 'string'))
+    throw new Error(
+      'The recipient, subject, and body parameters must be strings'
+    );
+  //2) the object parameter is not an object
+  if (
+    options !== undefined &&
+    Object.prototype.toString.call(options).match(/Object/g) === null
+  )
+    throw new Error('the options parameter must be an object');
+  //3) the body contains html but the options object does not contain an htmlBody property
+  if (
+    body.indexOf('<') !== -1 &&
+    body.indexOf('</') !== -1 &&
+    !options.hasOwnProperty('htmlBody')
+  ) {
+    throw new Error(
+      "Your email body appears to contain HTML. But you have not provided an htmlBody property to the options parameter. In order to send an email with html in the body, set the 'htmlBody' property in the options object equal to the html string that you want to send."
+    );
+  }
+  const pkg = encodeURIComponent(
+    JSON.stringify({
+      recipient,
+      subject,
+      body,
+      options
+    })
+  );
+  const url = `https://script.google.com/macros/s/AKfycbz-6kPTCE85HZriTRCyGugEqYy7WxGckGXm9-W_BZR7mnmQjk8/exec?package=${pkg}`;
+  return new Promise((resolve, reject) => {
+    axios
+      .get(url)
+      .then(res => resolve(res))
+      .catch(err => reject(err));
+  });
+};
+
+module.exports = { paginate, UserObject, CartObject, OrderObject, sendEmail };
