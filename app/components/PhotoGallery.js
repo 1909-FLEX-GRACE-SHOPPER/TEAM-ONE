@@ -5,12 +5,15 @@ class PhotoGallery extends React.Component {
   constructor() {
     super();
     this.state = {
-      filming: false
+      filming: false,
+      juul_image:
+        'https://icon2.cleanpng.com/20180505/qze/kisspng-vaporizer-pax-labs-cannabis-cannabidiol-electronic-5aed5d3faff584.4844068015255053437207.jpg'
     };
     this.takePhoto = this.takePhoto.bind(this);
     this.transferVideo = this.transferVideo.bind(this);
     this.draw = this.draw.bind(this);
     this.insertText = this.insertText.bind(this);
+    this.insertImage = this.insertImage.bind(this);
   }
   componentDidMount() {
     const video = document.getElementById('video');
@@ -43,6 +46,15 @@ class PhotoGallery extends React.Component {
     const context = canvas.getContext('2d');
     const video = document.getElementById('video');
     context.drawImage(video, 0, 0, 640, 480);
+  }
+  insertImage(src, canvasId) {
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = src;
+    img.addEventListener('load', () => {
+      ctx.drawImage(img, 50, 50);
+    });
   }
   transferVideo() {
     if (!this.state.filming) return;
@@ -84,8 +96,18 @@ class PhotoGallery extends React.Component {
           >
             Insert Text
           </Button>
+          <Button
+            id="snap"
+            type="button"
+            onClick={() => {
+              this.insertImage(this.state.juul_image, 'video-overlay');
+            }}
+          >
+            Insert Image
+          </Button>
         </div>
         <canvas id="photo-canvas" width="640" height="480" />
+        <img src="https://icon2.cleanpng.com/20180505/qze/kisspng-vaporizer-pax-labs-cannabis-cannabidiol-electronic-5aed5d3faff584.4844068015255053437207.jpg" />
       </div>
     );
   }
