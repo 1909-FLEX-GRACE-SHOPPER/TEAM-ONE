@@ -1,4 +1,6 @@
 const axios = require('axios');
+const { models } = require('../db/index.js');
+const { User, Order, Cart } = models;
 
 //Pagination middleware.
 //TODO: Return data when the limit is less than the number of rows on a "page" of the table
@@ -111,3 +113,64 @@ const sendEmail = (recipient, subject, body, options) => {
 };
 
 module.exports = { paginate, UserObject, CartObject, OrderObject, sendEmail };
+
+// Update the orders table and cart table so that
+// any orders or cart items that used to belong to
+// the guest will belong to the new user
+const mergeAndDestroyUser = async (newUser, guestUserInfo) => {
+  const guestUser = await User.findOne({
+    where: { ...guestUserInfo }
+  });
+  console.log('FOUND GUEST USER');
+  try {
+    await User.destroy({
+      where: {
+        ...guestUserInfo
+      }
+    });
+    console.log('DESTROYED USER');
+  } catch (e) {
+    console.log('FAILED TO DESTROY GUEST USER');
+    console.error(e);
+    return new Error(e);
+  }
+  try {
+    await Order.update(
+      { userId: newUser.id },
+      {
+        where: {
+          userId: guestUser.id
+        }
+      }
+    );
+    console.log('UPDATED ORDERS');
+  } catch (e) {
+    console.log('FAILED TO UPDATE ORDERS FOR NEW USER');
+    console.error(e);
+    return new Error(e);
+  }
+  try {
+    await Cart.update(
+      { userId: newUser.id },
+      {
+        where: {
+          userId: guestUser.id
+        }
+      }
+    );
+    console.log('UPDATED CART');
+  } catch (e) {
+    console.log('FAILED TO UPDATE CART FOR NEW USER');
+    console.error(e);
+    return new Error(e);
+  }
+  return newUser;
+};
+
+module.exports = {
+  paginate,
+  UserObject,
+  CartObject,
+  OrderObject,
+  mergeAndDestroyUser
+};
