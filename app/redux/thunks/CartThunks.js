@@ -33,12 +33,13 @@ export function setCart(userId) {
   };
 }
 
-export function setCartList(userId) {
+export function fetchCartList(userId) {
   return function thunk(dispatch) {
-    console.log('calling setCartList thunk');
     return axios
       .get(`/api/users/${userId}/cart/set`)
-      .then(res => dispatch(_setCartList(res.data)))
+      .then(res => {
+        return dispatch(_setCartList(res.data));
+      })
       .catch(e => {
         console.error('Error fetching Cart List', e);
         dispatch(
@@ -67,7 +68,7 @@ export function addToCart(
         userId,
         subtotal
       })
-      .then(() => dispatch(setCartList(userId)))
+      .then(() => dispatch(fetchCartList(userId)))
       .catch(e => {
         console.log('Error adding to cart', e);
       });
@@ -132,6 +133,19 @@ export const updateCart = (userId, payload) => {
             text: COMMON_FAIL
           })
         );
+      });
+  };
+};
+
+export const updateCartList = cartItem => {
+  return dispatch => {
+    return axios
+      .put(`/api/users/cart/cartlist/update`, {
+        cartItem
+      })
+      .then(() => dispatch(fetchCartList(cartItem.userId)))
+      .catch(e => {
+        console.log('ERROR UPDATING CART LIST ', e);
       });
   };
 };
