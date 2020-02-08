@@ -14,7 +14,7 @@ const User = db.define('users', {
     allowNull: false,
     //may need to update this later depends on how a user chooses his type
     validate: {
-      isIn: [['Guest', 'Existing customer', 'Admin']]
+      isIn: [['Guest', 'Existing customer', 'Admin','GitHub User']]
     }
   },
   email: {

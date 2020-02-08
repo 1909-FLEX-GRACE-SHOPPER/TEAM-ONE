@@ -7,42 +7,38 @@ class Navigation extends Component {
 	switchNavBar = params => {
 		const { logoutUser, user } = this.props;
 		switch (params.userType) {
+			case 'GitHub User':
+				return (
+					<Nav>
+						<Nav.Link href={`/user/${params.id}`}>Git Hub User</Nav.Link>
+						<Button
+							onClick={() => {
+								logoutUser(user.id);
+							}}>
+							Logout
+						</Button>
+					</Nav>
+				);
 			case 'Existing customer':
-				if (params.github_access_token) {
-					return (
-						<Nav>
-							<Nav.Link href={`/user/${params.id}`}>
-								GitHubUser
-							</Nav.Link>
-							<Button
-								onClick={() => {
-									logoutUser(user.id);
-								}}>
-								Logout
-							</Button>
-						</Nav>
-					);
-				} else {
-					return (
-						<Nav>
-							<Nav.Link href={`/user/${params.id}`}>
-								{params.firstName} {params.lastName}{' '}
-							</Nav.Link>
-							<Button
-								onClick={() => {
-									logoutUser(user.id);
-								}}>
-								Logout
-							</Button>
-						</Nav>
-					);
-				}
+				return (
+					<Nav>
+						<Nav.Link href={`/user/${params.id}`}>
+							{params.firstName} {params.lastName}
+						</Nav.Link>
+						<Button
+							onClick={() => {
+								logoutUser(user.id);
+							}}>
+							Logout
+						</Button>
+					</Nav>
+				);
 			case 'Admin':
 				return (
 					<Nav>
 						<Nav.Link href='/products/add'> Add a Product </Nav.Link>
 						<Nav.Link href={`/user/${params.id}`}>
-							{params.firstName} {params.lastName}{' '}
+							{params.firstName} {params.lastName}
 						</Nav.Link>
 						<Button
 							onClick={() => {
@@ -92,6 +88,7 @@ const mapStateToProps = state => {
 const mapDispatch = dispatch => {
 	return {
 		logoutUser: userId => dispatch(logoutUser(userId)),
+		getGitHubUserData: () => dispatch()
 	};
 };
 

@@ -26,7 +26,7 @@ router.get('/callback', (req, res, next) => {
 			return User.create({
 				github_access_token: res.data.access_token,
 				sessionId: req.cookies.session_id,
-				userType: 'Existing customer'
+				userType: 'GitHub User'
 			});
 		})
 		.then(() => {
@@ -54,18 +54,9 @@ router.get('/user', (req, res, next) => {
 				Authorization: `token ${req.user.github_access_token}`
 			}
 		})
-		.then(axRes => {
-			User.findOne({
-				where: {
-					github_access_token: req.user.github_access_token
-				}
-			}) 
+		.then(axResponse => {
+			res.send(axResponse.data);
 		})
-		.then(user => 
-			user.update({
-				firstName: axRes.data.name
-			})
-		)
 		.catch(e => {
 			console.log('Error while getting response from github user route.');
 			console.error(e);
