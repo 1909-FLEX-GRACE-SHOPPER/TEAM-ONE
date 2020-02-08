@@ -3,11 +3,10 @@ const app = express();
 const path = require('path');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
-const postCharge = require('./stripe');
 const Session = require('./db/models/sessions');
 const User = require('./db/models/users');
 
-require('dotenv').config();
+require('dotenv').config({ path: './.env' });
 
 app.use(express.json());
 app.use(cookieParser());
@@ -61,18 +60,6 @@ app.use(
     limits: { fileSize: 50 * 1024 * 1024 }
   })
 );
-
-app.post('/api/stripe/v1/charges', postCharge);
-
-//Enables CORS (for stripe integration)
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  )
-  next();
-});
 
 app.use(express.static(path.join('__dirname', '..', '/public')));
 

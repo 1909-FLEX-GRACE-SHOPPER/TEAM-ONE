@@ -4,8 +4,6 @@ const { db } = require('./db/index.js');
 const seed = require('../seed.js');
 const cookieParser = require('cookie-parser');
 
-require('dotenv').config();
-
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 3000;
