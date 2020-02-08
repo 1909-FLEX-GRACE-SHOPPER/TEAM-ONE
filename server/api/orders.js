@@ -18,19 +18,20 @@ router.get('/', paginate(Order), (req, res, next) => {
 
 //Create new order
 router.post('/', (req, res, next) => {
-  console.log('RECEIVED NEW ORDER');
-  console.log(req.body.order);
   const orderBody = new OrderObject(req.body.userId, req.body.cart);
   Order.create(orderBody)
     .then(order => {
       User.findByPk(req.body.userId).then(user => {
-        sendEmail(
-          user.email,
-          'Purchase order recieved',
-          'We go your order. <3 Juul'
-        );
-      });
+        if(user.email) {
+          sendEmail(
+            user.email,
+            'Purchase order recieved',
+            'We go your order. <3 Juul'
+          );
+        }
       return res.status(201).send(order);
+      })
+
     })
     .catch(e => {
       res.status(400);
