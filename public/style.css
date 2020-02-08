@@ -1,4 +1,10 @@
-.product-image-small {
+#all-products-container {
+  display:flex; 
+  
+}
+
+
+#product-image-small {
   width: 10em;
   height: 10em;
 }
