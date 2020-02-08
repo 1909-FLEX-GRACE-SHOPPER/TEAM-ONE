@@ -41,6 +41,28 @@ app.use((req, res, next) => {
       }
     })
       .then(user => {
+        if (!user) {
+          Session.create()
+            .then(session =>
+              User.create({
+                userType: 'Guest',
+                sessionId: session.id
+              })
+            )
+            .then(guest => {
+              console.log('CREATED A GUEST USER');
+              res.cookie('session_id', guest.dataValues.sessionId, {
+                path: '/',
+                expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+              });
+              req.user = guest;
+              next();
+            })
+            .catch(e => {
+              console.error(e);
+              res.status(404).redirect('/error');
+            });
+        }
         req.user = user;
         next();
       })
