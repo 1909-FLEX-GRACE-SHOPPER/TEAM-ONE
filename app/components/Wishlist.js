@@ -9,20 +9,20 @@ import Loading from './Loading';
 class Wishlist extends React.Component {
   componentDidMount() {
     console.log(this.props);
-    this.props.fetchWishlist(this.props.match.params.userId);
+    //this.props.fetchWishlist(this.props.match.params.userId);
   }
 
   //TODO: make wishlist render "create an account" after log out
-
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
 
   render() {
-    const { wishlist, user } = this.props;
+    const { wishlist, user, fetchWishlist } = this.props;
     if (!user.userType) return <Loading message={`retrieving your wishlist`} />;
     if (user.userType === 'Guest')
       return <div>Please create an account to create a wishlist.</div>;
+    if (user.userType !== 'Guest' && user.id) fetchWishlist(user.id);
     return (
       <div>
         {wishlist.length === 0 ? (
