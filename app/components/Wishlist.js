@@ -7,9 +7,6 @@ import WishlistItem from './WishlistItem.js';
 import Loading from './Loading';
 
 class Wishlist extends React.Component {
-  constructor() {
-    super();
-  }
   componentDidMount() {
     console.log(this.props);
     this.props.fetchWishlist(this.props.match.params.userId);
