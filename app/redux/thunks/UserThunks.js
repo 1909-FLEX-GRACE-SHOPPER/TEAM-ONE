@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { setUser, logInSuccess, statusMessage } from '../actions';
+import { setUser, logInSuccess, statusMessage , gitHubData } from '../actions';
 
 import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
@@ -148,17 +148,10 @@ export const logInUser = ({ email, password }) => {
 };
 
 //Thunks for getting GitHub user data on the API
-const GOT_USER = 'GOT_USER';
-
-const gotUser = user => ({
-  type: GOT_USER,
-  user,
-});
-
-const getGitHubData = () => dispatch => {
+export const getGitHubData = () => dispatch => {
   axios.get('/api/github/user')
     .then(res => {
-      dispatch(getGitHub(res.data));
+      dispatch(gitHubData(res.data));
     })
     .catch(e => {
       console.error(e);

@@ -121,8 +121,8 @@ export const statusMessage = (state = { status: null, text: '' }, action) => {
 
 export const gitHubData = (state = {}, action) => {
   switch (action.type) {
-    case GITHUB_DATA:
-      return action.user
+    case GET_GITHUB_DATA:
+      return action.gitHubUser
     default:
       return state;
   }

@@ -24,5 +24,6 @@ export default combineReducers({
   wishlist,
   cart,
   statusMessage,
-  similarProducts
+  similarProducts,
+  gitHubData,
 });

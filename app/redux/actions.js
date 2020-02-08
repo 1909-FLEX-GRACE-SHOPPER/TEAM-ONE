@@ -10,7 +10,8 @@ import {
   LOGIN_SUCCCESS,
   LOGIN_ERROR,
   SET_CART,
-  REMOVE_ITEM_FROM_CART
+  REMOVE_ITEM_FROM_CART,
+  GET_GITHUB_DATA
 } from './constants';
 
 export const setProducts = products => {
@@ -92,5 +93,13 @@ export const statusMessage = message => {
   return {
     type: STATUS_MESSAGE,
     message
+  };
+};
+
+
+export const gitHubData = gitHubUser => {
+  return {
+    type: GET_GITHUB_DATA,
+    gitHubUser
   };
 };

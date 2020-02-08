@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, Button } from 'react-bootstrap';
-import { logoutUser } from '../redux/thunks/UserThunks';
+import { logoutUser, getGitHubData } from '../redux/thunks/UserThunks';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
+	componentDidMount() {
+		const { getGitHubUserData } = this.props;
+		getGitHubUserData();
+	}
 	switchNavBar = params => {
-		const { logoutUser, user } = this.props;
+		const { logoutUser, user, gitHubUser } = this.props;
 		switch (params.userType) {
 			case 'GitHub User':
 				return (
 					<Nav>
-						<Nav.Link href={`/user/${params.id}`}>Git Hub User</Nav.Link>
+						<Nav.Link href={`/user/${params.id}`}> Git Hub User Data {} </Nav.Link>
 						<Button
 							onClick={() => {
 								logoutUser(user.id);
@@ -58,7 +62,7 @@ class Navigation extends Component {
 		}
 	};
 	render() {
-		const { user } = this.props;
+		const { user, gitHubUser } = this.props;
 		return (
 			<Navbar bg='dark' variant='dark'>
 				<Navbar.Brand>Logo</Navbar.Brand>
@@ -72,7 +76,7 @@ class Navigation extends Component {
 					<Nav.Link href={`/${user.id}/cart`}>Cart</Nav.Link>
 					<Nav.Link href={`/${user.id}/wishlist`}>Wishlist</Nav.Link>
 					{/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
-					{this.switchNavBar(user)}
+					{this.switchNavBar(user,gitHubUser)}
 				</Nav>
 			</Navbar>
 		);
@@ -81,14 +85,15 @@ class Navigation extends Component {
 
 const mapStateToProps = state => {
 	return {
-		user: state.user
+		user: state.user,
+		gitHubUser: state.gitHubUser
 	};
 };
 
 const mapDispatch = dispatch => {
 	return {
 		logoutUser: userId => dispatch(logoutUser(userId)),
-		getGitHubUserData: () => dispatch()
+		getGitHubUserData: () => dispatch(getGitHubData())
 	};
 };
 
