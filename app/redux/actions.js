@@ -10,6 +10,7 @@ import {
   LOGIN_SUCCCESS,
   LOGIN_ERROR,
   SET_CART,
+  SET_CART_LIST,
   REMOVE_ITEM_FROM_CART
 } from './constants';
 
@@ -77,7 +78,14 @@ export const loggedInFail = () => {
 export const _setCart = cart => {
   return {
     type: SET_CART,
-    cart,
+    cart
+  };
+};
+
+export const _setCartList = items => {
+  return {
+    type: SET_CART_LIST,
+    items
   };
 };
 

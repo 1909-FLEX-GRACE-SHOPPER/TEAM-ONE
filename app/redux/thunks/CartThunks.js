@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-import { statusMessage, _setCart, _removeItemFromCart } from '../actions';
+import {
+  statusMessage,
+  _setCart,
+  _setCartList,
+  _removeItemFromCart
+} from '../actions';
 
 import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 
@@ -10,10 +15,10 @@ export function setCart(userId) {
     return axios
       .get(`/api/users/${userId}/cart`)
       .then(res => {
-        if(res.data === '') {
-          dispatch(_setCart({}))
+        if (res.data === '') {
+          dispatch(_setCart({}));
         } else {
-          dispatch(_setCart(res.data))
+          dispatch(_setCart(res.data));
         }
       })
       .catch(e => {
@@ -28,13 +33,61 @@ export function setCart(userId) {
   };
 }
 
-export function addToCart(productId, userId, productQuantity) {
+export function fetchCartList(userId) {
   return function thunk(dispatch) {
     return axios
-      .post(`/api/users/cart/add`, { productId, userId, productQuantity })
-      .then(() => dispatch(setCart(userId)))
+      .get(`/api/users/${userId}/cart/set`)
+      .then(res => {
+        return dispatch(_setCartList(res.data));
+      })
+      .catch(e => {
+        console.error('Error fetching Cart List', e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
+      });
+  };
+}
+
+export function addToCart(
+  productId,
+  cartId,
+  productQuantity,
+  userId,
+  subtotal
+) {
+  return function thunk(dispatch) {
+    return axios
+      .post(`/api/users/cart/add`, {
+        productId,
+        cartId,
+        productQuantity,
+        userId,
+        subtotal
+      })
+      .then(() => dispatch(fetchCartList(userId)))
       .catch(e => {
         console.log('Error adding to cart', e);
+      });
+  };
+}
+
+export function removeItemFromCart(item) {
+  return function thunk(dispatch) {
+    return axios
+      .delete(`/api/users/:userId/cart/${item.id}`)
+      .then(() => dispatch(_removeItemFromCart(item)))
+      .catch(e => {
+        console.error('Error removing item from Cart', e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        );
       });
   };
 }
@@ -84,6 +137,19 @@ export const updateCart = (userId, payload) => {
   };
 };
 
+export const updateCartList = cartItem => {
+  return dispatch => {
+    return axios
+      .put(`/api/users/cart/cartlist/update`, {
+        cartItem
+      })
+      .then(() => dispatch(fetchCartList(cartItem.userId)))
+      .catch(e => {
+        console.log('ERROR UPDATING CART LIST ', e);
+      });
+  };
+};
+
 export const deleteCart = userId => {
   return dispatch => {
     return axios
@@ -100,20 +166,3 @@ export const deleteCart = userId => {
       });
   };
 };
-
-export function removeItemFromCart(item) {
-  return function thunk(dispatch) {
-    return axios
-      .delete(`/api/users/:userId/cart/${item.id}`)
-      .then(() => dispatch(_removeItemFromCart(item)))
-      .catch(e => {
-        console.error('Error removing item from Cart', e);
-        dispatch(
-          statusMessage({
-            status: FAIL,
-            text: COMMON_FAIL
-          })
-        );
-      });
-  };
-}

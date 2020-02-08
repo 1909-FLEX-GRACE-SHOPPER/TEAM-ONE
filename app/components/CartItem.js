@@ -1,69 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { updateCartList } from '../redux/thunks/CartThunks';
 
 class CartItem extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      productImage: '',
-      productName: '',
-      price: '',
-      subtotal: this.props.item.subtotal,
-      cartId: this.props.item.id,
-      quantity: this.props.item.productQuantity,
-      userId: this.props.item.userId,
-      productId: this.props.item.productId
-    };
-  }
-
-  componentDidMount() {
-    try {
-      const { productId } = this.state;
-      axios
-        .get(`/api/products/${productId}`)
-        .then(res => res.data)
-        .then(product => {
-          this.setState({
-            productImage: product.productImage,
-            productName: product.productName,
-            price: product.unitPrice
-          });
-        });
-    } catch (err) {
-      err => console.log(err);
-    }
-  }
-
-  handleEditQuantity = async ev => {
-    try {
-      const newQuantity = ev.target.value;
-      const newSubtotal = this.state.price * newQuantity;
-      this.setState({
-        quantity: newQuantity,
-        subtotal: newSubtotal
-      });
-      await axios
-        .put(`/api/users/${this.state.userId}/cart/${this.state.cartId}`, {
-          newQuantity,
-          newSubtotal
-        })
-        .then(res => {
-          return res.data;
-        });
-    } catch (err) {
-      err => console.log(err);
-    }
+  handleEditQuantity = ev => {
+    const { item } = this.props;
+    const newQuantity = ev.target.value;
+    const newSubtotal = item.product.unitPrice * newQuantity;
+    const updatedCartItem = { ...item, newQuantity, newSubtotal };
+    this.props.updateCartList(updatedCartItem);
   };
 
   render() {
     const {
-      productImage,
-      productName,
-      quantity,
-      price,
+      product: { productImage, productName },
+      productQuantity,
+      subtotal,
       productId
-    } = this.state;
+    } = this.props.item;
     return (
       <div className='cart-item'>
         <img className='cart-item-image' src={productImage} />
@@ -76,16 +31,21 @@ class CartItem extends React.Component {
             type='number'
             className='cart-item-quantity-select'
             min='1'
-            value={quantity}
+            value={productQuantity}
             onChange={ev => this.handleEditQuantity(ev)}
           />
         </div>
-        <div className='cart-item-subtotal'>
-          Subtotal: {`$${(price * quantity).toFixed(2)}`}{' '}
-        </div>
+        <div className='cart-item-subtotal'>Subtotal: {`$${subtotal}`} </div>
       </div>
     );
   }
 }
 
-export default CartItem;
+const mapState = ({ cartList }) => ({ cartList });
+const mapDispatch = dispatch => {
+  return {
+    updateCartList: cartItem => dispatch(updateCartList(cartItem))
+  };
+};
+
+export default connect(mapState, mapDispatch)(CartItem);
