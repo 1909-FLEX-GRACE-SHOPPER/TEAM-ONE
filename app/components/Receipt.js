@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 
 const Receipt = props => {
-  console.log(props);
   return (
     <div>
-      {/* <h3>Your order #{ props.orders.id.split('-')[0] } is being processed.</h3> */}
+      <h3>Thank you for juuling! Your order is being processed.</h3>
       {
         // props.order.products.map(product => {
         //   return (
