@@ -27,7 +27,7 @@ class Navigation extends Component {
       case 'Admin':
         return (
           <Nav>
-            <Nav.Link href="/products/add"> Add a Product </Nav.Link>
+            <Nav.Link href='/products/add'> Add a Product </Nav.Link>
             <Nav.Link href={`/user/${params.id}`}>
               {' '}
               {params.firstName} {params.lastName}{' '}
@@ -45,8 +45,8 @@ class Navigation extends Component {
       default:
         return (
           <Nav>
-            <Nav.Link href="/signup"> Sign Up </Nav.Link>
-            <Nav.Link href="/login"> Login </Nav.Link>
+            <Nav.Link href='/signup'> Sign Up </Nav.Link>
+            <Nav.Link href='/login'> Login </Nav.Link>
           </Nav>
         );
     }
@@ -54,18 +54,17 @@ class Navigation extends Component {
   render() {
     const { user } = this.props;
     return (
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg='dark' variant='dark'>
         <Navbar.Brand>Logo</Navbar.Brand>
-        <Nav className="mr-auto">
-          <Nav.Link href="/home">Home</Nav.Link>
-          <Nav.Link href="/about">About</Nav.Link>
-          <Nav.Link href="/products/page/1">Shop</Nav.Link>
-          <Nav.Link href="/gallery">Photo Booth</Nav.Link>
+        <Nav className='mr-auto'>
+          <Nav.Link href='/home'>Home</Nav.Link>
+          <Nav.Link href='/about'>About</Nav.Link>
+          <Nav.Link href='/products/page/1'>Shop</Nav.Link>
+          <Nav.Link href='/gallery'>Photo Booth</Nav.Link>
         </Nav>
         <Nav>
-          <Nav.Link href="/cart">Cart</Nav.Link>
-          <Nav.Link href="/wishlist">Wishlist</Nav.Link>
-          {/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
+          <Nav.Link href='/cart'>Cart</Nav.Link>
+          <Nav.Link href='/wishlist'>Wishlist</Nav.Link>
           {this.switchNavBar(user)}
         </Nav>
       </Navbar>
