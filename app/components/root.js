@@ -25,6 +25,7 @@ import Wishlist from './Wishlist';
 import ToastComponent from './Toasts';
 
 import AddProductForm from './AddProductForm';
+import PhotoGallery from './PhotoGallery';
 
 class Root extends React.Component {
   componentDidMount() {
@@ -55,7 +56,7 @@ class Root extends React.Component {
             <Route path="/receipt" component={Receipt} />
             <Route path="/:userId/wishlist" component={Wishlist} />
             <Route path="/user/:id" /*component={UserPage}*/ />
-            <Route path="/ar" component={ArScene} />
+            <Route path="/photo-booth" component={PhotoGallery} />
             <Redirect to="/" />
           </Switch>
         </div>

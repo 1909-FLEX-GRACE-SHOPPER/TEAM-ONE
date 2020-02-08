@@ -100,7 +100,7 @@ class ProductPage extends React.Component {
                 </div>
               </div>
               <div className="similar-products-container">
-                <h5>SIMILAR PRODUCTS</h5>
+                <h5>PRODUCTS YOU MAY BE INTERESTED IN</h5>
                 <div>
                   {similarProducts.length > 0
                     ? similarProducts.map(_sp => (
