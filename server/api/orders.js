@@ -18,6 +18,8 @@ router.get('/', paginate(Order), (req, res, next) => {
 
 //Create new order
 router.post('/', (req, res, next) => {
+  console.log('RECEIVED NEW ORDER');
+  console.log(req.body.order);
   const orderBody = new OrderObject(req.body.userId, req.body.cart);
   Order.create(orderBody)
     .then(order => {
