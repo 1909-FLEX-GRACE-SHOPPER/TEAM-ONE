@@ -10,7 +10,8 @@ import {
   wishlist,
   cart,
   statusMessage,
-  similarProducts
+  similarProducts,
+  gitHubData,
 } from './reducers';
 
 export default combineReducers({

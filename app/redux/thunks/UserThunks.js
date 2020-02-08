@@ -146,3 +146,21 @@ export const logInUser = ({ email, password }) => {
       });
   };
 };
+
+//Thunks for getting GitHub user data on the API
+const GOT_USER = 'GOT_USER';
+
+const gotUser = user => ({
+  type: GOT_USER,
+  user,
+});
+
+const getGitHubData = () => dispatch => {
+  axios.get('/api/github/user')
+    .then(res => {
+      dispatch(getGitHub(res.data));
+    })
+    .catch(e => {
+      console.error(e);
+    });
+};

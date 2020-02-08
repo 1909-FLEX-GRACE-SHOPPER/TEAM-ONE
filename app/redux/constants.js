@@ -23,3 +23,5 @@ export const SET_CART = Symbol('SET_CART');
 export const REMOVE_ITEM_FROM_CART = Symbol('REMOVE_ITEM_FROM_CART');
 
 export const ITEMS_PER_PAGE = 2;
+
+export const GET_GITHUB_DATA = ('GET_GITHUB_DATA');
