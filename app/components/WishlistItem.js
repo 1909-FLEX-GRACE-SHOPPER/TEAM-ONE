@@ -27,7 +27,7 @@ class WishlistItem extends React.Component {
           });
         });
     } catch (err) {
-      err => console.log(err);
+      console.log(err);
     }
   }
 

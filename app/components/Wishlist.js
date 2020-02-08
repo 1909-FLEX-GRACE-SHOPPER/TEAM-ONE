@@ -4,6 +4,7 @@ import { Button, ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { fetchWishlist, deleteWishlist } from '../redux/thunks/WishlistThunks';
 import WishlistItem from './WishlistItem.js';
+import Loading from './Loading';
 
 class Wishlist extends React.Component {
   constructor() {
@@ -24,33 +25,32 @@ class Wishlist extends React.Component {
     console.log(wishlist);
     if (user.userType === 'Guest' || user.userType === undefined) {
       return <div>Please create an account to create a wishlist.</div>;
-    } else {
-      return (
-        <div>
-          {wishlist.length === 0 ? (
-            <div>
-              <h4>WISHLIST</h4>
-              <p>Your wishlist is empty.</p>
-            </div>
-          ) : (
-            <div>
-              <Link to='/products/page/1'>Back</Link>
-              <h4>WISHLIST</h4>
-              <ListGroup className='wishlist-product-list'>
-                {wishlist.map(item => (
-                  <ListGroup.Item key={item.id}>
-                    <WishlistItem key={item.id} item={item} />
-                    <Button onClick={() => this.handleRemoveItem(item)}>
-                      Remove
-                    </Button>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </div>
-          )}
-        </div>
-      );
     }
+    return (
+      <div>
+        {wishlist.length === 0 ? (
+          <div>
+            <h4>WISHLIST</h4>
+            <p>Your wishlist is empty.</p>
+          </div>
+        ) : (
+          <div>
+            <Link to='/products/page/1'>Back</Link>
+            <h4>WISHLIST</h4>
+            <ListGroup className='wishlist-product-list'>
+              {wishlist.map(item => (
+                <ListGroup.Item key={item.id}>
+                  <WishlistItem key={item.id} item={item} />
+                  <Button onClick={() => this.handleRemoveItem(item)}>
+                    Remove
+                  </Button>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
+        )}
+      </div>
+    );
   }
 }
 
