@@ -28,9 +28,8 @@ import AddProductForm from './AddProductForm';
 class Root extends React.Component {
   componentDidMount() {
     const { fetchUser, createCart } = this.props;
-    fetchUser(document.cookie.replace(/session_id=/, '')).then(user => {
-      console.log('USER FROM FETCH USER = ', user);
-      createCart(user.id);
+    fetchUser(document.cookie.replace(/session_id=/, '')).then(() => {
+      createCart(this.props.user.id);
     });
   }
 

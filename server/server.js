@@ -62,9 +62,10 @@ app.use((req, res, next) => {
               console.error(e);
               res.status(404).redirect('/error');
             });
+        } else {
+          req.user = user;
+          next();
         }
-        req.user = user;
-        next();
       })
       .catch(e => {
         console.error(e);
