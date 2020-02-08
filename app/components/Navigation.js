@@ -4,6 +4,9 @@ import { logoutUser } from '../redux/thunks/UserThunks';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
+  componentDidMount () {
+    
+  }
   switchNavBar = params => {
     const { logoutUser, user } = this.props;
     switch (params.userType) {

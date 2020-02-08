@@ -124,6 +124,9 @@ const User = db.define('users', {
         arg: 5
       }
     }
+  },
+  github_access_token: {
+    type: STRING,
   }
 });
 
