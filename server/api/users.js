@@ -19,8 +19,6 @@ router.get('/session/:sessionId', (req, res, next) => {
     }
   })
     .then(user => {
-      console.log('FOUND USER = ', user);
-      console.log('SESSION ID = ', sessionId);
       res.status(200).send(user);
     })
     .catch(e => {
@@ -101,14 +99,12 @@ router.post('/login', (req, res, next) => {
               .update({
                 sessionId: req.cookies.session_id
               })
-              .then(() => {
-                User.destroy({
-                  where: {
-                    sessionId: req.cookies.session_id,
-                    userType: 'Guest'
-                  }
-                });
-              })
+              .then(() =>
+                mergeAndDestroyUser(user, {
+                  sessionId: req.cookies.session_id,
+                  userType: 'Guest'
+                })
+              )
               .then(() => {
                 return res
                   .cookie('session_id', req.cookies.session_id, {

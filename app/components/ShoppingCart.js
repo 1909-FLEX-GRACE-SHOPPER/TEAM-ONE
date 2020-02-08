@@ -8,7 +8,6 @@ import {
   fetchCartList,
   removeItemFromCart
 } from '../redux/thunks/CartThunks.js';
-import axios from 'axios';
 
 class ShoppingCart extends React.Component {
   constructor() {
