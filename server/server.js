@@ -46,6 +46,7 @@ app.use((req, res, next) => {
       })
       .catch(e => {
         console.error(e);
+        console.log('Error getting user using session_id');
         res.status(404).redirect('/error');
       });
   }
