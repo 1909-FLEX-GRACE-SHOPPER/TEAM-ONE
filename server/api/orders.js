@@ -56,7 +56,7 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-//Finds and serves a single user based on a primary key.
+//Finds and serves a single order based on a primary key.
 //Eager loads associated cart.
 router.get('/:orderId/orderDetails', (req, res, next) => {
   User.findByPk(req.params.orderId, {
