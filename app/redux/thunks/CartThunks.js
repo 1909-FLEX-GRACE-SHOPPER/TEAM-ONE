@@ -68,6 +68,7 @@ export function addToCart(
         userId,
         subtotal
       })
+      .then(() => dispatch(fetchCartList(userId)))
       .then(() => {
         dispatch(
           statusMessage({
@@ -76,7 +77,6 @@ export function addToCart(
           })
         );
       })
-      .then(() => dispatch(fetchCartList(userId)))
       .catch(e => {
         console.log(e);
         dispatch(
