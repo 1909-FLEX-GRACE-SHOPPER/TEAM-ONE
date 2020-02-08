@@ -113,7 +113,7 @@ class ProductPage extends React.Component {
                 </div>
               </div>
               <div className="similar-products-container">
-                <h5>SIMILAR PRODUCTS</h5>
+                <h5>PRODUCTS YOU MAY BE INTERESTED IN</h5>
                 <div>
                   {similarProducts.length > 0
                     ? similarProducts.map(_sp => (
@@ -133,9 +133,13 @@ class ProductPage extends React.Component {
   }
 }
 
+<<<<<<< HEAD
+const mapState = ({ singleProduct, user, similarProducts }) => ({
+=======
 //TODO: This should fetch similar products not just all products
 //TODO: Add cart thunk
 const mapState = ({ singleProduct, user, cart, similarProducts }) => ({
+>>>>>>> 3e758e852d6ad44ec097e8beb0c8ef7681850655
   singleProduct,
   user,
   cart,
