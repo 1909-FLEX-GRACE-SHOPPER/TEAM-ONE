@@ -11,7 +11,7 @@ router.post('/create-payment-intent', (req, res, next) => {
   } = req.body
 
   stripe.paymentIntents.create({
-    amount: amount * 100,
+    amount: amount * 100 || 100,
     currency: 'usd',
     shipping: {
       name,

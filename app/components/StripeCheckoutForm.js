@@ -193,10 +193,9 @@ class StripeCheckoutForm extends Component {
     axios
       .post(`/api/stripe/create-payment-intent`, {
       payment_method_types: ["card"],
-      amount: this.props.cartList.
-        map(item => {
-          total += parseFloat(item.subtotal);
-      }),
+      amount: this.props.cartList.reduce((accum, item) => {
+        return accum += parseFloat(item.subtotal)
+      }, 0),
       shipping: this.state
       })
       .then(res => {
@@ -323,9 +322,10 @@ class StripeCheckoutForm extends Component {
                     : true
                   }
                 >
-                  Submit {this.props.cartList.map(item => {
-                    total += parseFloat(item.subtotal);
-                  })} Payment
+                  Pay {this.props.cartList.reduce((accum, item) => {
+                    return accum += parseFloat(item.subtotal)
+                  }, 0)
+                  }
                 </Button>
              </Form>
            </div>
@@ -351,13 +351,13 @@ const mapState = ({
 }) => ({
   user,
   cart,
-  cardList,
+  cartList,
   statusMessage
 });
 
 const mapDispatch = dispatch => {
   return {
-    postOrder: (id, order) => dispatch(postOrder(id, order)),
+    postOrder: order => dispatch(postOrder(order)),
     deleteCart: id => dispatch(deleteCart(id)),
   }
 }

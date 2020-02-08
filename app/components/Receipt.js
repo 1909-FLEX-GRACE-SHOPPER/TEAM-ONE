@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 
 const Receipt = props => {
-    console.log(props)
+  console.log(props);
   return (
     <div>
-      <h3>Your order #{ props.orders.id.split('-')[0] } is being processed.</h3>
+      {/* <h3>Your order #{ props.orders.id.split('-')[0] } is being processed.</h3> */}
       {
         // props.order.products.map(product => {
         //   return (
@@ -18,9 +18,9 @@ const Receipt = props => {
       }
       <Button href='/'>Return to the Shop</Button>
     </div>
-  )
-}
+  );
+};
 
-const mapState = ({ orders }) => ({ orders })
+const mapState = ({ orders }) => ({ orders });
 
-export default connect(mapState)(Receipt)
+export default connect(mapState)(Receipt);
