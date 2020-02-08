@@ -280,7 +280,7 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
 });
 
 router.get('/:userId/cart', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+  if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
   Cart.findOne({
     where: { userId: req.params.userId }
@@ -293,7 +293,7 @@ router.get('/:userId/cart', (req, res, next) => {
 });
 
 router.get('/:userId/cart/set', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+  if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
   CartList.findAll({
     where: { userId: req.params.userId },
@@ -309,7 +309,7 @@ router.get('/:userId/cart/set', (req, res, next) => {
 });
 
 router.post('/cart/add', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.body.userId)
+  if (req.user.id !== req.body.userId)
     return res.status(400).send('Access Denied');
   const productId = req.body.productId;
   const productQuantity = req.body.productQuantity;
@@ -333,7 +333,7 @@ router.post('/cart/add', (req, res, next) => {
 
 //edit product quantity in cart
 router.put('/cart/cartlist/update', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.body.cartItem.userId)
+  if (req.user.id !== req.body.cartItem.userId)
     return res.status(400).send('Access Denied');
   const { newQuantity, newSubtotal, id } = req.body.cartItem;
 
@@ -354,7 +354,7 @@ router.put('/cart/cartlist/update', (req, res, next) => {
 });
 
 router.delete('/:userId/cart/:cartListId', async (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+  if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
   try {
     await CartList.destroy({
@@ -368,7 +368,7 @@ router.delete('/:userId/cart/:cartListId', async (req, res, next) => {
 });
 
 router.post(`/:userId/cart`, (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+  if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
   Cart.findOne({
     where: { userId: req.params.userId }
@@ -395,7 +395,7 @@ router.post(`/:userId/cart`, (req, res, next) => {
 
 //edit cart for shipping and billing details
 router.put(`/:userId/cart`, (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+  if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
   const cartBody = new CartObject(req.body);
   Cart.findOne({
@@ -413,7 +413,7 @@ router.put(`/:userId/cart`, (req, res, next) => {
 
 //Route for deleting a cart.
 router.delete(`/:userId/cart`, (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+  if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
   Cart.findOne({
     where: { userId: req.params.userId }
@@ -427,7 +427,7 @@ router.delete(`/:userId/cart`, (req, res, next) => {
 });
 
 router.get('/:userId/wishlist', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+  if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
   Wishlist.findAll({
     where: {
@@ -442,7 +442,7 @@ router.get('/:userId/wishlist', (req, res, next) => {
 });
 
 router.post('/wishlist', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.body.userId)
+  if (req.user.id !== req.body.userId)
     return res.status(400).send('Access Denied');
   const productId = req.body.productId;
   const userId = req.body.userId;
@@ -456,7 +456,7 @@ router.post('/wishlist', (req, res, next) => {
 });
 
 router.delete('/:userId/wishlist/:wishlistId', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+  if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
   Wishlist.findByPk(req.params.wishlistId)
     .then(item => item.destroy())
