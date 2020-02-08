@@ -21,8 +21,6 @@ class Wishlist extends React.Component {
 
   componentDidUpdate() {
     const { user, fetchWishlist } = this.props;
-    console.log(user);
-    console.log(this.state.fetchedWL);
     if (user.userType !== 'Guest' && user.userType && !this.state.fetchedWL) {
       fetchWishlist(user.id);
       this.setState({ fetchedWL: true });
