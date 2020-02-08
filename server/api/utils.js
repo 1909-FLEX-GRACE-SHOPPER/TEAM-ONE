@@ -75,22 +75,12 @@ function OrderObject(id, order) {
 // any orders or cart items that used to belong to
 // the guest will belong to the new user
 const mergeAndDestroyUser = async (newUser, guestUserInfo) => {
-  const guestUser = await User.findOne({
-    where: { ...guestUserInfo }
-  });
-  console.log('FOUND GUEST USER');
-  try {
-    await User.destroy({
-      where: {
-        ...guestUserInfo
-      }
-    });
-    console.log('DESTROYED USER');
-  } catch (e) {
-    console.log('FAILED TO DESTROY GUEST USER');
-    console.error(e);
-    return new Error(e);
-  }
+  const guestUser = (
+    await User.findOne({
+      where: { ...guestUserInfo }
+    })
+  ).dataValues;
+  console.log('MERGING ', guestUser, ' into ', newUser);
   try {
     await Order.update(
       { userId: newUser.id },
@@ -122,6 +112,7 @@ const mergeAndDestroyUser = async (newUser, guestUserInfo) => {
     return new Error(e);
   }
   try {
+    console.log('newUser id is', newUser.id);
     await CartList.update(
       { userId: newUser.id },
       {
@@ -130,9 +121,22 @@ const mergeAndDestroyUser = async (newUser, guestUserInfo) => {
         }
       }
     );
+    console.log('UPDATED CART LIST');
   } catch (e) {
     console.log('FAILED TO UPDATE CART LIST');
     console.error(e);
+  }
+  try {
+    await User.destroy({
+      where: {
+        ...guestUserInfo
+      }
+    });
+    console.log('DESTROYED USER');
+  } catch (e) {
+    console.log('FAILED TO DESTROY GUEST USER');
+    console.error(e);
+    return new Error(e);
   }
   return newUser;
 };

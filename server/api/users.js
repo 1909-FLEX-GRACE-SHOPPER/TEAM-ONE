@@ -100,7 +100,7 @@ router.post('/login', (req, res, next) => {
                 sessionId: req.cookies.session_id
               })
               .then(() =>
-                mergeAndDestroyUser(user, {
+                mergeAndDestroyUser(user.dataValues, {
                   sessionId: req.cookies.session_id,
                   userType: 'Guest'
                 })

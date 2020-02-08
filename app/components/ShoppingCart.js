@@ -14,7 +14,8 @@ class ShoppingCart extends React.Component {
     super();
     this.state = {
       total: 0,
-      fetchedCart: false
+      fetchedCart: false,
+      userId: ''
     };
   }
   componentDidMount() {
@@ -32,10 +33,14 @@ class ShoppingCart extends React.Component {
 
   checkAndFetchCart = () => {
     const { user, fetchCartList } = this.props;
-    if (user.id && !this.state.fetchedCart) {
+    console.log(this.props);
+    if (
+      (this.state.userId !== user.id && user.id !== undefined) ||
+      (user.id && !this.state.fetchedCart)
+    ) {
       console.log('fetching cart');
       fetchCartList(user.id);
-      this.setState({ fetchedCart: true });
+      this.setState({ fetchedCart: true, userId: user.id });
     }
   };
 
