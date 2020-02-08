@@ -12,6 +12,7 @@ app.use(cookieParser());
 app.use((req, res, next) => {
   //The user doesn't have a session cookie so we create a session
   if (!req.cookies['session_id']) {
+    console.log('no cookie');
     Session.create()
       .then(session =>
         User.create({
@@ -41,8 +42,31 @@ app.use((req, res, next) => {
       }
     })
       .then(user => {
-        req.user = user;
-        next();
+        //console.log(user);
+        if (!user) {
+          Session.create()
+            .then(session =>
+              User.create({
+                userType: 'Guest',
+                sessionId: session.id
+              })
+            )
+            .then(guest => {
+              res.cookie('session_id', guest.dataValues.sessionId, {
+                path: '/',
+                expires: new Date(Date.now() + 1000 * 60 * 60 * 24)
+              });
+              req.user = guest;
+              next();
+            })
+            .catch(e => {
+              console.error(e);
+              res.status(404).redirect('/error');
+            });
+        } else {
+          req.user = user.dataValues;
+          next();
+        }
       })
       .catch(e => {
         console.error(e);
