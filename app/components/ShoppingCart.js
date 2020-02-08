@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import CartItem from './CartItem.js';
 import { Button, ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { setCart, removeItemFromCart } from '../redux/thunks/CartThunks.js';
+import { setCartList, removeItemFromCart } from '../redux/thunks/CartThunks.js';
 
 class ShoppingCart extends React.Component {
   constructor() {
@@ -14,17 +14,16 @@ class ShoppingCart extends React.Component {
     this.props.fetchCart(this.props.match.params.userId);
   }
 
-  componentDidUpdate() {}
-
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
 
   render() {
-    const { cart } = this.props;
-    console.log(cart);
+    const { cartList } = this.props;
+    console.log('calling ShoppingCart render');
+    console.log(cartList);
     // this.state.total = this.state.total + cart.map(item => parseInt(item.subtotal));
-    if (!cart.length) {
+    if (!cartList.length) {
       return (
         <div className='shopping-cart'>
           <h4>SHOPPING CART</h4>
@@ -36,7 +35,7 @@ class ShoppingCart extends React.Component {
         <div className='shopping-cart'>
           <h4>SHOPPING CART</h4>
           <ListGroup className='shopping-cart-product-list'>
-            {cart.map(item => (
+            {cartList.map(item => (
               <ListGroup.Item key={item.id}>
                 <CartItem key={item.id} item={item} />
                 <Button onClick={() => this.handleRemoveItem(item)}>
@@ -55,13 +54,13 @@ class ShoppingCart extends React.Component {
 }
 
 const mapState = state => {
-  const cart = state.cart;
-  return { cart };
+  const cartList = state.cartList;
+  return { cartList };
 };
 
 const mapDispatch = dispatch => {
   return {
-    fetchCart: userId => dispatch(setCart(userId)),
+    fetchCart: userId => dispatch(setCartList(userId)),
     removeItem: item => dispatch(removeItemFromCart(item))
   };
 };

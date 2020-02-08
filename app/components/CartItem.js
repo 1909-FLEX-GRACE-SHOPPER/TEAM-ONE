@@ -10,7 +10,7 @@ class CartItem extends React.Component {
       productName: '',
       price: '',
       subtotal: this.props.item.subtotal,
-      cartId: this.props.item.id,
+      cartListId: this.props.item.id,
       quantity: this.props.item.productQuantity,
       userId: this.props.item.userId,
       productId: this.props.item.productId
@@ -44,9 +44,9 @@ class CartItem extends React.Component {
         subtotal: newSubtotal
       });
       await axios
-        .put(`/api/users/${this.state.userId}/cart/${this.state.cartId}`, {
-          newQuantity,
-          newSubtotal
+        .put(`/api/users/${this.state.userId}/cart/${this.state.cartListId}`, {
+          newQuantity
+          // newSubtotal
         })
         .then(res => {
           return res.data;

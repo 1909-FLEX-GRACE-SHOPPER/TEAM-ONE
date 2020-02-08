@@ -14,8 +14,6 @@ class Wishlist extends React.Component {
     this.props.fetchWishlist(this.props.match.params.userId);
   }
 
-  //TODO: make wishlist render "create an account" after log out
-
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
@@ -24,7 +22,7 @@ class Wishlist extends React.Component {
     const { wishlist, user } = this.props;
     console.log('calling Wishlist render');
     console.log(wishlist);
-    if (user.userType === 'Guest') {
+    if (user.userType === 'Guest' || user.userType === undefined) {
       return <div>Please create an account to create a wishlist.</div>;
     } else {
       return (
