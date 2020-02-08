@@ -1,4 +1,6 @@
 const axios = require('axios');
+const { models } = require('../db/index.js');
+const { User, Order, Cart } = models;
 
 //Pagination middleware.
 //TODO: Return data when the limit is less than the number of rows on a "page" of the table
