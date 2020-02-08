@@ -296,12 +296,14 @@ router.post('/cart/add', (req, res, next) => {
   const productQuantity = req.body.productQuantity;
   const cartId = req.body.cartId;
   const userId = req.body.userId;
+  const subtotal = req.body.subtotal;
 
   CartList.create({
     productId: productId,
     productQuantity: productQuantity,
     cartId: cartId,
-    userId: userId
+    userId: userId,
+    subtotal: subtotal
   })
     .then(newItem => res.status(200).send(newItem))
     .catch(err => {

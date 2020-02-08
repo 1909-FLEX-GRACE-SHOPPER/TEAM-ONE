@@ -13,7 +13,7 @@ class ShoppingCart extends React.Component {
   componentDidMount() {
     this.props.fetchCart(this.props.match.params.userId);
   }
-
+  //TO DO: update user Id in CartList when user log in or log out
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
@@ -21,11 +21,15 @@ class ShoppingCart extends React.Component {
   render() {
     const { cartList } = this.props;
     console.log('calling ShoppingCart render');
-    console.log(cartList);
-    // this.state.total = this.state.total + cart.map(item => parseInt(item.subtotal));
+    cartList.map(item => {
+      this.state.total += parseFloat(item.subtotal) / 2;
+      Math.round((this.state.total + Number.EPSILON) * 100) / 100;
+    });
+
     if (!cartList.length) {
       return (
         <div className='shopping-cart'>
+          <Link to='/products/page/1'>Back</Link>
           <h4>SHOPPING CART</h4>
           <p>Your cart is empty.</p>
         </div>
@@ -33,6 +37,7 @@ class ShoppingCart extends React.Component {
     } else {
       return (
         <div className='shopping-cart'>
+          <Link to='/products/page/1'>Back</Link>
           <h4>SHOPPING CART</h4>
           <ListGroup className='shopping-cart-product-list'>
             {cartList.map(item => (
@@ -45,7 +50,7 @@ class ShoppingCart extends React.Component {
             ))}
           </ListGroup>
           {/* TODO: reflect total cost */}
-          <div>TOTAL: {this.state.total}</div>
+          <div>TOTAL: ${this.state.total}</div>
           <Link to='/checkout'>CHECKOUT</Link>
         </div>
       );

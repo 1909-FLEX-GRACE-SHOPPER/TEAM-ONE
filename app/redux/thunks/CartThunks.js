@@ -51,14 +51,21 @@ export function setCartList(userId) {
   };
 }
 
-export function addToCart(productId, cartId, productQuantity, userId) {
+export function addToCart(
+  productId,
+  cartId,
+  productQuantity,
+  userId,
+  subtotal
+) {
   return function thunk(dispatch) {
     return axios
       .post(`/api/users/cart/add`, {
         productId,
         cartId,
         productQuantity,
-        userId
+        userId,
+        subtotal
       })
       .then(() => dispatch(setCartList(userId)))
       .catch(e => {

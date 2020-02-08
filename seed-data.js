@@ -98,7 +98,7 @@ const users = [
     userType: 'Admin',
     email: 'cissy5120@gmail.com',
     password: bcrypt.hashSync('123', 10),
-    lastName: 'Bae',
+    lastName: 'Bai',
     firstName: 'Cissy',
     phone: 2122222222,
     shippingAddress: '5 Hanover Square',

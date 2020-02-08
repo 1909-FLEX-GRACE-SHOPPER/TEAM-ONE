@@ -22,8 +22,20 @@ class ProductPage extends React.Component {
     this.props.fetchSimilarProducts(this.props.match.params.id);
   }
 
-  handleAddToCart = async ({ productId, cartId, productQuantity, userId }) => {
-    await this.props.addToCart(productId, cartId, productQuantity, userId);
+  handleAddToCart = async ({
+    productId,
+    cartId,
+    productQuantity,
+    userId,
+    subtotal
+  }) => {
+    await this.props.addToCart(
+      productId,
+      cartId,
+      productQuantity,
+      userId,
+      subtotal
+    );
   };
 
   postWishlist = async ({ productId, userId }) => {
@@ -73,7 +85,8 @@ class ProductPage extends React.Component {
                         productId: singleProduct.id,
                         cartId: cart.id,
                         productQuantity: this.state.quantity,
-                        userId: user.id
+                        userId: user.id,
+                        subtotal: this.state.quantity * singleProduct.unitPrice
                       });
                     }}
                   >
@@ -136,8 +149,8 @@ const mapDispatch = dispatch => {
       dispatch(fetchSimilarProducts(productId)),
     postWishlist: (productId, userId) =>
       dispatch(postWishlist(productId, userId)),
-    addToCart: (productId, cartId, productQuantity, userId) =>
-      dispatch(addToCart(productId, cartId, productQuantity, userId))
+    addToCart: (productId, cartId, productQuantity, userId, subtotal) =>
+      dispatch(addToCart(productId, cartId, productQuantity, userId, subtotal))
   };
 };
 
