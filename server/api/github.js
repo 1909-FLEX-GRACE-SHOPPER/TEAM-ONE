@@ -47,4 +47,30 @@ router.get('/callback', (req, res, next) => {
 		});
 });
 
+router.get('/user', (req, res, next) => {
+	axios
+		.get('https://api.github.com/user', {
+			headers: {
+				Authorization: `token ${req.user.github_access_token}`
+			}
+		})
+		.then(axRes => {
+			User.findOne({
+				where: {
+					github_access_token: req.user.github_access_token
+				}
+			}) 
+		})
+		.then(user => 
+			user.update({
+				firstName: axRes.data.name
+			})
+		)
+		.catch(e => {
+			console.log('Error while getting response from github user route.');
+			console.error(e);
+			res.redirect('/error');
+		});
+});
+
 module.exports = router;
