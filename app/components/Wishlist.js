@@ -14,18 +14,26 @@ class Wishlist extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.checkAndFetchWishlist();
+  }
   //TODO: make wishlist render "create an account" after log out
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
 
   componentDidUpdate() {
+    this.checkAndFetchWishlist();
+  }
+
+  checkAndFetchWishlist = () => {
     const { user, fetchWishlist } = this.props;
     if (user.userType !== 'Guest' && user.userType && !this.state.fetchedWL) {
       fetchWishlist(user.id);
       this.setState({ fetchedWL: true });
     }
-  }
+  };
+
   render() {
     const { wishlist, user } = this.props;
     if (!user.userType) return <Loading message="retrieving your wishlist" />;
