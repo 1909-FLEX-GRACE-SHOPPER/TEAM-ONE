@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import ArScene from './ArScene';
 
 class PhotoGallery extends React.Component {
   constructor() {
