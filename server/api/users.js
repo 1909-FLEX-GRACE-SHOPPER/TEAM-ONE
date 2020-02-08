@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { models } = require('../db/index.js');
-const { User, Order, Cart, CartList, Session, Wishlist } = models;
+const { User, Order, Cart, CartList, Session, Wishlist, Product } = models;
 
 const {
   paginate,
@@ -286,10 +286,13 @@ router.get('/:userId/cart', (req, res, next) => {
 
 router.get('/:userId/cart/set', (req, res, next) => {
   CartList.findAll({
-    where: { userId: req.params.userId }
+    where: { userId: req.params.userId },
+    include: [Product]
   })
     .then(cart => res.status(200).send(cart))
     .catch(e => {
+      console.log('ERROR GETTING CART LIST');
+      console.error(e);
       res.status(404);
       next(e);
     });
@@ -317,17 +320,19 @@ router.post('/cart/add', (req, res, next) => {
 });
 
 //edit product quantity in cart
-router.put('/:userId/cart/:cartListId', (req, res, next) => {
-  const { newQuantity, newSubtotal } = req.body;
+router.put('/cart/cartlist/update', (req, res, next) => {
+  const { newQuantity, newSubtotal, id } = req.body.cartItem;
 
-  CartList.findByPk(req.params.cartListId)
+  CartList.findByPk(id)
     .then(cartItem =>
       cartItem.update({
         productQuantity: newQuantity,
         subtotal: newSubtotal
       })
     )
-    .then(() => res.status(202))
+    .then(updatedItem => {
+      return res.status(202).send(updatedItem);
+    })
     .catch(e => {
       res.status(304);
       next(e);

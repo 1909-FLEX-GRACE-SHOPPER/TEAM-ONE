@@ -50,7 +50,6 @@ app.use((req, res, next) => {
               })
             )
             .then(guest => {
-              console.log('CREATED A GUEST USER');
               res.cookie('session_id', guest.dataValues.sessionId, {
                 path: '/',
                 expires: new Date(Date.now() + 1000 * 60 * 60 * 24)

@@ -4,7 +4,10 @@ import CartItem from './CartItem.js';
 import { Button, ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Loading from './Loading';
-import { setCartList, removeItemFromCart } from '../redux/thunks/CartThunks.js';
+import {
+  fetchCartList,
+  removeItemFromCart
+} from '../redux/thunks/CartThunks.js';
 import axios from 'axios';
 
 class ShoppingCart extends React.Component {
@@ -29,10 +32,10 @@ class ShoppingCart extends React.Component {
   };
 
   checkAndFetchCart = () => {
-    const { user, fetchCart } = this.props;
+    const { user, fetchCartList } = this.props;
     if (user.id && !this.state.fetchedCart) {
       console.log('fetching cart');
-      fetchCart(user.id);
+      fetchCartList(user.id);
       this.setState({ fetchedCart: true });
     }
   };
@@ -51,8 +54,6 @@ class ShoppingCart extends React.Component {
   render() {
     const { cartList, user } = this.props;
     let total = this.state.total;
-    console.log('calling ShoppingCart render');
-    console.log(user.id);
     if (!user.id) return <Loading message='Retrieving your cart' />;
     cartList.map(item => {
       total += parseFloat(item.subtotal);
@@ -97,7 +98,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    fetchCart: userId => dispatch(setCartList(userId)),
+    fetchCartList: userId => dispatch(fetchCartList(userId)),
     removeItem: item => dispatch(removeItemFromCart(item))
   };
 };
