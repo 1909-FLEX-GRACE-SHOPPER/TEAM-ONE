@@ -1,22 +1,13 @@
 const Sequelize = require('sequelize');
 const db = require('./../database.js');
 
-const { UUID, UUIDV4, INTEGER, STRING, TEXT, DECIMAL } = Sequelize;
+const { UUID, UUIDV4, STRING, TEXT } = Sequelize;
 
 const Cart = db.define('cart', {
   id: {
     primaryKey: true,
     type: UUID,
     defaultValue: UUIDV4
-  },
-
-  productQuantity: {
-    type: INTEGER
-  },
-
-  subtotal: {
-    type: DECIMAL(10, 2),
-    defaultValue: 0
   },
 
   shippingName: {

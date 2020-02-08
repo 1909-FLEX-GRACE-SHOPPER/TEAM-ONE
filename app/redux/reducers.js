@@ -8,7 +8,7 @@ import {
   LOGIN_ERROR,
   SET_WISHLIST,
   SET_CART,
-  ADD_TO_CART,
+  SET_CART_LIST,
   REMOVE_ITEM_FROM_CART,
   STATUS_MESSAGE,
   SET_SIMILAR_PRODUCTS
@@ -99,16 +99,26 @@ export const wishlist = (state = [], action) => {
   }
 };
 
-export const cart = (state = [], action) => {
+export const cart = (state = {}, action) => {
   switch (action.type) {
     case SET_CART:
       return action.cart;
+    default:
+      return state;
+  }
+};
+
+export const cartList = (state = [], action) => {
+  switch (action.type) {
+    case SET_CART_LIST:
+      return action.items;
     case REMOVE_ITEM_FROM_CART:
       return state.filter(item => item.id !== action.selectedItem.id);
     default:
       return state;
   }
 };
+
 export const statusMessage = (state = { status: null, text: '' }, action) => {
   switch (action.type) {
     case STATUS_MESSAGE:

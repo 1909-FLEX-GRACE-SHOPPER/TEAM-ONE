@@ -21,9 +21,20 @@ class ProductPage extends React.Component {
     this.props.fetchSingleProduct(this.props.match.params.id);
     this.props.fetchSimilarProducts(this.props.match.params.id);
   }
-
-  handleAddToCart = async ({ productId, userId, productQuantity }) => {
-    await this.props.addToCart(productId, userId, productQuantity);
+  handleAddToCart = async ({
+    productId,
+    cartId,
+    productQuantity,
+    userId,
+    subtotal
+  }) => {
+    await this.props.addToCart(
+      productId,
+      cartId,
+      productQuantity,
+      userId,
+      subtotal
+    );
   };
 
   postWishlist = async ({ productId, userId }) => {
@@ -31,7 +42,7 @@ class ProductPage extends React.Component {
   };
 
   render() {
-    const { singleProduct, user, similarProducts } = this.props;
+    const { singleProduct, user, cart, similarProducts } = this.props;
     return (
       <div>
         {!singleProduct ? (
@@ -71,8 +82,10 @@ class ProductPage extends React.Component {
                     onClick={() => {
                       this.handleAddToCart({
                         productId: singleProduct.id,
+                        cartId: cart.id,
+                        productQuantity: this.state.quantity,
                         userId: user.id,
-                        productQuantity: this.state.quantity
+                        subtotal: this.state.quantity * singleProduct.unitPrice
                       });
                     }}
                   >
@@ -120,9 +133,16 @@ class ProductPage extends React.Component {
   }
 }
 
+<<<<<<< HEAD
 const mapState = ({ singleProduct, user, similarProducts }) => ({
+=======
+//TODO: This should fetch similar products not just all products
+//TODO: Add cart thunk
+const mapState = ({ singleProduct, user, cart, similarProducts }) => ({
+>>>>>>> 3e758e852d6ad44ec097e8beb0c8ef7681850655
   singleProduct,
   user,
+  cart,
   similarProducts
 });
 const mapDispatch = dispatch => {
@@ -132,8 +152,8 @@ const mapDispatch = dispatch => {
       dispatch(fetchSimilarProducts(productId)),
     postWishlist: (productId, userId) =>
       dispatch(postWishlist(productId, userId)),
-    addToCart: (productId, userId, productQuantity) =>
-      dispatch(addToCart(productId, userId, productQuantity))
+    addToCart: (productId, cartId, productQuantity, userId, subtotal) =>
+      dispatch(addToCart(productId, cartId, productQuantity, userId, subtotal))
   };
 };
 
