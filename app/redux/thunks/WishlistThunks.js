@@ -23,19 +23,19 @@ export const fetchWishlist = userId => {
       });
   };
 };
-//TODO: add userId to path
+
 export const postWishlist = (productId, userId) => {
   return dispatch => {
     return axios
-      .post(`/api/users/wishlist`, productId)
+      .post(`/api/users/wishlist`, { productId, userId })
       .then(() => {
         dispatch(fetchWishlist(userId));
-        // dispatch(
-        //   statusMessage({
-        //     status: SUCCESS,
-        //     text: 'Wishlist item added.'
-        //   })
-        // );
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Wishlist item added.'
+          })
+        );
       })
       .catch(e => {
         console.log('Error adding wishlist', e);

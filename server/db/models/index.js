@@ -5,6 +5,7 @@ const Product = require('./products');
 const Wishlist = require('./wishlist');
 const Session = require('./sessions');
 const Cart = require('./cart');
+const CartList = require('./cartList');
 
 module.exports = {
   User,
@@ -13,5 +14,6 @@ module.exports = {
   Product,
   Wishlist,
   Session,
-  Cart
+  Cart,
+  CartList
 };
