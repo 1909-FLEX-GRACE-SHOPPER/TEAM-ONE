@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateCartList } from '../redux/thunks/CartThunks';
-import axios from 'axios';
 
 class CartItem extends React.Component {
   handleEditQuantity = ev => {

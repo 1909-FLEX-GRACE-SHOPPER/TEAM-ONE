@@ -40,17 +40,6 @@ class ShoppingCart extends React.Component {
     }
   };
 
-  updateTotalCost = async () => {
-    try {
-      const { cartList } = this.props;
-      let subtotal = await axios.get(
-        `/api/users/${cartList.userId}/cart/${cartList.id}`
-      );
-    } catch (err) {
-      err => console.log(err);
-    }
-  };
-
   render() {
     const { cartList, user } = this.props;
     let total = this.state.total;
