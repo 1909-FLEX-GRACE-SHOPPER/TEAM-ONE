@@ -47,31 +47,31 @@ class ShoppingCart extends React.Component {
         `/api/users/${cartList.userId}/cart/${cartList.id}`
       );
     } catch (err) {
-      err => console.log(err);
+      console.log(err);
     }
   };
 
   render() {
     const { cartList, user } = this.props;
     let total = this.state.total;
-    if (!user.id) return <Loading message='Retrieving your cart' />;
+    if (!user.id) return <Loading message="Retrieving your cart" />;
     cartList.map(item => {
       total += parseFloat(item.subtotal);
     });
     if (!cartList.length) {
       return (
-        <div className='shopping-cart'>
-          <Link to='/products/page/1'>Back</Link>
+        <div className="shopping-cart">
+          <Link to="/products/page/1">Back</Link>
           <h4>SHOPPING CART</h4>
           <p>Your cart is empty.</p>
         </div>
       );
     } else {
       return (
-        <div className='shopping-cart'>
-          <Link to='/products/page/1'>Back</Link>
+        <div className="shopping-cart">
+          <Link to="/products/page/1">Back</Link>
           <h4>SHOPPING CART</h4>
-          <ListGroup className='shopping-cart-product-list'>
+          <ListGroup className="shopping-cart-product-list">
             {cartList.map(item => (
               <ListGroup.Item key={item.id}>
                 <CartItem key={item.id} item={item} />
@@ -83,7 +83,7 @@ class ShoppingCart extends React.Component {
           </ListGroup>
           {/* TODO: total cost should update when subtotal changes*/}
           <div>TOTAL: ${total}</div>
-          <Link to='/checkout'>CHECKOUT</Link>
+          <Link to="/checkout">CHECKOUT</Link>
         </div>
       );
     }

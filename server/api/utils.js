@@ -1,5 +1,5 @@
 const { models } = require('../db/index.js');
-const { User, Order, Cart } = models;
+const { User, Order, Cart, CartList } = models;
 
 //Pagination middleware.
 //TODO: Return data when the limit is less than the number of rows on a "page" of the table
@@ -120,6 +120,19 @@ const mergeAndDestroyUser = async (newUser, guestUserInfo) => {
     console.log('FAILED TO UPDATE CART FOR NEW USER');
     console.error(e);
     return new Error(e);
+  }
+  try {
+    await CartList.update(
+      { userId: newUser.id },
+      {
+        where: {
+          userId: guestUser.id
+        }
+      }
+    );
+  } catch (e) {
+    console.log('FAILED TO UPDATE CART LIST');
+    console.error(e);
   }
   return newUser;
 };

@@ -101,14 +101,12 @@ router.post('/login', (req, res, next) => {
               .update({
                 sessionId: req.cookies.session_id
               })
-              .then(() => {
-                User.destroy({
-                  where: {
-                    sessionId: req.cookies.session_id,
-                    userType: 'Guest'
-                  }
-                });
-              })
+              .then(() =>
+                mergeAndDestroyUser(user, {
+                  sessionId: req.cookies.session_id,
+                  userType: 'Guest'
+                })
+              )
               .then(() => {
                 return res
                   .cookie('session_id', req.cookies.session_id, {
