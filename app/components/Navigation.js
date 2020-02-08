@@ -14,7 +14,7 @@ class Navigation extends Component {
 			case 'GitHub User':
 				return (
 					<Nav>
-						<Nav.Link href={`/user/${params.id}`}> Git Hub User Data {} </Nav.Link>
+						<Nav.Link href={`/user/${params.id}`}> {gitHubUser.name} </Nav.Link>
 						<Button
 							onClick={() => {
 								logoutUser(user.id);
@@ -63,6 +63,7 @@ class Navigation extends Component {
 	};
 	render() {
 		const { user, gitHubUser } = this.props;
+		console.log('this is the PROPS', this.props)
 		return (
 			<Navbar bg='dark' variant='dark'>
 				<Navbar.Brand>Logo</Navbar.Brand>
@@ -86,7 +87,7 @@ class Navigation extends Component {
 const mapStateToProps = state => {
 	return {
 		user: state.user,
-		gitHubUser: state.gitHubUser
+		gitHubUser: state.gitHubData
 	};
 };
 
