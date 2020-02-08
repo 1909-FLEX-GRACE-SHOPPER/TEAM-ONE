@@ -24,6 +24,7 @@ router.post('/', (req, res, next) => {
   Order.create(orderBody)
     .then(order => {
       User.findByPk(req.body.userId).then(user => {
+        console.log(sendEmail);
         sendEmail(
           user.email,
           'Purchase order recieved',
