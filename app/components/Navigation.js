@@ -12,7 +12,7 @@ class Navigation extends Component {
 					return (
 						<Nav>
 							<Nav.Link href={`/user/${params.id}`}>
-								{params.firstName}
+								GitHubUser
 							</Nav.Link>
 							<Button
 								onClick={() => {
