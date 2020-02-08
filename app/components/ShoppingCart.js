@@ -4,23 +4,40 @@ import CartItem from './CartItem.js';
 import { Button, ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { setCartList, removeItemFromCart } from '../redux/thunks/CartThunks.js';
+import { fetchWishlist } from '../redux/thunks/WishlistThunks.js';
 
 class ShoppingCart extends React.Component {
   constructor() {
     super();
-    this.state = { total: 0 };
+    this.state = { total: 0, fetchedCart: false };
   }
   componentDidMount() {
-    this.props.fetchCart(this.props.match.params.userId);
+    console.log('calling componentDidMount in Cart');
+    this.checkAndFetchCart();
+  }
+
+  componentDidUpdate() {
+    console.log('calling componentDidUpdate in Cart');
+    this.checkAndFetchCart();
   }
   //TO DO: update user Id in CartList when user log in or log out
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
 
+  checkAndFetchCart = () => {
+    const { user, fetchCart } = this.props;
+    if (!this.state.fetchedCart) {
+      console.log('fetching cart');
+      fetchCart(user.id);
+      this.setState({ fetchedCart: true });
+    }
+  };
+
   render() {
     const { cartList } = this.props;
     console.log('calling ShoppingCart render');
+
     cartList.map(item => {
       this.state.total += parseFloat(item.subtotal) / 2;
       Math.round((this.state.total + Number.EPSILON) * 100) / 100;
@@ -49,7 +66,7 @@ class ShoppingCart extends React.Component {
               </ListGroup.Item>
             ))}
           </ListGroup>
-          {/* TODO: reflect total cost */}
+          {/* TODO: total cost should update when subtotal changes*/}
           <div>TOTAL: ${this.state.total}</div>
           <Link to='/checkout'>CHECKOUT</Link>
         </div>
@@ -60,7 +77,8 @@ class ShoppingCart extends React.Component {
 
 const mapState = state => {
   const cartList = state.cartList;
-  return { cartList };
+  const user = state.user;
+  return { cartList, user };
 };
 
 const mapDispatch = dispatch => {
