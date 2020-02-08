@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 import { connect } from 'react-redux';
 import Nav from 'react-bootstrap/Nav';
 import {
@@ -10,12 +11,18 @@ import {
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import axios from 'axios';
+import { deleteCart } from '../redux/thunks/CartThunks';
+import { postOrder } from '../redux/thunks/OrderThunks';
+
+import Loading from './Loading'
+
+import { SUCCESS } from '../redux/thunks/utils';
 
 class StripeCheckoutForm extends Component {
   constructor() {
     super();
     this.state = {
+      cardReady: false,
       name: '',
       address: {
         line1: '',
@@ -23,15 +30,161 @@ class StripeCheckoutForm extends Component {
         postal_code: '',
         state: '',
         country: '',
+      },
+      errors: {
+        nameError: '',
+        line1Error: '',
+        cityError: '',
+        postal_codeError: '',
+        stateError: '',
+        countryError: '',
       }
     }
   }
 
+  validate = (field, value) => {
+    const { errors } = this.state
+    switch(field) {
+      case 'name':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              nameError: 'Required field'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              nameError: ''
+            }
+          })
+        }
+        break;
+      
+      case 'line1': 
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              line1Error: 'Required field',
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              line1Error: '',
+            }
+          })
+        }
+        break;
+    
+      case 'city':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              cityError: 'required field',
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              cityError: '',
+            }
+          })
+        }
+        break;
+
+      case 'postal_code':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              postal_codeError: 'Required field'
+            }
+          })
+        } else if(!value.match(/^[0-9]{5}$/)) {
+          this.setState({
+            errors: {
+              ...errors,
+              postal_codeError: 'Invalid Zip Code'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              postal_codeError: ''
+            }
+          })
+        }
+        break;
+
+      case 'state':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              stateError: 'Required field',
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              stateError: '',
+            }
+          })
+        }
+        break;
+
+        case 'country':
+          if(!value) {
+            this.setState({
+              errors: {
+                ...errors,
+                countryError: 'Required field'
+              }
+            })
+          } else {
+            this.setState({
+              errors: {
+                ...errors,
+                countryError: ''
+              }
+            })
+          }
+          break;
+
+        default:
+          break;
+    }
+  }
+
+  componentDidMount() {
+    this.setState({ cardReady: true })
+  }
+
   handleOnChange = ({ target: { name, value }}) => {
     if(name === 'name') {
-      this.setState({ [name]: value })
+      this.setState(
+        { [name]: value },
+        () => this.validate(name, value)
+      )
     } else {
-      this.setState({ ...this.state, address: { ...this.state.address, [name]: value } })
+      this.setState(
+        { ...this.state,
+          address: {
+            ...this.state.address,
+            [name]: value 
+          } 
+        },
+        () => this.validate(name, value)
+      )
     }
   }
 
@@ -39,37 +192,26 @@ class StripeCheckoutForm extends Component {
     e.preventDefault();
     axios
       .post(`/api/stripe/create-payment-intent`, {
-        customer: this.props.user.id,
-        payment_method_types: ["card"],
-        amount: 100,
-        shipping: this.state
+      payment_method_types: ["card"],
+      amount: this.props.cartList.
+        map(item => {
+          total += parseFloat(item.subtotal);
+      }),
+      shipping: this.state
       })
       .then(res => {
-        this.props.stripe
-          .confirmCardPayment(res.data.client_secret, {
-            payment_method: {
-              billing_details: {
-
-              }
-            }
-          })
-          .then(payload => {
-            axios
-              .post(`/api/stripe/create-customer`, {
-                payment_method: {
-                  card: payload,
-                },
-                setup_future_usage: 'off_session'
-              })
-              .then(res => {
-                console.log(res)
-              })
-          })
-          .catch(e => {
-            console.error(e)
-          })
+      this.props.stripe
+        .handleCardPayment(res.data.client_secret)
+      })
+      .then(() => {
+      this.props.postOrder({ userId: this.props.user.id, cart: this.props.cart })
+      .then(() => this.props.deleteCart(this.props.user.id))
+      .then(() => {
+        if(this.props.statusMessage.status === SUCCESS) {
+          this.props.history.push('/receipt');
+        }
+      })
     })
-
   }
 
   render() {
@@ -81,10 +223,14 @@ class StripeCheckoutForm extends Component {
         postal_code,
         state,
         country,
-      }
+      },
+      errors
     } = this.state;
-
     return (
+      <div>
+      {
+      this.state.cardReady
+      ? (
       <div>
         {
           false
@@ -169,18 +315,51 @@ class StripeCheckoutForm extends Component {
                 <Button
                   onClick={ this.handleOnClick }
                   className='order-button'
+                  disabled={
+                    Object.values(errors).every(value => value === '') &&
+                    Object.values(this.state.address).every(value => value !== '') &&
+                    name !== ''
+                    ? false
+                    : true
+                  }
                 >
-                  Submit Payment
+                  Submit {this.props.cartList.map(item => {
+                    total += parseFloat(item.subtotal);
+                  })} Payment
                 </Button>
              </Form>
            </div>
           )
         }
       </div>
+      )
+      : (
+        <Loading message='loading credit card input' />
+      )
+      }
+    )
+    </div>
     )
   }
 }
 
-const mapState = ({ user }) => ({ user });
+const mapState = ({
+  user,
+  cart,
+  cartList,
+  statusMessage
+}) => ({
+  user,
+  cart,
+  cardList,
+  statusMessage
+});
 
-export default connect(mapState)(injectStripe(StripeCheckoutForm));
+const mapDispatch = dispatch => {
+  return {
+    postOrder: (id, order) => dispatch(postOrder(id, order)),
+    deleteCart: id => dispatch(deleteCart(id)),
+  }
+}
+
+export default connect(mapState, mapDispatch)(injectStripe(StripeCheckoutForm));

@@ -43,7 +43,6 @@ class Root extends React.Component {
           <Navigation />
           <ToastComponent status={status} message={text} />
           <Switch>
-<<<<<<< HEAD
             <Route exact path="/" component={WelcomeMessage} />
             <Route exact path="/about" component={About} />
             <Route exact path="/gallery" component={Gallery} />
@@ -53,28 +52,11 @@ class Root extends React.Component {
             <Route exact path="/products/add" component={AddProductForm} />
             <Route path="/products/:id" component={ProductPage} />
             <Route exact path="/:userId/cart" component={ShoppingCart} />
-            <Route path="/checkout" component={Checkout} />
+            <Route path="/checkout" component={StripeCheckout} />
             <Route path='/receipt' component={ Receipt } />
-            <Route exact path='/stripe' component={ StripeCheckout }/>
             <Route path="/wishlist/:userId" component={Wishlist} />
             <Route path="/user/:id" /*component={UserPage}*/ />
             <Redirect to="/" />
-=======
-            <Route exact path='/' component={WelcomeMessage} />
-            <Route exact path='/about' component={About} />
-            <Route exact path='/gallery' component={Gallery} />
-            <Route path='/login' component={Login} />
-            <Route path='/signup' component={Signup} />
-            <Route exact path='/products/page/:page' component={Products} />
-            <Route exact path='/products/add' component={AddProductForm} />
-            <Route path='/products/:id' component={ProductPage} />
-            <Route exact path='/cart' component={ShoppingCart} />
-            <Route path='/checkout' component={Checkout} />
-            <Route path='/receipt' component={Receipt} />
-            <Route path='/wishlist' component={Wishlist} />
-            <Route path='/user/:id' /*component={UserPage}*/ />
-            <Redirect to='/' />
->>>>>>> 62db9602f34a7cef8246cb0deb22f56128d5b4aa
           </Switch>
         </div>
       </Router>

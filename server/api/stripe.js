@@ -28,11 +28,4 @@ router.post('/create-payment-intent', (req, res, next) => {
   })
 })
 
-router.post('/create-customer', (req, res, next) => {
-    console.log(req.body)
-  stripe.customers.create({
-    payment_method: req.body.payment_method,
-  })
-})
-
 module.exports = router
