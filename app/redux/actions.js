@@ -11,6 +11,7 @@ import {
   LOGIN_ERROR,
   SET_CART,
   REMOVE_ITEM_FROM_CART,
+  SET_CART_LIST,
   GET_GITHUB_DATA
 } from './constants';
 
@@ -78,7 +79,14 @@ export const loggedInFail = () => {
 export const _setCart = cart => {
   return {
     type: SET_CART,
-    cart,
+    cart
+  };
+};
+
+export const _setCartList = items => {
+  return {
+    type: SET_CART_LIST,
+    items
   };
 };
 
@@ -95,7 +103,6 @@ export const statusMessage = message => {
     message
   };
 };
-
 
 export const gitHubData = gitHubUser => {
   return {

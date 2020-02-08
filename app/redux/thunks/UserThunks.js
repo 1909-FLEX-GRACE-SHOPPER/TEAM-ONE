@@ -146,7 +146,6 @@ export const logInUser = ({ email, password }) => {
       });
   };
 };
-
 //Thunks for getting GitHub user data on the API
 export const getGitHubData = () => dispatch => {
   axios.get('/api/github/user')

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { models } = require('../db/index.js');
-const { User, Order, Cart, Product, Session, Wishlist } = models;
+const { User, Order, Cart, CartList, Session, Wishlist } = models;
 
 const {
   paginate,
@@ -18,7 +18,11 @@ router.get('/session/:sessionId', (req, res, next) => {
       sessionId
     }
   })
-    .then(user => res.status(200).send(user))
+    .then(user => {
+      console.log('FOUND USER = ', user);
+      console.log('SESSION ID = ', sessionId);
+      res.status(200).send(user);
+    })
     .catch(e => {
       res.status(400);
       next(e);
@@ -229,7 +233,7 @@ router.post('/:userId/orders', (req, res, next) => {
   const orderBody = new OrderObject(req.params.userId, req.body);
   Order.create(orderBody)
     .then(() => {
-      res.status(201).send('success')
+      res.status(201).send('success');
     })
     .catch(e => {
       console.log('ERROR CREATING ORDER ', e);
@@ -270,7 +274,7 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
 });
 
 router.get('/:userId/cart', (req, res, next) => {
-  Cart.findAll({
+  Cart.findOne({
     where: { userId: req.params.userId }
   })
     .then(cart => res.status(200).send(cart))
@@ -280,27 +284,43 @@ router.get('/:userId/cart', (req, res, next) => {
     });
 });
 
-router.post('/cart/add', async (req, res, next) => {
-  try {
-    const productId = req.body.productId;
-    const productQuantity = req.body.productQuantity;
-    const userId = req.body.userId;
-    Cart.create({
-      productId: productId,
-      productQuantity: productQuantity,
-      userId: userId
+router.get('/:userId/cart/set', (req, res, next) => {
+  CartList.findAll({
+    where: { userId: req.params.userId }
+  })
+    .then(cart => res.status(200).send(cart))
+    .catch(e => {
+      res.status(404);
+      next(e);
     });
-  } catch (err) {
-    res.status(400);
-    next(err);
-  }
+});
+
+router.post('/cart/add', (req, res, next) => {
+  const productId = req.body.productId;
+  const productQuantity = req.body.productQuantity;
+  const cartId = req.body.cartId;
+  const userId = req.body.userId;
+  const subtotal = req.body.subtotal;
+
+  CartList.create({
+    productId: productId,
+    productQuantity: productQuantity,
+    cartId: cartId,
+    userId: userId,
+    subtotal: subtotal
+  })
+    .then(newItem => res.status(200).send(newItem))
+    .catch(err => {
+      res.status(400);
+      next(err);
+    });
 });
 
 //edit product quantity in cart
-router.put('/:userId/cart/:cartId', (req, res, next) => {
+router.put('/:userId/cart/:cartListId', (req, res, next) => {
   const { newQuantity, newSubtotal } = req.body;
 
-  Cart.findByPk(req.params.cartId)
+  CartList.findByPk(req.params.cartListId)
     .then(cartItem =>
       cartItem.update({
         productQuantity: newQuantity,
@@ -314,10 +334,10 @@ router.put('/:userId/cart/:cartId', (req, res, next) => {
     });
 });
 
-router.delete('/:userId/cart/:cartId', async (req, res, next) => {
+router.delete('/:userId/cart/:cartListId', async (req, res, next) => {
   try {
-    await Cart.destroy({
-      where: { id: req.params.cartId }
+    await CartList.destroy({
+      where: { id: req.params.cartListId }
     });
     res.status(202).send('Item deleted');
   } catch (err) {
@@ -356,28 +376,28 @@ router.put(`/:userId/cart`, (req, res, next) => {
   Cart.findOne({
     where: { userId: req.params.userId }
   })
-  .then(cart => cart.update(cartBody))
-  .then(() => {
-    res.status(202).send('updated')
-  })
-  .catch(e => {
-    res.status(304);
-    next(e);
-  })
-})
+    .then(cart => cart.update(cartBody))
+    .then(() => {
+      res.status(202).send('updated');
+    })
+    .catch(e => {
+      res.status(304);
+      next(e);
+    });
+});
 
 //Route for deleting a cart.
 router.delete(`/:userId/cart`, (req, res, next) => {
   Cart.findOne({
     where: { userId: req.params.userId }
   })
-  .then(cart => cart.destroy())
-  .then(() => res.status(202).send({}))
-  .catch(e => {
-    res.status(404)
-    next(e);
-  })
-})
+    .then(cart => cart.destroy())
+    .then(() => res.status(202).send({}))
+    .catch(e => {
+      res.status(404);
+      next(e);
+    });
+});
 
 router.get('/:userId/wishlist', (req, res, next) => {
   Wishlist.findAll({
@@ -391,14 +411,10 @@ router.get('/:userId/wishlist', (req, res, next) => {
       next(e);
     });
 });
-//TODO: remove console.log
-//TODO: add userId to path
-router.post('/wishlist', (req, res, next) => {
-  console.log('calling post wishlist api');
-  console.log(req.body);
 
+router.post('/wishlist', (req, res, next) => {
   const productId = req.body.productId;
-  const userId = req.params.userId;
+  const userId = req.body.userId;
 
   Wishlist.create({ productId: productId, userId: userId })
     .then(item => res.status(201).send(item))
