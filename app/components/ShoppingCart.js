@@ -3,46 +3,60 @@ import { Link } from 'react-router-dom';
 import CartItem from './CartItem.js';
 import { Button, ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import Loading from './Loading';
 import { setCartList, removeItemFromCart } from '../redux/thunks/CartThunks.js';
-import { fetchWishlist } from '../redux/thunks/WishlistThunks.js';
+import axios from 'axios';
 
 class ShoppingCart extends React.Component {
   constructor() {
     super();
-    this.state = { total: 0, fetchedCart: false };
+    this.state = {
+      total: 0,
+      fetchedCart: false
+    };
   }
   componentDidMount() {
     console.log('calling componentDidMount in Cart');
     this.checkAndFetchCart();
   }
-
   componentDidUpdate() {
     console.log('calling componentDidUpdate in Cart');
     this.checkAndFetchCart();
   }
-  //TO DO: update user Id in CartList when user log in or log out
+
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
 
   checkAndFetchCart = () => {
     const { user, fetchCart } = this.props;
-    if (!this.state.fetchedCart) {
+    if (user.id && !this.state.fetchedCart) {
       console.log('fetching cart');
       fetchCart(user.id);
       this.setState({ fetchedCart: true });
     }
   };
 
+  updateTotalCost = async () => {
+    try {
+      const { cartList } = this.props;
+      let subtotal = await axios.get(
+        `/api/users/${cartList.userId}/cart/${cartList.id}`
+      );
+    } catch (err) {
+      err => console.log(err);
+    }
+  };
+
   render() {
-    const { cartList } = this.props;
+    const { cartList, user } = this.props;
+    let total = this.state.total;
     console.log('calling ShoppingCart render');
-
+    console.log(user.id);
+    if (!user.id) return <Loading message='Retrieving your cart' />;
     cartList.map(item => {
-      this.state.total += parseFloat(item.subtotal) / 2;
-      Math.round((this.state.total + Number.EPSILON) * 100) / 100;
+      total += parseFloat(item.subtotal);
     });
-
     if (!cartList.length) {
       return (
         <div className='shopping-cart'>
@@ -67,7 +81,7 @@ class ShoppingCart extends React.Component {
             ))}
           </ListGroup>
           {/* TODO: total cost should update when subtotal changes*/}
-          <div>TOTAL: ${this.state.total}</div>
+          <div>TOTAL: ${total}</div>
           <Link to='/checkout'>CHECKOUT</Link>
         </div>
       );

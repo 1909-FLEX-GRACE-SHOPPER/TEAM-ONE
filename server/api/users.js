@@ -18,7 +18,11 @@ router.get('/session/:sessionId', (req, res, next) => {
       sessionId
     }
   })
-    .then(user => res.status(200).send(user))
+    .then(user => {
+      console.log('FOUND USER = ', user);
+      console.log('SESSION ID = ', sessionId);
+      res.status(200).send(user);
+    })
     .catch(e => {
       res.status(400);
       next(e);
