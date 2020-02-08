@@ -23,7 +23,7 @@ export const fetchWishlist = userId => {
       });
   };
 };
-//TODO: add userId to path
+
 export const postWishlist = (productId, userId) => {
   return dispatch => {
     return axios
