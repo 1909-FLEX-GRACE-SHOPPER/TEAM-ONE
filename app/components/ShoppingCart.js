@@ -77,7 +77,8 @@ class ShoppingCart extends React.Component {
 
 const mapState = state => {
   const cartList = state.cartList;
-  return { cartList };
+  const user = state.user;
+  return { cartList, user };
 };
 
 const mapDispatch = dispatch => {
