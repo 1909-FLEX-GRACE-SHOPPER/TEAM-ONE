@@ -27,7 +27,7 @@ class WishlistItem extends React.Component {
           });
         });
     } catch (err) {
-      err => console.log(err);
+      console.log(err);
     }
   }
 
@@ -35,11 +35,11 @@ class WishlistItem extends React.Component {
     const { productName, productImage, price, productId } = this.state;
     return (
       <div>
-        <img className='wishlist-item-image' src={productImage} />
-        <div className='wishlist-item-name'>
+        <img className="wishlist-item-image" src={productImage} />
+        <div className="wishlist-item-name">
           <Link to={`/products/${productId}`}>{productName}</Link>
         </div>
-        <div className='wishlist-item-price'>Price: {price}</div>
+        <div className="wishlist-item-price">Price: {price}</div>
       </div>
     );
   }
