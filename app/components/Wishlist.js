@@ -7,9 +7,11 @@ import WishlistItem from './WishlistItem.js';
 import Loading from './Loading';
 
 class Wishlist extends React.Component {
-  componentDidMount() {
-    console.log(this.props);
-    //this.props.fetchWishlist(this.props.match.params.userId);
+  constructor() {
+    super();
+    this.state = {
+      fetchedWL: false
+    };
   }
 
   //TODO: make wishlist render "create an account" after log out
@@ -17,12 +19,26 @@ class Wishlist extends React.Component {
     await this.props.removeItem(item);
   };
 
+  componentDidUpdate() {
+    const { user, fetchWishlist } = this.props;
+    if (user.userType === 'Guest' || this.state.fetchedWL) return;
+    fetchWishlist(user.id);
+  }
+  checkAndFetchWishlist = () => {
+    if (this.state.fetchedWL) return;
+    const { user } = this.props;
+    if (user.userType !== 'Guest' && user.id) {
+      fetchWishlist(user.id);
+      this.setState({ fetchedWL: true });
+    }
+  };
+
   render() {
-    const { wishlist, user, fetchWishlist } = this.props;
-    if (!user.userType) return <Loading message={`retrieving your wishlist`} />;
-    if (user.userType === 'Guest')
+    const { wishlist, user } = this.props;
+    if (!user.userType) return <Loading message="retrieving your wishlist" />;
+    if (user.userType === 'Guest') {
       return <div>Please create an account to create a wishlist.</div>;
-    if (user.userType !== 'Guest' && user.id) fetchWishlist(user.id);
+    }
     return (
       <div>
         {wishlist.length === 0 ? (
