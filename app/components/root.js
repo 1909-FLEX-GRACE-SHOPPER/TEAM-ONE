@@ -22,7 +22,7 @@ import Gallery from './PhotoGallery';
 import About from './About';
 import Wishlist from './Wishlist';
 import ToastComponent from './Toasts';
-import StripeCheckoutForm from './StripeCheckoutForm';
+import StripeCheckout from './StripeCheckout';
 
 import AddProductForm from './AddProductForm';
 
@@ -53,7 +53,7 @@ class Root extends React.Component {
             <Route exact path="/:userId/cart" component={ShoppingCart} />
             <Route path="/checkout" component={Checkout} />
             <Route path='/receipt' component={ Receipt } />
-            <Route exact path='/stripe' component={ StripeCheckoutForm }/>
+            <Route exact path='/stripe' component={ StripeCheckout }/>
             <Route path="/wishlist/:userId" component={Wishlist} />
             <Route path="/user/:id" /*component={UserPage}*/ />
             <Redirect to="/" />

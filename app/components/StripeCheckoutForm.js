@@ -1,32 +1,84 @@
 import React, { Component } from 'react';
-import { injectStripe } from 'react-stripe-elements';
+import { connect } from 'react-redux';
+import Nav from 'react-bootstrap/Nav';
+import {
+  CardNumberElement,
+  CardExpiryElement,
+  CardCVCElement,
+  injectStripe
+} from 'react-stripe-elements';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import { CardSection } from './CardSection';
+import axios from 'axios';
 
 class StripeCheckoutForm extends Component {
+  constructor() {
+      super();
+      this.state = {
+          receiptUrl: '',
+      }
+  }
 
-    handleOnClick = e => {
-        e.preventDefault();
-        this.props.stripe.confirmCardPayment('{PAYMENT_INTENT_CLIENT_SECRET}', {
-            payment_method: {
-                card: this.props.elements.getElement('card'),
-                billing_details: {
-                    name: 'meow',
-                },
-            }
-        });
-    };
+  handleOnClick = e => {
+    e.preventDefault();
+    this.props.stripe.createToken()
+    .then(({ token }) => {
+      axios
+        .post(`/api/stripe/v1/charges`, {
+          source: token.id,
+          amount: 1000,
+          receipt_email: this.props.user.email || null,
+        })
+        .then(res => {
+            this.setState({ receiptUrl: res.data.charge.receipt_url })
+        })
+    })
+  };
 
-    render() {
-        return (
-            <Form>
-                <CardSection />
-                <Button onClick={ this.handleOnClick }>Confirm order</Button>
-            </Form>
-        )
-    }
+  render() {
+    const { receiptUrl } = this.state;
+    return (
+      <div>
+        {
+          receiptUrl
+          ? (
+            <div>
+              <h3>Payment Successful!</h3>
+              <a href={ receiptUrl }>View Receipt</a>
+              <Nav.Link href='/'>Return to Shopping</Nav.Link>
+            </div>
+          )
+          : (
+            <div className='checkout-form'>
+              <Form>
+                <label>
+                  Card details
+                    <CardNumberElement />
+                </label>
+                <label>
+                  Expiration date
+                  <CardExpiryElement />
+                </label>
+                <label>
+                  CVC 
+                  <CardCVCElement />
+                </label>
+                <Button
+                  onClick={ this.handleOnClick }
+                  className='order-button'
+                >
+                  Submit Payment
+                </Button>
+             </Form>
+           </div>
+          )
+        }
+      </div>
+    )
+  }
 }
 
-export default injectStripe(StripeCheckoutForm);
+const mapState = ({ user }) => ({ user });
+
+export default connect(mapState)(injectStripe(StripeCheckoutForm));
