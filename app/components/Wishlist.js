@@ -4,58 +4,77 @@ import { Button, ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { fetchWishlist, deleteWishlist } from '../redux/thunks/WishlistThunks';
 import WishlistItem from './WishlistItem.js';
+import Loading from './Loading';
 
 class Wishlist extends React.Component {
-  componentDidMount() {
-    if (
-      this.props.user.userType !== 'Guest' &&
-      this.props.user.userType !== undefined
-    ) {
-      this.props.fetchWishlist(this.props.match.params.userId);
-    }
+  constructor() {
+    super();
+    this.state = {
+      fetchedWL: false
+    };
   }
 
+  //TODO: make wishlist render "create an account" after log out
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
 
+  componentDidUpdate() {
+    const { user, fetchWishlist } = this.props;
+    if (user.userType !== 'Guest' && user.userType && !this.state.fetchedWL) {
+      fetchWishlist(user.id);
+      this.setState({ fetchedWL: true });
+    }
+  }
+  checkAndFetchWishlist = () => {
+    if (this.state.fetchedWL) return;
+    const { user } = this.props;
+    if (user.userType !== 'Guest' && user.id) {
+      fetchWishlist(user.id);
+      this.setState({ fetchedWL: true });
+    }
+  };
+
   render() {
-    const { wishlist, user, product } = this.props;
+    const { wishlist, user } = this.props;
+    if (!user.userType) return <Loading message="retrieving your wishlist" />;
     if (user.userType === 'Guest') {
       return <div>Please create an account to create a wishlist.</div>;
-    } else {
-      return (
-        <div>
-          {wishlist.length === 0 ? (
-            <div>
-              <h4>WISHLIST</h4>
-              <p>Your wishlist is empty.</p>
-            </div>
-          ) : (
-            <div>
-              <Link>Back</Link>
-              <h4>WISHLIST</h4>
-              <ListGroup className='wishlist-product-list'>
-                {wishlist.map(item => (
-                  <ListGroup.Item key={item.id}>
-                    {/* bring in associated product */}
-                    <WishlistItem key={item.id} />
-
-                    <Button onClick={() => this.handleRemoveItem(item)}>
-                      Remove
-                    </Button>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </div>
-          )}
-        </div>
-      );
     }
+    return (
+      <div>
+        {wishlist.length === 0 ? (
+          <div>
+            <h4>WISHLIST</h4>
+            <p>Your wishlist is empty.</p>
+          </div>
+        ) : (
+          <div>
+            <Link to="/products/page/1">Back</Link>
+            <h4>WISHLIST</h4>
+            <ListGroup className="wishlist-product-list">
+              {wishlist.map(item => (
+                <ListGroup.Item key={item.id}>
+                  <WishlistItem key={item.id} item={item} />
+                  <Button onClick={() => this.handleRemoveItem(item)}>
+                    Remove
+                  </Button>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
+        )}
+      </div>
+    );
   }
 }
 
-const mapState = ({ wishlist, user }) => ({ wishlist, user });
+const mapState = state => {
+  const wishlist = state.wishlist;
+  const user = state.user;
+  return { wishlist, user };
+};
+
 const mapDispatch = dispatch => {
   return {
     fetchWishlist: userId => dispatch(fetchWishlist(userId)),

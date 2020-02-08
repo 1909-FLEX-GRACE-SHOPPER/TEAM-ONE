@@ -10,7 +10,7 @@ class CartItem extends React.Component {
       productName: '',
       price: '',
       subtotal: this.props.item.subtotal,
-      cartId: this.props.item.id,
+      cartListId: this.props.item.id,
       quantity: this.props.item.productQuantity,
       userId: this.props.item.userId,
       productId: this.props.item.productId
@@ -44,7 +44,7 @@ class CartItem extends React.Component {
         subtotal: newSubtotal
       });
       await axios
-        .put(`/api/users/${this.state.userId}/cart/${this.state.cartId}`, {
+        .put(`/api/users/${this.state.userId}/cart/${this.state.cartListId}`, {
           newQuantity,
           newSubtotal
         })
@@ -61,7 +61,7 @@ class CartItem extends React.Component {
       productImage,
       productName,
       quantity,
-      price,
+      subtotal,
       productId
     } = this.state;
     return (
@@ -80,9 +80,7 @@ class CartItem extends React.Component {
             onChange={ev => this.handleEditQuantity(ev)}
           />
         </div>
-        <div className='cart-item-subtotal'>
-          Subtotal: {`$${(price * quantity).toFixed(2)}`}{' '}
-        </div>
+        <div className='cart-item-subtotal'>Subtotal: {`$${subtotal}`} </div>
       </div>
     );
   }

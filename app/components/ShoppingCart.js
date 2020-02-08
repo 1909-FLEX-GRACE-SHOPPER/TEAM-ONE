@@ -3,25 +3,33 @@ import { Link } from 'react-router-dom';
 import CartItem from './CartItem.js';
 import { Button, ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { setCart, removeItemFromCart } from '../redux/thunks/CartThunks.js';
+import { setCartList, removeItemFromCart } from '../redux/thunks/CartThunks.js';
 
 class ShoppingCart extends React.Component {
+  constructor() {
+    super();
+    this.state = { total: 0 };
+  }
   componentDidMount() {
     this.props.fetchCart(this.props.match.params.userId);
   }
-
+  //TO DO: update user Id in CartList when user log in or log out
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
 
   render() {
-    const { cart } = this.props;
-    console.log(cart);
-    let total = 0;
-    total += cart.map(item => parseInt(item.subtotal));
-    if (cart.length === 0) {
+    const { cartList } = this.props;
+    console.log('calling ShoppingCart render');
+    cartList.map(item => {
+      this.state.total += parseFloat(item.subtotal) / 2;
+      Math.round((this.state.total + Number.EPSILON) * 100) / 100;
+    });
+
+    if (!cartList.length) {
       return (
         <div className='shopping-cart'>
+          <Link to='/products/page/1'>Back</Link>
           <h4>SHOPPING CART</h4>
           <p>Your cart is empty.</p>
         </div>
@@ -29,9 +37,10 @@ class ShoppingCart extends React.Component {
     } else {
       return (
         <div className='shopping-cart'>
+          <Link to='/products/page/1'>Back</Link>
           <h4>SHOPPING CART</h4>
           <ListGroup className='shopping-cart-product-list'>
-            {cart.map(item => (
+            {cartList.map(item => (
               <ListGroup.Item key={item.id}>
                 <CartItem key={item.id} item={item} />
                 <Button onClick={() => this.handleRemoveItem(item)}>
@@ -41,7 +50,7 @@ class ShoppingCart extends React.Component {
             ))}
           </ListGroup>
           {/* TODO: reflect total cost */}
-          <div>TOTAL: {total}</div>
+          <div>TOTAL: ${this.state.total}</div>
           <Link to='/checkout'>CHECKOUT</Link>
         </div>
       );
@@ -50,13 +59,13 @@ class ShoppingCart extends React.Component {
 }
 
 const mapState = state => {
-  const cart = state.cart;
-  return { cart };
+  const cartList = state.cartList;
+  return { cartList };
 };
 
 const mapDispatch = dispatch => {
   return {
-    fetchCart: userId => dispatch(setCart(userId)),
+    fetchCart: userId => dispatch(setCartList(userId)),
     removeItem: item => dispatch(removeItemFromCart(item))
   };
 };
