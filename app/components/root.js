@@ -17,6 +17,7 @@ import ProductPage from './ProductPage';
 import ShoppingCart from './ShoppingCart';
 import Checkout from './Checkout';
 import Receipt from './Receipt';
+import ArScene from './ArScene';
 import Confirmation from './Confirmation';
 import Gallery from './PhotoGallery';
 import About from './About';
@@ -24,6 +25,7 @@ import Wishlist from './Wishlist';
 import ToastComponent from './Toasts';
 
 import AddProductForm from './AddProductForm';
+import PhotoGallery from './PhotoGallery';
 
 class Root extends React.Component {
   componentDidMount() {
@@ -52,8 +54,9 @@ class Root extends React.Component {
             <Route exact path="/:userId/cart" component={ShoppingCart} />
             <Route path="/checkout" component={Checkout} />
             <Route path="/receipt" component={Receipt} />
-            <Route path="/wishlist" component={Wishlist} />
+            <Route path="/:userId/wishlist" component={Wishlist} />
             <Route path="/user/:id" /*component={UserPage}*/ />
+            <Route path="/photo-booth" component={PhotoGallery} />
             <Redirect to="/" />
           </Switch>
         </div>

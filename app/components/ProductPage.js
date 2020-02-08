@@ -21,7 +21,6 @@ class ProductPage extends React.Component {
     this.props.fetchSingleProduct(this.props.match.params.id);
     this.props.fetchSimilarProducts(this.props.match.params.id);
   }
-
   handleAddToCart = async ({
     productId,
     cartId,
@@ -114,7 +113,7 @@ class ProductPage extends React.Component {
                 </div>
               </div>
               <div className="similar-products-container">
-                <h5>SIMILAR PRODUCTS</h5>
+                <h5>PRODUCTS YOU MAY BE INTERESTED IN</h5>
                 <div>
                   {similarProducts.length > 0
                     ? similarProducts.map(_sp => (

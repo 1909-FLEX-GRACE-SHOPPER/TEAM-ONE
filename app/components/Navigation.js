@@ -63,7 +63,7 @@ class Navigation extends Component {
           <Nav.Link href="/gallery">Photo Booth</Nav.Link>
         </Nav>
         <Nav>
-          <Nav.Link href={`/${user.id}/cart`}>Cart</Nav.Link>
+          <Nav.Link href="/cart">Cart</Nav.Link>
           <Nav.Link href="/wishlist">Wishlist</Nav.Link>
           {/* this is just a temporary link that goes no-where for now, will update once the cart component is ready */}
           {this.switchNavBar(user)}

@@ -14,22 +14,21 @@ class Wishlist extends React.Component {
     };
   }
 
-  //TODO: make wishlist render "create an account" after log out
+  componentDidMount() {
+    this.checkAndFetchWishlist();
+  }
+
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
 
   componentDidUpdate() {
+    this.checkAndFetchWishlist();
+  }
+
+  checkAndFetchWishlist = () => {
     const { user, fetchWishlist } = this.props;
     if (user.userType !== 'Guest' && user.userType && !this.state.fetchedWL) {
-      fetchWishlist(user.id);
-      this.setState({ fetchedWL: true });
-    }
-  }
-  checkAndFetchWishlist = () => {
-    if (this.state.fetchedWL) return;
-    const { user } = this.props;
-    if (user.userType !== 'Guest' && user.id) {
       fetchWishlist(user.id);
       this.setState({ fetchedWL: true });
     }
@@ -37,7 +36,8 @@ class Wishlist extends React.Component {
 
   render() {
     const { wishlist, user } = this.props;
-    if (!user.userType) return <Loading message="retrieving your wishlist" />;
+
+    if (!user.userType) return <Loading message='retrieving your wishlist' />;
     if (user.userType === 'Guest') {
       return <div>Please create an account to create a wishlist.</div>;
     }
@@ -50,9 +50,9 @@ class Wishlist extends React.Component {
           </div>
         ) : (
           <div>
-            <Link to="/products/page/1">Back</Link>
+            <Link to='/products/page/1'>Back</Link>
             <h4>WISHLIST</h4>
-            <ListGroup className="wishlist-product-list">
+            <ListGroup className='wishlist-product-list'>
               {wishlist.map(item => (
                 <ListGroup.Item key={item.id}>
                   <WishlistItem key={item.id} item={item} />

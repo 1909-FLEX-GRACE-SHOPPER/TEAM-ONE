@@ -3,29 +3,54 @@ import { Link } from 'react-router-dom';
 import CartItem from './CartItem.js';
 import { Button, ListGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { setCartList, removeItemFromCart } from '../redux/thunks/CartThunks.js';
+import Loading from './Loading';
+import {
+  fetchCartList,
+  removeItemFromCart
+} from '../redux/thunks/CartThunks.js';
 
 class ShoppingCart extends React.Component {
   constructor() {
     super();
-    this.state = { total: 0 };
+    this.state = {
+      total: 0,
+      fetchedCart: false,
+      userId: ''
+    };
   }
   componentDidMount() {
-    this.props.fetchCart(this.props.match.params.userId);
+    console.log('calling componentDidMount in Cart');
+    this.checkAndFetchCart();
   }
-  //TO DO: update user Id in CartList when user log in or log out
+  componentDidUpdate() {
+    console.log('calling componentDidUpdate in Cart');
+    this.checkAndFetchCart();
+  }
+
   handleRemoveItem = async item => {
     await this.props.removeItem(item);
   };
 
-  render() {
-    const { cartList } = this.props;
-    console.log('calling ShoppingCart render');
-    cartList.map(item => {
-      this.state.total += parseFloat(item.subtotal) / 2;
-      Math.round((this.state.total + Number.EPSILON) * 100) / 100;
-    });
+  checkAndFetchCart = () => {
+    const { user, fetchCartList } = this.props;
+    console.log(this.props);
+    if (
+      (this.state.userId !== user.id && user.id !== undefined) ||
+      (user.id && !this.state.fetchedCart)
+    ) {
+      console.log('fetching cart');
+      fetchCartList(user.id);
+      this.setState({ fetchedCart: true, userId: user.id });
+    }
+  };
 
+  render() {
+    const { cartList, user } = this.props;
+    let total = this.state.total;
+    if (!user.id) return <Loading message='Retrieving your cart' />;
+    cartList.map(item => {
+      total += parseFloat(item.subtotal);
+    });
     if (!cartList.length) {
       return (
         <div className='shopping-cart'>
@@ -49,8 +74,8 @@ class ShoppingCart extends React.Component {
               </ListGroup.Item>
             ))}
           </ListGroup>
-          {/* TODO: reflect total cost */}
-          <div>TOTAL: ${this.state.total}</div>
+          {/* TODO: total cost should update when subtotal changes*/}
+          <div>TOTAL: ${total}</div>
           <Link to='/checkout'>CHECKOUT</Link>
         </div>
       );
@@ -60,12 +85,13 @@ class ShoppingCart extends React.Component {
 
 const mapState = state => {
   const cartList = state.cartList;
-  return { cartList };
+  const user = state.user;
+  return { cartList, user };
 };
 
 const mapDispatch = dispatch => {
   return {
-    fetchCart: userId => dispatch(setCartList(userId)),
+    fetchCartList: userId => dispatch(fetchCartList(userId)),
     removeItem: item => dispatch(removeItemFromCart(item))
   };
 };
