@@ -18,27 +18,22 @@ const Order = db.define('orders', {
 
   shippingName: {
     type: STRING,
-    allowNull: false
   },
 
   shippingAddress: {
     type: STRING,
-    allowNull: false
   },
 
   shippingCity: {
     type: STRING,
-    allowNull: false
   },
 
   shippingState: {
     type: STRING,
-    allowNull: false
   },
   
   shippingZip: {
     type: STRING,
-    allowNull: false,
     validate: {
       len: {
         arg: 5
@@ -54,36 +49,6 @@ const Order = db.define('orders', {
   shippingNotes: {
     type: TEXT,
     allowNull: true,
-  },
-
-  cardNumber: {
-    type: STRING,
-    allowNull: false,
-    validate: {
-      len: {
-        arg: [13, 16]
-      }
-    }
-  },
-
-  cardHolder: {
-    type: STRING,
-    allowNull: false
-  },
-
-  expirationDate: {
-    type: STRING,
-    allowNull: false
-  },
-
-  securityCode: {
-    type: STRING,
-    allowNull: false,
-    validate: {
-      len: {
-        arg: 3
-      }
-    }
   },
 
 });

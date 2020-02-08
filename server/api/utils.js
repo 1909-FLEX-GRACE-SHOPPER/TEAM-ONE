@@ -112,7 +112,6 @@ const sendEmail = (recipient, subject, body, options) => {
   });
 };
 
-module.exports = { paginate, UserObject, CartObject, OrderObject, sendEmail };
 // Update the orders table and cart table so that
 // any orders or cart items that used to belong to
 // the guest will belong to the new user
@@ -188,5 +187,6 @@ module.exports = {
   UserObject,
   CartObject,
   OrderObject,
-  mergeAndDestroyUser
+  mergeAndDestroyUser,
+  sendEmail
 };

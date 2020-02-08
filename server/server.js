@@ -6,8 +6,11 @@ const cookieParser = require('cookie-parser');
 const Session = require('./db/models/sessions');
 const User = require('./db/models/users');
 
+require('dotenv').config({ path: './.env' });
+
 app.use(express.json());
 app.use(cookieParser());
+
 
 app.use((req, res, next) => {
   //The user doesn't have a session cookie so we create a session
@@ -76,6 +79,7 @@ app.use((req, res, next) => {
   }
 });
 
+//Allows file uploads no bigger than 5MB.
 app.use(
   fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 }

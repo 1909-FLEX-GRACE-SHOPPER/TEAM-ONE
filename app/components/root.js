@@ -17,18 +17,20 @@ import ProductPage from './ProductPage';
 import ShoppingCart from './ShoppingCart';
 import Checkout from './Checkout';
 import Receipt from './Receipt';
+import ArScene from './ArScene';
 import Confirmation from './Confirmation';
 import Gallery from './PhotoGallery';
 import About from './About';
 import Wishlist from './Wishlist';
 import ToastComponent from './Toasts';
+import StripeCheckout from './StripeCheckout';
 
 import AddProductForm from './AddProductForm';
+import PhotoGallery from './PhotoGallery';
 
 class Root extends React.Component {
   componentDidMount() {
     const { fetchUser, createCart } = this.props;
-    console.log('session id', document.cookie.replace(/session_id=/, ''));
     fetchUser(document.cookie.replace(/session_id=/, '')).then(() => {
       createCart(this.props.user.id);
     });
@@ -42,20 +44,21 @@ class Root extends React.Component {
           <Navigation />
           <ToastComponent status={status} message={text} />
           <Switch>
-            <Route exact path='/' component={WelcomeMessage} />
-            <Route exact path='/about' component={About} />
-            <Route exact path='/gallery' component={Gallery} />
-            <Route path='/login' component={Login} />
-            <Route path='/signup' component={Signup} />
-            <Route exact path='/products/page/:page' component={Products} />
-            <Route exact path='/products/add' component={AddProductForm} />
-            <Route path='/products/:id' component={ProductPage} />
-            <Route exact path='/cart' component={ShoppingCart} />
-            <Route path='/checkout' component={Checkout} />
-            <Route path='/receipt' component={Receipt} />
-            <Route path='/wishlist' component={Wishlist} />
-            <Route path='/user/:id' /*component={UserPage}*/ />
-            <Redirect to='/' />
+            <Route exact path="/" component={WelcomeMessage} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/gallery" component={Gallery} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <Route exact path="/products/page/:page" component={Products} />
+            <Route exact path="/products/add" component={AddProductForm} />
+            <Route path="/products/:id" component={ProductPage} />
+            <Route exact path="/:userId/cart" component={ShoppingCart} />
+            <Route path="/checkout" component={StripeCheckout} />
+            <Route path="/receipt" component={Receipt} />
+            <Route path="/:userId/wishlist" component={Wishlist} />
+            <Route path="/user/:id" /*component={UserPage}*/ />
+            <Route path="/photo-booth" component={PhotoGallery} />
+            <Redirect to="/" />
           </Switch>
         </div>
       </Router>
