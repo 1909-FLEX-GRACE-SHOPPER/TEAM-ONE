@@ -3,6 +3,124 @@ const bcrypt = require('bcrypt');
 
 const products = [
   {
+    productName: 'Juicy Couture Juul',
+    productDescription: 'Happy Halloween!',
+    productImage:
+      'https://di2ponv0v5otw.cloudfront.net/posts/2019/11/23/5dd9e1ee9ed36dee46aac908/m_5dd9e21d21cd0a2f4b5215ef.jpg',
+    inventory: 100,
+    unitPrice: 899.99,
+    tags: 'Accessory'
+  },
+  {
+    productName: 'Prada Juul',
+    productDescription: 'Happy Halloween!',
+    productImage:
+      'https://cdn.shopify.com/s/files/1/1998/2969/products/red_goyard_300x300.jpg?v=1550867492',
+    inventory: 100,
+    unitPrice: 899.99,
+    tags: 'Accessory'
+  },
+  {
+    productName: 'Fendi Juul',
+    productDescription: 'Happy Halloween!',
+    productImage:
+      'https://cdn.shopify.com/s/files/1/2879/9822/products/juul-wraps-color-fendi-juul-skin-1.jpg?v=1556908550',
+    inventory: 100,
+    unitPrice: 899.99,
+    tags: 'Accessory'
+  },
+  {
+    productName: 'Louis Vuitton Juul',
+    productDescription: 'Happy Halloween!',
+    productImage:
+      'https://cdn.shopify.com/s/files/1/1998/2969/products/LVblack_1024x1024@2x.png?v=1550866604',
+    inventory: 100,
+    unitPrice: 899.99,
+    tags: 'Accessory'
+  },
+  {
+    productName: 'Alpine Berry',
+    productDescription:
+      'Sweet sweet alpine berry.\nEach JUULpod contains ~0.7mL with 5 % nicotine by weight',
+    productImage:
+      'https://d1q4q7ketxgxfn.cloudfront.net/media/catalog/product/cache/9f8d2b6c4380d79b762744d4373a4f38/j/u/ju-ju-po-ab-20-pg-juul-alpine-berry-refill-pods-20mg.jpg',
+    inventory: 100,
+    unitPrice: 15.99,
+    tags: 'Pod'
+  },
+  {
+    productName: 'Juul Costume',
+    productDescription: 'Happy Halloween!',
+    productImage:
+      'https://www.collegemagazine.com/wp-content/uploads/2018/10/IMG_38C3DE209E48-1.jpeg',
+    inventory: 100,
+    unitPrice: 399.99,
+    tags: 'Accessory'
+  },
+  {
+    productName: 'Juul Super Charger',
+    productDescription: 'Stay super charged!',
+    productImage:
+      'https://cdn.shopify.com/s/files/1/1448/7344/products/fuul-tech-portable-juul-charger-2.jpg?v=1556100516',
+    inventory: 100,
+    unitPrice: 56.99,
+    tags: 'Charger'
+  },
+  {
+    productName: 'Juul Gucci',
+    productDescription: 'Gucci!',
+    productImage:
+      'https://images-na.ssl-images-amazon.com/images/I/81Lw0GW5FDL._SY355_.jpg',
+    inventory: 100,
+    unitPrice: 899.99,
+    tags: 'Accessory'
+  },
+  {
+    productName: 'Juul necklace',
+    productDescription: 'Cool necklace!',
+    productImage:
+      'https://images-na.ssl-images-amazon.com/images/I/41PB0a0fcoL.jpg',
+    inventory: 100,
+    unitPrice: 40.0,
+    tags: 'Accessory'
+  },
+  {
+    productName: 'Juul carry case',
+    productDescription: 'Carry the squad!',
+    productImage:
+      'https://ae01.alicdn.com/kf/HTB1B8TneBKw3KVjSZTEq6AuRpXaJ.jpg',
+    inventory: 100,
+    unitPrice: 14.99,
+    tags: 'Accessory'
+  },
+  {
+    productName: 'Starter Kit',
+    productDescription: 'Get off on the right foot!',
+    productImage:
+      'https://rfdtv.images.worldnow.com/images/18863480_G.jpg?lastEditedDate=1571327249000',
+    inventory: 100,
+    unitPrice: 14.99,
+    tags: 'Device'
+  },
+  {
+    productName: 'Juulboro',
+    productDescription: 'Surprise your friends!',
+    productImage:
+      'https://studybreaks.com/wp-content/uploads/2018/12/1543603673631.jpg',
+    inventory: 100,
+    unitPrice: 14.99,
+    tags: 'Device'
+  },
+  {
+    productName: 'Juulboro',
+    productDescription: 'Surprise your friends!',
+    productImage:
+      'https://studybreaks.com/wp-content/uploads/2018/12/1543603673631.jpg',
+    inventory: 100,
+    unitPrice: 14.99,
+    tags: 'Device'
+  },
+  {
     productName: 'Slate Juul Device',
     productDescription:
       'For adult smokers seeking a satisfying alternative to cigarettes. The slate JUUL Device comes with a USB Charging Dock and a one year limited device warranty. JUULpods are not included.',

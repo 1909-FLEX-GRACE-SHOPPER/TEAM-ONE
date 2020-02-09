@@ -4,7 +4,8 @@ import { logoutUser, getGitHubData } from '../redux/thunks/UserThunks';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
-	componentDidMount() {
+  
+componentDidMount() {
 		const { getGitHubUserData } = this.props;
 		getGitHubUserData();
 	}
@@ -69,7 +70,7 @@ class Navigation extends Component {
               Logout
             </Button>
           </Nav>
-				);
+        );
         break;
 			case 'Admin':
         return (
@@ -126,6 +127,7 @@ class Navigation extends Component {
         );
     }
   };
+
 	render() {
 		const { user, gitHubUser } = this.props;
 		console.log('this is the PROPS', this.props);
@@ -202,22 +204,22 @@ class Navigation extends Component {
           {this.switchNavBar(user, gitHubUser)}
         </Nav>
       </Navbar>
-		);
-	}
+    );
+  }
 }
 
 const mapStateToProps = state => {
-	return {
-		user: state.user,
-		gitHubUser: state.gitHubData
-	};
+  return {
+    user: state.user,
+    gitHubUser: state.gitHubData
+  };
 };
 
 const mapDispatch = dispatch => {
-	return {
-		logoutUser: userId => dispatch(logoutUser(userId)),
-		getGitHubUserData: () => dispatch(getGitHubData())
-	};
+  return {
+    logoutUser: userId => dispatch(logoutUser(userId)),
+    getGitHubUserData: () => dispatch(getGitHubData())
+  };
 };
 
 export default connect(mapStateToProps, mapDispatch)(Navigation);

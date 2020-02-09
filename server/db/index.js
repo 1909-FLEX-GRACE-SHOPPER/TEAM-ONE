@@ -37,8 +37,8 @@ User.hasMany(Order);
 Order.belongsTo(User);
 
 //ORDER DETAILS
-Product.belongsToMany(Order, { through: OrderDetail });
-Order.belongsToMany(Product, { through: OrderDetail });
+OrderDetail.belongsTo(Order);
+Order.hasMany(OrderDetail);
 
 //Sessions
 Session.hasOne(User);

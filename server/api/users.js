@@ -220,6 +220,7 @@ router.put('/:id', (req, res, next) => {
 //Finds and serves a single user based on a primary key.
 //Eager loads associated orders.
 router.get('/:userId/orders', (req, res, next) => {
+  console.log('this is the', req.user.id)
   if (req.user.id !== req.params.userId)
     return res.status(401).send('Access Denied');
   Order.findOne({

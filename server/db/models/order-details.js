@@ -18,6 +18,11 @@ const OrderDetail = db.define('orderDetails', {
     //of product price and product quantity
     type: DECIMAL(10, 2),
     allowNull: false
+  },
+  productId: {
+    //TODO: make product cost as the product
+    //of product price and product quantity
+    type: UUID
   }
 });
 
