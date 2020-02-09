@@ -27,10 +27,15 @@ class Products extends React.Component {
     const selectedPage = this.props.match.params.page;
     const { history } = this.props;
     return (
-      <div>
+      <div 
+        style={
+          {
+            margin: '3rem',
+          }
+        }
+      >
         <div className="product-search-and-pagination">
           <div className="filter-and-sort">
-            <Form.Label>Filters</Form.Label>
             <Form.Control
               as="select"
               id="filter-by"
@@ -46,7 +51,7 @@ class Products extends React.Component {
                 }
               }
             >
-              <option value="">None</option>
+              <option value="">Filters</option>
               <option value="Accessory">Accessory</option>
               <option value="Charger">Charger</option>
               <option value="Device">Device</option>

@@ -1,20 +1,79 @@
-import React from 'react';
-import Card from 'react-bootstrap/Card';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import emoji from 'node-emoji';
 
-const Product = ({ product }) => {
+import { addToCart } from '../redux/thunks/CartThunks';
+import { postWishlist } from '../redux/thunks/WishlistThunks';
+
+class Product extends Component {
+
+  handleAddToCart = ({
+    productId,
+    cartId,
+    productQuantity,
+    userId,
+    subtotal,
+  }, e) => {
+    e.preventDefault()
+    this.props.addToCart(
+      productId,
+      cartId,
+      productQuantity,
+      userId,
+      subtotal
+    );
+  };
+
+  handleAddToWishlist = (productId, userId, e) => {
+    e.preventDefault();
+    this.props.postWishlist(
+      productId,
+      userId,
+    )
+  }
+
+  render() {
   return (
     <div
       style={
         {
           width: 'calc(100%/4)',
-          margin: '1ren',
-          minHeight: '300px',
+          margin: '1rem',
+          height: '350px',
           fontFamily: 'Roboto',
+          padding: '1rem',
+          border: '2px black solid',
         }
       }
     >
-      <Link to={`/products/${product.id}`}
+    <div>
+      <Button
+        onClick={e => {
+          this.handleAddToCart({
+            productId: this.props.product.id,
+            cartId: this.props.cart.id,
+            productQuantity: 1,
+            userId: this.props.user.id,
+            subtotal: this.props.product.unitPrice
+          }, e)
+        }}
+      >
+        {emoji.get('heavy_plus_sign')}
+      </Button>
+      <Button
+        onClick={e => {
+          this.handleAddToWishlist(
+            this.props.product.id,
+            this.props.user.id,
+            e)
+        }}
+      >
+        {emoji.get('heart')}
+      </Button>
+    </div>
+      <Link to={`/products/${this.props.product.id}`}
         style={
           {
             textDecoration: 'none',
@@ -26,7 +85,7 @@ const Product = ({ product }) => {
           <div>
             <img
               variant='bottom'
-              src={product.productImage}
+              src={this.props.product.productImage}
               style={
                 {
                   width: '100%'
@@ -48,21 +107,31 @@ const Product = ({ product }) => {
               style={
                 {
                   fontSize: '14px',
-                  textTransform: 'capitalize',
+                  textTransform: 'uppercase',
                 }
-              }>{product.productName}</div>
+              }>{this.props.product.productName}</div>
             <div 
               style={
                 {
                   fontSize: '14px',
                 }
               }
-            >${product.unitPrice}</div>
+            >${this.props.product.unitPrice}</div>
           </div>
         </div>
       </Link>
     </div>
   );
 };
+}
 
-export default Product;
+const mapState = ({ user, singleProduct, cart }) => ({ user, singleProduct, cart })
+
+const mapDispatch = dispatch => {
+  return {
+    addToCart: (productId, cartId, productQuantity, userId, subtotal) => dispatch(addToCart(productId, cartId, productQuantity, userId, subtotal)),
+    postWishlist: (productId, userId) => dispatch(postWishlist(productId, userId))
+  }
+}
+
+export default connect(mapState, mapDispatch)(Product);
