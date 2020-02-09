@@ -14,6 +14,16 @@ class Navigation extends Component {
 			case 'GitHub User':
 				return (
 					<Nav>
+            <Nav.Link
+              href='/wishlist'
+              style={
+                {
+                  color: 'white'
+                }
+              }
+            >
+              Wishlist
+            </Nav.Link>
 						<Nav.Link href={`/user/${params.id}`}> {gitHubUser.name} </Nav.Link>
 						<Button
 							onClick={() => {
@@ -64,16 +74,6 @@ class Navigation extends Component {
 			case 'Admin':
         return (
           <Nav>
-            <Nav.Link 
-              href='/products/add'
-              style={
-                {
-                  color: 'white'
-                }
-              }
-            > 
-              Add a Product
-            </Nav.Link>
             <Nav.Link
               href={`/user/${params.id}`}
               style={
