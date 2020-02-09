@@ -31,15 +31,13 @@ import PhotoGallery from './PhotoGallery';
 class Root extends React.Component {
   componentDidMount() {
     const { fetchUser, createCart } = this.props;
-    fetchUser(document.cookie.replace(/session_id=/, '')).then(() => {
-      createCart(this.props.user.id);
-    });
+    fetchUser(document.cookie.replace(/session_id=/, ''))
   }
 
   render() {
     const { status, text } = this.props.statusMessage;
     return (
-      <Router forceRefresh={true}>
+      <Router>
         <div>
           <Navigation />
           <ToastComponent status={status} message={text} />
@@ -52,11 +50,11 @@ class Root extends React.Component {
             <Route exact path="/products/page/:page" component={Products} />
             <Route exact path="/products/add" component={AddProductForm} />
             <Route path="/products/:id" component={ProductPage} />
-            <Route exact path="/:userId/cart" component={ShoppingCart} />
+            <Route exact path="/cart" component={ShoppingCart} />
             <Route path="/checkout" component={StripeCheckout} />
             <Route path="/receipt" component={Receipt} />
-            <Route path="/:userId/wishlist" component={Wishlist} />
-            <Route path="/user/:id" /*component={UserPage}*/ />
+            <Route path="/wishlist" component={Wishlist} />
+            <Route path="/user" /*component={UserPage}*/ />
             <Route path="/photo-booth" component={PhotoGallery} />
             <Redirect to="/" />
           </Switch>
