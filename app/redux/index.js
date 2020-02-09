@@ -12,6 +12,7 @@ import {
   cartList,
   statusMessage,
   similarProducts,
+  featuredProducts,
   gitHubData,
 } from './reducers';
 
@@ -27,5 +28,6 @@ export default combineReducers({
   cartList,
   statusMessage,
   similarProducts,
+  featuredProducts,
   gitHubData,
 });

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../database.js');
 
-const { UUID, UUIDV4, STRING, DECIMAL, TEXT, INTEGER } = Sequelize;
+const { UUID, UUIDV4, STRING, DECIMAL, TEXT, INTEGER, BOOLEAN } = Sequelize;
 
 const Product = db.define('products', {
   id: {
@@ -41,6 +41,9 @@ const Product = db.define('products', {
   },
   tags: {
     type: STRING
+  },
+  featured: {
+    type: BOOLEAN
   }
 });
 

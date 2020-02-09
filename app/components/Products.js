@@ -6,6 +6,9 @@ import { fetchProducts } from '../redux/thunks/ProductThunks.js';
 import Form from 'react-bootstrap/Form';
 import { ITEMS_PER_PAGE } from '../redux/constants';
 
+import Nav from 'react-bootstrap/Nav'
+import emoji from 'node-emoji';
+
 class Products extends React.Component {
   constructor() {
     super();
@@ -27,18 +30,31 @@ class Products extends React.Component {
     const selectedPage = this.props.match.params.page;
     const { history } = this.props;
     return (
-      <div>
+      <div 
+        style={
+          {
+            margin: '3rem',
+          }
+        }
+      >
         <div className="product-search-and-pagination">
           <div className="filter-and-sort">
-            <Form.Label>Filters</Form.Label>
             <Form.Control
               as="select"
               id="filter-by"
               onChange={e => {
                 this.filterProducts(e.target.value);
               }}
+              style={
+                {
+                  width: '10rem',
+                  margin: '1rem',
+                  border: '1px black solid',
+                  borderRadius: 'none',
+                }
+              }
             >
-              <option value="">None</option>
+              <option value="">Filters</option>
               <option value="Accessory">Accessory</option>
               <option value="Charger">Charger</option>
               <option value="Device">Device</option>
@@ -51,7 +67,47 @@ class Products extends React.Component {
             history={history}
           />
         </div>
-        <div className="all-products-container">
+        <div
+          className='all-products-container'
+          style={
+            {
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }
+          }
+        >
+          {
+            this.props.user.userType === 'Admin'
+            ? <Nav.Link
+                href='/products/add'
+                style={
+                  {
+                    height: '350px',
+                    border: '2px solid black',
+                    color: 'black'
+                  }
+                }
+              >
+              <div
+                style={
+                  {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    margin: '50% 0',
+                  }
+                }
+              >
+                { emoji.get('heavy_plus_sign')}
+                <p>Add a new product</p>
+              </div>
+            </Nav.Link>
+            : null
+          }
           {productsThisPage.length === 0
             ? 'No products'
             : productsThisPage.map(_product =>
@@ -72,7 +128,7 @@ class Products extends React.Component {
   }
 }
 
-const mapState = ({ products }) => ({ products });
+const mapState = ({ products, user }) => ({ products, user });
 const mapDispatch = dispatch => {
   return {
     fetchProducts: page => dispatch(fetchProducts(page))

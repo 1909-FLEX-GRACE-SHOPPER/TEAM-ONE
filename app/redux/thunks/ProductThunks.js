@@ -4,7 +4,8 @@ import {
   setProducts,
   setSingleProduct,
   statusMessage,
-  setSimilarProducts
+  setSimilarProducts,
+  setFeaturedProducts,
 } from '../actions';
 
 import { ITEMS_PER_PAGE } from '../constants';
@@ -48,6 +49,23 @@ export const fetchSimilarProducts = productId => {
       });
   };
 };
+
+export const fetchFeaturedProducts = () => {
+  return dispatch => {
+    return axios
+      .get(`/api/products/featured`)
+      .then(res => dispatch(setFeaturedProducts(res.data)))
+      .catch(e => {
+        console.error(e)
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: COMMON_FAIL
+          })
+        )
+      })
+  }
+}
 
 //Thunk for fetching a single product
 export const fetchSingleProduct = productId => {

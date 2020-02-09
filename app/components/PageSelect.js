@@ -13,29 +13,37 @@ class PageSelect extends React.Component {
   render() {
     const { pages, selectedPage } = this.props;
     return (
-      <Pagination>
-        <Pagination.Prev
-          onClick={() => {
-            this.movePage(Number(selectedPage) - 1);
-          }}
-        />
-        {Array.from({ length: pages }).map((_page, i) => (
-          <Pagination.Item
+      <div
+        style={
+          {
+            border: 'none',
+          }
+        }
+      >
+        <Pagination>
+          <Pagination.Prev
             onClick={() => {
-              this.movePage(Number(i + 1));
+              this.movePage(Number(selectedPage) - 1);
             }}
-            key={`page-${i + 1}`}
-            active={Number(i + 1) === Number(selectedPage)}
-          >
-            {i + 1}
-          </Pagination.Item>
-        ))}
-        <Pagination.Next
-          onClick={() => {
-            this.movePage(Number(selectedPage) + 1);
-          }}
-        />
-      </Pagination>
+          />
+          {Array.from({ length: pages }).map((_page, i) => (
+            <Pagination.Item
+              onClick={() => {
+                this.movePage(Number(i + 1));
+              }}
+              key={`page-${i + 1}`}
+              active={Number(i + 1) === Number(selectedPage)}
+            >
+              {i + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={() => {
+              this.movePage(Number(selectedPage) + 1);
+            }}
+          />
+        </Pagination>
+      </div>
     );
   }
 }

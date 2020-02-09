@@ -18,8 +18,9 @@ class Wishlist extends React.Component {
     this.checkAndFetchWishlist();
   }
 
-  handleRemoveItem = async item => {
-    await this.props.removeItem(item);
+  handleRemoveItem = item => {
+    console.log('ITEM', item)
+    this.props.removeItem(item, this.props.user.id);
   };
 
   componentDidUpdate() {
@@ -78,7 +79,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     fetchWishlist: userId => dispatch(fetchWishlist(userId)),
-    removeItem: item => dispatch(deleteWishlist(item))
+    removeItem: (item, userId) => dispatch(deleteWishlist(item, userId))
   };
 };
 
