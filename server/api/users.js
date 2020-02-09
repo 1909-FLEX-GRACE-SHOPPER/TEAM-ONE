@@ -389,12 +389,13 @@ router.put(`/:userId/cart`, (req, res, next) => {
 
 //Route for deleting a cart.
 router.delete(`/:userId/cart`, (req, res, next) => {
-  Cart.findOne({
+  CartList.findOne({
     where: { userId: req.params.userId }
   })
     .then(cart => cart.destroy())
     .then(() => res.status(202).send({}))
     .catch(e => {
+      console.log(e);
       res.status(404);
       next(e);
     });
