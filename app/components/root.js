@@ -35,7 +35,7 @@ class Root extends React.Component {
       document.cookie
         .split(';')
         .filter(c => /session_id=/.test(c))[0]
-        .replace(/session_id=/, '')
+        .replace(/session_id=/, '').replace(/ /,'')
     );
   }
 
