@@ -482,8 +482,6 @@ router.delete(`/:userId/cart`, (req, res, next) => {
 });
 
 router.get('/:userId/wishlist', (req, res, next) => {
-  if (req.user.id !== req.params.userId)
-    return res.status(400).send('Access Denied');
   Wishlist.findAll({
     where: {
       userId: req.params.userId
@@ -511,8 +509,6 @@ router.post('/wishlist', (req, res, next) => {
 });
 
 router.delete('/:userId/wishlist/:wishlistId', (req, res, next) => {
-  if (req.user.id !== req.params.userId)
-    return res.status(400).send('Access Denied');
   Wishlist.findByPk(req.params.wishlistId)
     .then(item => item.destroy())
     .then(() => res.status(200).send('Item deleted'))

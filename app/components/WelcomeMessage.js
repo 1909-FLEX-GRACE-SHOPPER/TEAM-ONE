@@ -42,7 +42,7 @@ class WelcomeMessage extends React.Component {
           <div className='home-text-button'>
             <h2>Premium vaping devices in stylish colors</h2>
             <Button
-              to='/shop'
+              href='/products'
               className='home-button'
             >
               Explore the whole collection

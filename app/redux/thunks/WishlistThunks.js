@@ -52,8 +52,8 @@ export const postWishlist = (productId, userId) => {
 export const deleteWishlist = (item, userId) => {
   return dispatch => {
     return axios
-      .delete(`/api/users/${userId}/wishlist/${item.id}`)
-      .then(() => dispatch(fetchWishlist(item.userId)))
+      .delete(`/api/users/${ userId }/wishlist/${item.id}`)
+      .then(() => dispatch(fetchWishlist(userId)))
       .then(() => {
         dispatch(
           statusMessage({

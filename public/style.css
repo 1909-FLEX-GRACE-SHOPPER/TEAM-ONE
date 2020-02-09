@@ -92,6 +92,7 @@ Nav {
   width: 50vw;
   background-image: url('https://wi-images.condecdn.net/image/z3P1QYD83Xa/crop/2040/f/wired-vaping-1.jpg');
   object-fit: cover;
+  background-position: center; 
 }
 
 .hero-text {
