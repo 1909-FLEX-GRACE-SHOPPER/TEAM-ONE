@@ -13,6 +13,7 @@ import {
   statusMessage,
   similarProducts,
   featuredProducts
+  gitHubData,
 } from './reducers';
 
 export default combineReducers({
@@ -28,4 +29,5 @@ export default combineReducers({
   statusMessage,
   similarProducts,
   featuredProducts,
+  gitHubData,
 });

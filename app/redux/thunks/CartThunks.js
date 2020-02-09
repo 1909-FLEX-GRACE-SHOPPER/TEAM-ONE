@@ -112,6 +112,7 @@ export const createCart = userId => {
     return axios
       .post(`/api/users/${userId}/cart`)
       .then(() => {
+        console.log('cart is initiated');
         dispatch(setCart(userId));
       })
       .catch(e => {
@@ -158,6 +159,27 @@ export const updateCartList = cartItem => {
         cartItem
       })
       .then(() => dispatch(fetchCartList(cartItem.userId)))
+      .catch(e => {
+        console.log('ERROR UPDATING CART LIST ', e);
+      });
+  };
+};
+// issue: fetchCartList doesn't get userId
+export const updateCartItemQuantity = (
+  newQuantity,
+  newSubtotal,
+  productId,
+  userId
+) => {
+  return dispatch => {
+    return axios
+      .put(`/api/users/cart/cartlist/quantity/merge`, {
+        newQuantity,
+        newSubtotal,
+        productId,
+        userId
+      })
+      .then(() => dispatch(fetchCartList(userId)))
       .catch(e => {
         console.log('ERROR UPDATING CART LIST ', e);
       });
