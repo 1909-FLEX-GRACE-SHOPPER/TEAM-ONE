@@ -203,7 +203,7 @@ class StripeCheckoutForm extends Component {
         .handleCardPayment(res.data.client_secret)
       })
       .then(() => {
-      this.props.postOrder({ userId: this.props.user.id, cart: this.props.cart })
+      this.props.postOrder({ userId: this.props.user.id, cart: this.props.cartList })
       .then(() => this.props.deleteCart(this.props.user.id))
       .then(() => {
         if(this.props.statusMessage.status === SUCCESS) {
@@ -225,6 +225,7 @@ class StripeCheckoutForm extends Component {
       },
       errors
     } = this.state;
+    console.log(this.props)
     return (
       <div>
       {
@@ -323,6 +324,7 @@ class StripeCheckoutForm extends Component {
                   }
                 >
                   Pay {this.props.cartList.reduce((accum, item) => {
+                    console.log(item)
                     return accum += parseFloat(item.subtotal)
                   }, 0)
                   }
