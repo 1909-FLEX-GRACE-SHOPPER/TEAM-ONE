@@ -6,6 +6,9 @@ import { fetchProducts } from '../redux/thunks/ProductThunks.js';
 import Form from 'react-bootstrap/Form';
 import { ITEMS_PER_PAGE } from '../redux/constants';
 
+import Nav from 'react-bootstrap/Nav'
+import emoji from 'node-emoji';
+
 class Products extends React.Component {
   constructor() {
     super();
@@ -76,6 +79,35 @@ class Products extends React.Component {
             }
           }
         >
+          {
+            this.props.user.userType === 'Admin'
+            ? <Nav.Link
+                href='/products/add'
+                style={
+                  {
+                    height: '350px',
+                    border: '2px solid black',
+                    color: 'black'
+                  }
+                }
+              >
+              <div
+                style={
+                  {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    margin: '50% 0',
+                  }
+                }
+              >
+                { emoji.get('heavy_plus_sign')}
+                <p>Add a new product</p>
+              </div>
+            </Nav.Link>
+            : null
+          }
           {productsThisPage.length === 0
             ? 'No products'
             : productsThisPage.map(_product =>
@@ -96,7 +128,7 @@ class Products extends React.Component {
   }
 }
 
-const mapState = ({ products }) => ({ products });
+const mapState = ({ products, user }) => ({ products, user });
 const mapDispatch = dispatch => {
   return {
     fetchProducts: page => dispatch(fetchProducts(page))

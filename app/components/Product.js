@@ -43,13 +43,27 @@ class Product extends Component {
           margin: '1rem',
           height: '350px',
           fontFamily: 'Roboto',
-          padding: '1rem',
+          padding: '0.5rem',
           border: '2px black solid',
         }
       }
     >
-    <div>
+    <div
+      style={
+        {
+          display: 'flex',
+        }
+      }
+    >
       <Button
+        style={
+          {
+            border: '2px solid black',
+            borderRadius:'none',
+            backgroundColor: 'white',
+            margin: '0.5rem',
+          }
+        }
         onClick={e => {
           this.handleAddToCart({
             productId: this.props.product.id,
@@ -62,16 +76,29 @@ class Product extends Component {
       >
         {emoji.get('heavy_plus_sign')}
       </Button>
-      <Button
-        onClick={e => {
-          this.handleAddToWishlist(
-            this.props.product.id,
-            this.props.user.id,
-            e)
-        }}
-      >
-        {emoji.get('heart')}
-      </Button>
+      { this.props.user.userType === 'Existing customer'
+      ? (
+        <Button
+          style={
+            {
+              border: '2px solid black',
+              borderRadius:'none',
+              backgroundColor: 'white',
+              margin: '0.5rem',
+            }
+          }
+          onClick={e => {
+            this.handleAddToWishlist(
+              this.props.product.id,
+              this.props.user.id,
+              e)
+          }}
+        >
+          {emoji.get('heart')}
+        </Button>
+      )
+      : null
+    }
     </div>
       <Link to={`/products/${this.props.product.id}`}
         style={
