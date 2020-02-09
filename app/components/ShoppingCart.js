@@ -33,16 +33,19 @@ class ShoppingCart extends React.Component {
 
   checkAndFetchCart = () => {
     const { user, fetchCartList } = this.props;
-    console.log(this.props);
     if (
       (this.state.userId !== user.id && user.id !== undefined) ||
       (user.id && !this.state.fetchedCart)
     ) {
-      console.log('fetching cart');
       fetchCartList(user.id);
       this.setState({ fetchedCart: true, userId: user.id });
     }
   };
+
+  handleOnClick = e => {
+    e.preventDefault();
+    this.props.history.push('/checkout')
+  }
 
   render() {
     const { cartList, user } = this.props;
@@ -68,15 +71,15 @@ class ShoppingCart extends React.Component {
             {cartList.map(item => (
               <ListGroup.Item key={item.id}>
                 <CartItem key={item.id} item={item} />
-                <Button onClick={() => this.handleRemoveItem(item)}>
+                <button onClick={() => this.handleRemoveItem(item)}>
                   Remove
-                </Button>
+                </button>
               </ListGroup.Item>
             ))}
           </ListGroup>
           {/* TODO: total cost should update when subtotal changes*/}
           <div>TOTAL: ${total}</div>
-          <Link to='/checkout'>CHECKOUT</Link>
+          <button onClick={ this.handleOnClick }>CHECKOUT</button>
         </div>
       );
     }

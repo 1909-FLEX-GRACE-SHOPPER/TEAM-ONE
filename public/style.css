@@ -1,18 +1,27 @@
-.product-image-small {
-  width: 10em;
-  height: 10em;
+body {
+  font-family: Roboto, sans-serif;
 }
+
+Button {
+  background-color: black;
+  color: white;
+  border-radius: 0;
+  padding: .5rem;
+}
+
 .toast {
   position: fixed;
   z-index: 10;
   left: 90%;
 }
+
 #photo-gallery {
   display: flex;
   flex-direction: column;
   align-items: center;
   align-content: center;
 }
+
 #gallery-buttons-container {
   display: flex;
   justify-content: space-around;
@@ -30,4 +39,33 @@
   position: absolute;
   z-index: 10;
   left: 0;
+}
+
+/* Home Page */
+#hero-image {
+  background-image: url(https://d3i6fh83elv35t.cloudfront.net/static/2019/08/vaping-1024x683.jpg);
+  object-fit: cover;
+  height: 50vh;
+  width: 100%;
+}
+
+/* Shop */
+.all-products-container {
+  width: 80vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.product-container {
+  width: calc(100% / 4 - 1rem);
+}
+
+.product-image-small {
+  width: 5px
+}
+
+/* Add product Form */
+.add-product-form {
+  background-color: #fff;
 }

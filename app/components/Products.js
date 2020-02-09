@@ -51,7 +51,7 @@ class Products extends React.Component {
             history={history}
           />
         </div>
-        <div className="all-products-container">
+        <div className='all-products-container'>
           {productsThisPage.length === 0
             ? 'No products'
             : productsThisPage.map(_product =>

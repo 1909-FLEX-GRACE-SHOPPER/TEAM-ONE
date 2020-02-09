@@ -15,7 +15,6 @@ import Signup from './Signup';
 import Products from './Products';
 import ProductPage from './ProductPage';
 import ShoppingCart from './ShoppingCart';
-import Checkout from './Checkout';
 import Receipt from './Receipt';
 import ArScene from './ArScene';
 import Confirmation from './Confirmation';
@@ -30,7 +29,7 @@ import PhotoGallery from './PhotoGallery';
 
 class Root extends React.Component {
   componentDidMount() {
-    const { fetchUser, createCart } = this.props;
+    const { fetchUser } = this.props;
     fetchUser(document.cookie.replace(/session_id=/, ''))
   }
 
