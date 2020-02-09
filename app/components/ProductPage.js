@@ -37,30 +37,33 @@ class ProductPage extends React.Component {
     userId,
     subtotal
   }) => {
-    const { isInCart } = this.props.cartList;
-    const { updateCartItem } = this.state;
-    console.log(this.state);
-    if (updateCartItem) {
-      console.log('product exists in cart');
-      const newQuantity = productQuantity;
-      const newSubtotal = subtotal;
-      this.props.updateCartItemQuantity(
-        newQuantity,
-        newSubtotal,
-        productId,
-        userId
-      );
-    } else {
-      console.log('product doesnt exist in cart');
-      this.setState({ updateCartItem: true });
-      this.props.addToCart(
-        productId,
-        cartId,
-        productQuantity,
-        userId,
-        subtotal
-      );
-    }
+    // const { isInCart } = this.props.cartList;
+    // const { updateCartItem } = this.state;
+    // console.log(this.state);
+    // if (updateCartItem) {
+    //   console.log('product exists in cart');
+    //   const newQuantity = productQuantity;
+    //   const newSubtotal = subtotal;
+    //   this.props.updateCartItemQuantity(
+    //     newQuantity,
+    //     newSubtotal,
+    //     productId,
+    //     userId
+    //   );
+    // } else {
+    //   console.log('product doesnt exist in cart');
+    //   this.setState({ updateCartItem: true });
+    //   this.props.addToCart(
+    //     productId,
+    //     cartId,
+    //     productQuantity,
+    //     userId,
+    //     subtotal
+    //   );
+    // }
+    // this.setState({ quantity: 0 });
+
+    this.props.addToCart(productId, cartId, productQuantity, userId, subtotal);
     this.setState({ quantity: 0 });
   };
 
@@ -104,28 +107,28 @@ class ProductPage extends React.Component {
           <div>Product Not Found. :(</div>
         ) : (
           <div>
-            <Link to='/products'>Back</Link>
-            <div className='product-page'>
-              <div className='product-hero'>
+            <Link to="/products">Back</Link>
+            <div className="product-page">
+              <div className="product-hero">
                 <img
-                  className='product-image-small'
+                  className="product-image-small"
                   src={singleProduct.productImage}
                 />
-                <div className='product-details'>
-                  <div className='product-name'>{singleProduct.name}</div>
-                  <div className='product-price'>{singleProduct.price}</div>
-                  <div className='product-quantity-select-container'>
+                <div className="product-details">
+                  <div className="product-name">{singleProduct.name}</div>
+                  <div className="product-price">{singleProduct.price}</div>
+                  <div className="product-quantity-select-container">
                     <input
-                      type='number'
-                      className='product-quantity-select'
+                      type="number"
+                      className="product-quantity-select"
                       max={singleProduct.inventory}
-                      min='0'
+                      min="0"
                       value={this.state.quantity}
                       onChange={e => {
                         this.setState({ quantity: e.target.value });
                       }}
                     />
-                    <div className='product-sub-total'>
+                    <div className="product-sub-total">
                       SUBTOTAL{' '}
                       {`$${(
                         this.state.quantity * singleProduct.unitPrice
@@ -157,17 +160,17 @@ class ProductPage extends React.Component {
                   >
                     ADD TO WISHLIST
                   </Button>
-                  <div className='product-description'>
+                  <div className="product-description">
                     {singleProduct.description}
                   </div>
-                  <div className='social-media-icons'>
+                  <div className="social-media-icons">
                     <div>TWITTER</div>
                     <div>INSTAGRAM</div>
                     <div>FACEBOOK</div>
                   </div>
                 </div>
               </div>
-              <div className='similar-products-container'>
+              <div className="similar-products-container">
                 <h5>PRODUCTS YOU MAY BE INTERESTED IN</h5>
                 <div>
                   {similarProducts.length > 0

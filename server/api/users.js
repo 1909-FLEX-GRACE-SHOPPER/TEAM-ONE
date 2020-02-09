@@ -312,23 +312,47 @@ router.get('/:userId/cart/set', (req, res, next) => {
 router.post('/cart/add', (req, res, next) => {
   if (req.user.id !== req.body.userId)
     return res.status(400).send('Access Denied');
+
   const productId = req.body.productId;
-  const productQuantity = req.body.productQuantity;
+  const newQuantity = req.body.productQuantity;
   const cartId = req.body.cartId;
   const userId = req.body.userId;
-  const subtotal = req.body.subtotal;
+  const newSubtotal = req.body.subtotal;
 
-  CartList.create({
-    productId: productId,
-    productQuantity: productQuantity,
-    cartId: cartId,
-    userId: userId,
-    subtotal: subtotal
+  //Check if the user has this product in cart
+
+  CartList.findOne({
+    where: {
+      userId,
+      productId
+    }
   })
-    .then(newItem => res.status(200).send(newItem))
+    .then(product => {
+      if (!product) {
+        return CartList.create({
+          productId: productId,
+          productQuantity: newQuantity,
+          cartId: cartId,
+          userId: userId,
+          subtotal: newSubtotal
+        });
+      } else {
+        return CartList.increment(
+          {
+            productQuantity: newQuantity,
+            subtotal: parseFloat(newSubtotal)
+          },
+          {
+            where: { productId, userId }
+          }
+        );
+      }
+    })
+    .then(updatedList => res.status(200).send({ updatedList }))
     .catch(err => {
+      console.log('ERROR ADDING TO CAR ', err);
       res.status(400);
-      next(err);
+      next();
     });
 });
 
