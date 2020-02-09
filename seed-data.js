@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const products = [
   {
-    productName: 'Prada Juul',
+    productName: 'Juicy Couture Juul',
     productDescription: 'Happy Halloween!',
     productImage:
       'https://di2ponv0v5otw.cloudfront.net/posts/2019/11/23/5dd9e1ee9ed36dee46aac908/m_5dd9e21d21cd0a2f4b5215ef.jpg',
