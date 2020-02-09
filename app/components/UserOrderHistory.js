@@ -18,7 +18,13 @@ class UserOrderHistory extends Component {
         {orderDetails.map(_order => (
           <div key={`order-${_order.id}`}>
             {_order.orderDetails.map(_detail => (
-              <div key={`detail-${_detail.id}`}>{JSON.stringify(_detail)}</div>
+              <div key={`detail-${_detail.id}`}>{`Product ID: ${
+                _detail.productId
+              }; $${_detail.productCost}; Ordered at ${new Date(
+                _detail.createdAt
+              )
+                .toString()
+                .slice(0, 15)}`}</div>
             ))}
           </div>
         ))}
