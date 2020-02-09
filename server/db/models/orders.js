@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./../database.js');
 
-const { UUID, UUIDV4, STRING, DECIMAL, TEXT } = Sequelize;
+const { UUID, UUIDV4, DECIMAL } = Sequelize;
 
 const Order = db.define('orders', {
   id: {
@@ -11,46 +11,9 @@ const Order = db.define('orders', {
   },
 
   orderCost: {
-    //TODO: make order cost as the sum of product cost
     type: DECIMAL(10, 2),
     allowNull: false
-  },
-
-  shippingName: {
-    type: STRING,
-  },
-
-  shippingAddress: {
-    type: STRING,
-  },
-
-  shippingCity: {
-    type: STRING,
-  },
-
-  shippingState: {
-    type: STRING,
-  },
-  
-  shippingZip: {
-    type: STRING,
-    validate: {
-      len: {
-        arg: 5
-      }
-    }
-  },
-
-  shippingCountry: {
-    type: STRING,
-    allowNull: true,
-  },
-
-  shippingNotes: {
-    type: TEXT,
-    allowNull: true,
-  },
-
+  }
 });
 
 module.exports = Order;
