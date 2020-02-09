@@ -1,10 +1,13 @@
 import React from 'react';
 import Pagination from 'react-bootstrap/Pagination';
+import { connect } from 'react-redux';
+import { fetchProducts } from '../redux/thunks/ProductThunks.js';
 
 class PageSelect extends React.Component {
   movePage(page) {
     const totalPages = this.props.pages;
     if (page === 0 || page > totalPages) return;
+    this.props.fetchProducts(page);
     this.props.history.push(`/products/page/${page}`);
   }
   render() {
@@ -37,4 +40,11 @@ class PageSelect extends React.Component {
   }
 }
 
-export default PageSelect;
+const mapState = ({ products }) => ({ products });
+const mapDispatch = dispatch => {
+  return {
+    fetchProducts: page => dispatch(fetchProducts(page))
+  };
+};
+
+export default connect(mapState, mapDispatch)(PageSelect);
