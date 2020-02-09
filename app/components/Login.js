@@ -50,6 +50,7 @@ class Login extends Component {
             </Form.Group>
             <div>{authError ? authError : null}</div>
             <Nav.Link href='/signup'> Sign up </Nav.Link>
+            <Nav.Link href={"/api/github/login"}> Github Log In! </Nav.Link>
             <Button onClick={this.onSubmit}> Log In! </Button>
           </Form>
         ) : (

@@ -11,7 +11,8 @@ import {
   SET_CART_LIST,
   REMOVE_ITEM_FROM_CART,
   STATUS_MESSAGE,
-  SET_SIMILAR_PRODUCTS
+  SET_SIMILAR_PRODUCTS,
+  GET_GITHUB_DATA 
 } from './constants';
 
 export const products = (state = [], action) => {
@@ -127,3 +128,12 @@ export const statusMessage = (state = { status: null, text: '' }, action) => {
       return state;
   }
 };
+
+export const gitHubData = (state = {}, action) => {
+  switch (action.type) {
+    case GET_GITHUB_DATA:
+      return action.gitHubUser
+    default:
+      return state;
+  }
+}; 

@@ -11,7 +11,8 @@ import {
   LOGIN_ERROR,
   SET_CART,
   SET_CART_LIST,
-  REMOVE_ITEM_FROM_CART
+  REMOVE_ITEM_FROM_CART,
+  GET_GITHUB_DATA
 } from './constants';
 
 export const setProducts = products => {
@@ -102,3 +103,10 @@ export const statusMessage = message => {
     message
   };
 };
+
+export const gitHubData = gitHubUser => {
+  return {
+    type: GET_GITHUB_DATA,
+    gitHubUser
+  };
+}; 
