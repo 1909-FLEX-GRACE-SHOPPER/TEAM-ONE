@@ -10,9 +10,9 @@ import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 export const fetchOrders = userId => {
   return dispatch => {
     return axios
-      .get(`/api/users/${ userId }/orders`)
+      .get(`/api/users/${userId}/orders`)
       .then(res => {
-        dispatch(setOrders(res.data))
+        dispatch(setOrders(res.data));
       })
       .catch(e => {
         console.log(e);
