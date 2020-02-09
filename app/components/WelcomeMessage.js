@@ -37,10 +37,8 @@ class WelcomeMessage extends React.Component {
           </div>
         </div>
         <div className='home-image-div'>
-          <img
-            src='https://wi-images.condecdn.net/image/z3P1QYD83Xa/crop/2040/f/wired-vaping-1.jpg'
-            className='home-image'
-          />
+          <div className='home-image'>
+          </div>
           <div className='home-text-button'>
             <h2>Premium vaping devices in stylish colors</h2>
             <Button
