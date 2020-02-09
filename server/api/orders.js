@@ -26,7 +26,8 @@ router.post('/', (req, res, next) => {
           OrderDetail.create({
             ..._item,
             orderId: order.id,
-            productCost: _item.subtotal
+            productCost: _item.subtotal,
+            productId: _item.productId
           })
         )
       )
