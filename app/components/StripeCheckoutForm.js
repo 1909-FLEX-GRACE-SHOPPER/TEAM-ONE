@@ -225,9 +225,8 @@ class StripeCheckoutForm extends Component {
       },
       errors
     } = this.state;
-    console.log(this.props)
     return (
-      <div>
+      <div className='container mt-4'>
       {
       this.state.cardReady
       ? (
@@ -243,8 +242,28 @@ class StripeCheckoutForm extends Component {
           )
           : (
             <div className='checkout-form'>
-              <Form>
-                <div>
+              <Form 
+                style={
+                  {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }
+                }
+              >
+                <h3>Checkout for { this.props.user.firstName || 'Guest' }</h3>
+                <h5>Shipping Information</h5>
+                <div
+                  style={
+                    {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                      margin: '1rem',
+                    }
+                  }
+                >
                   <label>
                     Recipients Name
                   </label>
@@ -255,64 +274,136 @@ class StripeCheckoutForm extends Component {
                     onChange={ this.handleOnChange }
                   />
                 </div>
-                <label>
-                  Address
-                </label>
-                <input
-                  type='text'
-                  name='line1'
-                  value={ line1 }
-                  onChange={ this.handleOnChange }
-                />
-                <label>
-                  City
-                </label>
-                <input
-                  type='text'
-                  name='city'
-                  value={ city }
-                  onChange={ this.handleOnChange }
-                />
-                <label>
-                  Zip Code
-                </label>
-                <input
-                  type='text'
-                  name='postal_code'
-                  value={ postal_code }
-                  onChange={ this.handleOnChange }
-                />
-                <label>
-                  State
-                </label>
-                <input
-                  type='text'
-                  name='state'
-                  value={ state }
-                  onChange={ this.handleOnChange }
-                />
-                <label>
-                  Country 
-                </label>
-                <input
-                  type='text'
-                  name='country'
-                  value={ country }
-                  onChange={ this.handleOnChange }
-                />
+                <div
+                  style={
+                    {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                      margin: '1rem',
+                    }
+                  }
+                >
+                  <label>
+                    Address
+                  </label>
+                  <input
+                    type='text'
+                    name='line1'
+                    value={ line1 }
+                    onChange={ this.handleOnChange }
+                  />
+                </div>
+                <div 
+                  style={
+                    {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }
+                  }
+                >
+                  <label>
+                    City
+                  </label>
+                  <input
+                    type='text'
+                    name='city'
+                    value={ city }
+                    onChange={ this.handleOnChange }
+                  />
+                </div>
+                <div
+                  style={
+                    {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                      margin: '1rem',
+                    }
+                  }
+                >
+                  <label>
+                    Zip Code
+                  </label>
+                  <input
+                    type='text'
+                    name='postal_code'
+                    value={ postal_code }
+                    onChange={ this.handleOnChange }
+                  />
+                </div>
+                <div
+                  style={
+                    {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                    }
+                  }
+                >
+                  <label>
+                    State
+                  </label>
+                  <input
+                    type='text'
+                    name='state'
+                    value={ state }
+                    onChange={ this.handleOnChange }
+                  />
+                </div>
+                <div 
+                  style={
+                    {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '50%',
+                      margin: '1rem',
+                    }
+                  }
+                >
+                  <label>
+                    Country 
+                  </label>
+                  <input
+                    type='text'
+                    name='country'
+                    value={ country }
+                    onChange={ this.handleOnChange }
+                  />
+                </div>
+                <h5>Card Information</h5>
                 <label>
                   Card details
                     <CardNumberElement />
                 </label>
-                <label>
-                  Expiration date
-                  <CardExpiryElement />
-                </label>
-                <label>
-                  CVC 
-                  <CardCVCElement />
-                </label>
+                <div
+                  style={
+                    {
+                      display: 'flex',
+                      margin: '1rem',
+                    }
+                  }
+                >
+                  <label>
+                    Expiration date
+                    <CardExpiryElement />
+                  </label>
+                  <label>
+                    CVC 
+                    <CardCVCElement />
+                  </label>
+                </div>
                 <Button
+                  style={
+                    {
+                      margin: '1rem',
+                      backgroundColor: 'black',
+                      border: 'none',
+                      borderRadius: '0',
+                      width: '300px'
+                    }
+                  }
                   onClick={ this.handleOnClick }
                   className='order-button'
                   disabled={
