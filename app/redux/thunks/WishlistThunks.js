@@ -54,12 +54,20 @@ export const deleteWishlist = (item, userId) => {
     return axios
       .delete(`/api/users/${userId}/wishlist/${item.id}`)
       .then(() => dispatch(fetchWishlist(item.userId)))
+      .then(() => {
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Removed from Wishlist.'
+          })
+        );
+      })
       .catch(e => {
-        console.log('Error removing item from wishlist', e);
+        console.log(e);
         dispatch(
           statusMessage({
             status: FAIL,
-            text: COMMON_FAIL
+            text: 'Unable to delete wishlist item. Please try again'
           })
         );
       });

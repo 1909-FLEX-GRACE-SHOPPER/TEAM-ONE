@@ -10,20 +10,26 @@ export const ToastComponent = props => {
   switch (status) {
     case SUCCESS:
       return (
-        <Toast onClose={() => props.resetStatus()}>
-          <Toast.Header className='bg-success'>
-            <strong className='mr-auto text-white'>Success!</strong>
+        <Toast
+          style={{ position: 'fixed', left: '90%', 'z-index': '10' }}
+          onClose={() => props.resetStatus()}
+        >
+          <Toast.Header className="bg-success">
+            <strong className="mr-auto text-white">Success!</strong>
           </Toast.Header>
-          <Toast.Body className='text-success'>{message}</Toast.Body>
+          <Toast.Body className="text-success">{message}</Toast.Body>
         </Toast>
       );
     case FAIL:
       return (
-        <Toast onClose={() => props.resetStatus()}>
-          <Toast.Header className='bg-danger'>
-            <strong className='mr-auto text-white'>Error!</strong>
+        <Toast
+          style={{ position: 'fixed', left: '90%', 'z-index': '10' }}
+          onClose={() => props.resetStatus()}
+        >
+          <Toast.Header className="bg-danger">
+            <strong className="mr-auto text-white">Error!</strong>
           </Toast.Header>
-          <Toast.Body className='text-danger'>{message}</Toast.Body>
+          <Toast.Body className="text-danger">{message}</Toast.Body>
         </Toast>
       );
     default:

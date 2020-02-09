@@ -69,8 +69,22 @@ export function addToCart(
         subtotal
       })
       .then(() => dispatch(fetchCartList(userId)))
+      .then(() => {
+        dispatch(
+          statusMessage({
+            status: SUCCESS,
+            text: 'Added to cart.'
+          })
+        );
+      })
       .catch(e => {
-        console.log('Error adding to cart', e);
+        console.log(e);
+        dispatch(
+          statusMessage({
+            status: FAIL,
+            text: 'Unable to add to cart. Please try again'
+          })
+        );
       });
   };
 }
