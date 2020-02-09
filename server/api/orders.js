@@ -26,7 +26,8 @@ router.post('/', (req, res, next) => {
           OrderDetail.create({
             ..._item,
             orderId: order.id,
-            productCost: _item.subtotal
+            productCost: _item.subtotal,
+            productId: _item.productId
           })
         )
       )
@@ -69,16 +70,18 @@ router.get('/:id', (req, res, next) => {
 
 //Finds and serves a single order based on a primary key.
 //Eager loads associated cart.
-router.get('/:orderId/orderDetails', (req, res, next) => {
-  User.findByPk(req.params.orderId, {
-    include: [
-      {
-        model: OrderDetail
-      }
-    ]
+router.get('/:userId/orderDetails', (req, res, next) => {
+  //Find all the orders
+  Order.findAll({
+    where: {
+      userId: req.params.userId
+    },
+    include: [OrderDetail]
   })
-    .then(user => res.status(200).send(user))
+    .then(orders => res.status(200).send(orders))
     .catch(e => {
+      console.log('error getting order history');
+      console.log(e);
       res.status(404);
       next(e);
     });

@@ -26,6 +26,7 @@ import StripeCheckout from './StripeCheckout';
 
 import AddProductForm from './AddProductForm';
 import PhotoGallery from './PhotoGallery';
+import UserOrderHistory from './UserOrderHistory';
 
 class Root extends React.Component {
   componentDidMount() {
@@ -53,7 +54,7 @@ class Root extends React.Component {
             <Route path="/checkout" component={StripeCheckout} />
             <Route path="/receipt" component={Receipt} />
             <Route path="/wishlist" component={Wishlist} />
-            <Route path="/user" /*component={UserPage}*/ />
+            <Route path="/user/:id" component={UserOrderHistory} />
             <Route path="/photo-booth" component={PhotoGallery} />
             <Redirect to="/" />
           </Switch>

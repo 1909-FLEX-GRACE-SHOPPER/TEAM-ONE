@@ -207,17 +207,17 @@ class Navigation extends Component {
 }
 
 const mapStateToProps = state => {
-	return {
-		user: state.user,
-		gitHubUser: state.gitHubData
-	};
+  return {
+    user: state.user,
+    gitHubUser: state.gitHubData
+  };
 };
 
 const mapDispatch = dispatch => {
-	return {
-		logoutUser: userId => dispatch(logoutUser(userId)),
-		getGitHubUserData: () => dispatch(getGitHubData())
-	};
+  return {
+    logoutUser: userId => dispatch(logoutUser(userId)),
+    getGitHubUserData: () => dispatch(getGitHubData())
+  };
 };
 
 export default connect(mapStateToProps, mapDispatch)(Navigation);
