@@ -413,10 +413,9 @@ router.put(`/:userId/cart`, (req, res, next) => {
 
 //Route for deleting a cart.
 router.delete(`/:userId/cart`, (req, res, next) => {
-  CartList.findOne({
   if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
-  Cart.findOne({
+  CartList.findOne({
     where: { userId: req.params.userId }
   })
     .then(cart => cart.destroy())
