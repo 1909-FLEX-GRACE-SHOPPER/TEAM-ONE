@@ -1,0 +1,150 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 1px;
+}
+
+.header {
+  text-align: center;
+  padding: 1rem;
+}
+
+.section {
+  padding-top: 4rem;
+}
+
+Button {
+  background-color: black;
+  color: white;
+  border-radius: 0;
+  padding: .5rem;
+}
+
+Nav {
+  color: white;
+}
+
+.toast {
+  position: fixed;
+  z-index: 10;
+  left: 90%;
+}
+
+#photo-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}
+
+#gallery-buttons-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1.5em;
+  width: 640px;
+}
+
+#video-and-overlay {
+  position: relative;
+  width: 640px;
+  height: 480px;
+}
+
+#video-overlay {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+}
+
+/* Home Page */
+#hero-image {
+  background-image: url(https://d3i6fh83elv35t.cloudfront.net/static/2019/08/vaping-1024x683.jpg);
+  object-fit: cover;
+  height: 75vh;
+  width: 100%;
+  padding: 0;
+}
+
+#hero-image-container {
+  padding: 0;
+}
+
+.featured-products-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.single-featured-product {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-image-div {
+  background-color: #fbf4e1;
+  margin-top: 8rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.home-image {
+  width: 50vw;
+  background-image: url('https://wi-images.condecdn.net/image/z3P1QYD83Xa/crop/2040/f/wired-vaping-1.jpg');
+  object-fit: cover;
+  background-position: center; 
+}
+
+.hero-text {
+  font-size: 40px;
+  font-weight: bold;
+  text-transform: uppercase;
+  width: 40%;
+  color: black;
+  position: absolute;
+  top: 40%;
+  left: 10rem;
+}
+
+.home-text-button {
+  text-transform: uppercase;
+  padding: 10rem 5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-button {
+  color: black;
+  border: black solid 3px;
+  border-radius: 0;
+  background-color: #fbf4e1;
+  margin-top: 2rem;
+}
+
+.home-button:hover {
+  color: black;
+  border: black solid 3px;
+  border-radius: 0;
+  background-color: #ebe0c3;
+}
+
+/* Shop */
+.all-products-container {
+  width: 80vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.product-container {
+  width: calc(100% / 4 - 1rem);
+}
+
+.product-image-small {
+  width: 5px
+}
+
+/* Add product Form */
+.add-product-form {
+  background-color: #fff;
+}
