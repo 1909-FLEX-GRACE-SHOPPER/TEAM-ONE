@@ -4,7 +4,8 @@ import { logoutUser, getGitHubData } from '../redux/thunks/UserThunks';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
-	componentDidMount() {
+  
+componentDidMount() {
 		const { getGitHubUserData } = this.props;
 		getGitHubUserData();
 	}
@@ -69,7 +70,7 @@ class Navigation extends Component {
               Logout
             </Button>
           </Nav>
-				);
+        );
         break;
 			case 'Admin':
         return (
@@ -202,8 +203,8 @@ class Navigation extends Component {
           {this.switchNavBar(user, gitHubUser)}
         </Nav>
       </Navbar>
-		);
-	}
+    );
+  }
 }
 
 const mapStateToProps = state => {
