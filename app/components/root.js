@@ -31,7 +31,12 @@ import UserOrderHistory from './UserOrderHistory';
 class Root extends React.Component {
   componentDidMount() {
     const { fetchUser } = this.props;
-    fetchUser(document.cookie.replace(/session_id=/, ''))
+    fetchUser(
+      document.cookie
+        .split(';')
+        .filter(c => /session_id=/.test(c))[0]
+        .replace(/session_id=/, '')
+    );
   }
 
   render() {
