@@ -11,7 +11,7 @@ export const ToastComponent = props => {
     case SUCCESS:
       return (
         <Toast
-          style={{ position: 'fixed', left: '90%', 'z-index': '10' }}
+          style={{ position: 'fixed', left: '90%', zIndex: '10' }}
           onClose={() => props.resetStatus()}
         >
           <Toast.Header className="bg-success">
@@ -23,7 +23,7 @@ export const ToastComponent = props => {
     case FAIL:
       return (
         <Toast
-          style={{ position: 'fixed', left: '90%', 'z-index': '10' }}
+          style={{ position: 'fixed', left: '90%', zIndex: '10' }}
           onClose={() => props.resetStatus()}
         >
           <Toast.Header className="bg-danger">
