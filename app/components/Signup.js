@@ -18,6 +18,8 @@ class Signup extends Component {
       password: '',
       confirmPassword: '',
       errors: {
+        firstNameError: '',
+        lastNameError: '',
         usernameError: '',
         emailError: '',
         passwordError: '',
@@ -30,6 +32,42 @@ class Signup extends Component {
     const { errors } = this.state;
 
     switch (field) {
+      case 'firstName':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              firstNameError: 'Required Field'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              firstNameError: ''
+            }
+          })
+        }
+        break;
+
+      case 'lastName':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              lastNameError: 'Required field'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              lastNameError: ''
+            }
+          })
+        }
+        break;
+
       case 'email':
         if (!value.match(/\S+@\S+\.\S+/)) {
           this.setState({
@@ -38,6 +76,13 @@ class Signup extends Component {
               emailError: 'Email not valid'
             }
           });
+        } else if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              emailError: 'Required field'
+            }
+          })
         } else {
           this.setState({
             errors: {
@@ -56,6 +101,13 @@ class Signup extends Component {
               passwordError: 'Password not valid'
             }
           });
+        } else if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              passwordError: 'Required field'
+            }
+          })
         } else {
           this.setState({
             errors: {
@@ -113,15 +165,40 @@ class Signup extends Component {
       email,
       password,
       confirmPassword,
-      errors: { usernameError, emailError, passwordError, confirmPasswordError }
+      errors: {
+        firstNameError,
+        lastNameError,
+        usernameError,
+        emailError,
+        passwordError,
+        confirmPasswordError
+      }
     } = this.state;
 
     return (
       <div className='container mt-4'>
         <div className='logo-medium'></div>
 
-        <Form className='signup-form'>
-          <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Form
+          className='signup-form'
+          style={
+            {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }
+          }
+        >
+          <Row
+            style={
+              {
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '50%',
+                }
+              }
+            >
             <Group
               as={Col}
               controlId='firstName'
@@ -138,7 +215,14 @@ class Signup extends Component {
                 name='firstName'
                 value={firstName}
                 onChange={this.handleOnChange}
+                isInvalid={ !!firstNameError }
               />
+              <Control.Feedback
+                type='invalid'
+                className='text-danger'
+              >
+                { firstNameError }
+              </Control.Feedback>
             </Group>
 
             <Group
@@ -157,22 +241,49 @@ class Signup extends Component {
                 name='lastName'
                 value={lastName}
                 onChange={this.handleOnChange}
+                isInvalid={ !!lastNameError }
               />
+              <Control.Feedback
+                type='invalid'
+                className='text-danger'
+              >
+                { lastNameError }
+              </Control.Feedback>
             </Group>
           </Row>
 
-          <Group controlId='username'>
+          <Group
+            controlId='username'
+            style={
+              {
+                width: '50%',
+              }
+            }
+          >
             <Label>USER NAME</Label>
             <Control
               type='text'
               name='username'
               value={username}
               onChange={this.handleOnChange}
+              isInvalid={ !!usernameError }
             />
-            <p show={usernameError}>{usernameError}</p>
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              {usernameError}
+            </Control.Feedback>
           </Group>
 
-          <Group controlId='email'>
+          <Group
+            controlId='email'
+            style={
+              {
+                width: '50%',
+              }
+            }
+          >
             <Label>
               Email address{' '}
               <span style={{ color: 'red', fontSize: '10px' }}>*required</span>
@@ -182,14 +293,24 @@ class Signup extends Component {
               name='email'
               value={email}
               onChange={this.handleOnChange}
+              isInvalid={ !!emailError }
             />
-            <Text className='text-muted'>
-              We'll never share your email with anyone else.
-            </Text>
-            <p show={emailError}>{emailError}</p>
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              {emailError}
+            </Control.Feedback>
           </Group>
 
-          <Group controlId='password'>
+          <Group
+            controlId='password'
+            style={
+              {
+                width: '50%',
+              }
+            }
+          >
             <Label>
               PASSWORD{' '}
               <span style={{ color: 'red', fontSize: '10px' }}>
@@ -202,19 +323,38 @@ class Signup extends Component {
               name='password'
               value={password}
               onChange={this.handleOnChange}
+              isInvalid={ !!passwordError }
             />
-            <p show={passwordError}>{passwordError}</p>
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              {passwordError}
+            </Control.Feedback>
           </Group>
 
-          <Group controlId='confirmPassword'>
+          <Group
+            controlId='confirmPassword'
+            style={
+              {
+                width: '50%',
+              }
+            }
+          >
             <Label>CONFIRM PASSWORD</Label>
             <Control
               type='password'
               name='confirmPassword'
               value={confirmPassword}
               onChange={this.handleOnChange}
+              isInvalid={ !!confirmPasswordError }
             />
-            <p show={confirmPasswordError}>{confirmPasswordError}</p>
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              { confirmPasswordError }
+            </Control.Feedback>
           </Group>
 
           <div>
@@ -232,7 +372,15 @@ class Signup extends Component {
               passwordError ||
               confirmPasswordError
             }
-            variant='primary'
+            style={
+              {
+                margin: '1rem',
+                backgroundColor: 'black',
+                border: 'none',
+                borderRadius: '0',
+                width: '300px'
+              }
+            }
             type='submit'
             onClick={this.handleOnSubmit}
           >

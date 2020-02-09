@@ -91,7 +91,10 @@ componentDidMount() {
               }}
               style={
                 {
-                  color: 'white'
+                  color: 'white',
+                  backgroundColor: '#343a40',
+                  border: '0',
+                  borderRadius: '0',
                 }
               }
             >

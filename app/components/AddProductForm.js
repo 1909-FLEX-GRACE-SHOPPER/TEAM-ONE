@@ -23,6 +23,7 @@ class AddProductForm extends Component {
       tags: '',
       featured: false,
       errors: {
+        productNameError: '',
         fileError: '',
         unitPriceError: '',
         inventoryError: ''
@@ -61,6 +62,13 @@ class AddProductForm extends Component {
               unitPriceError: 'Price not valid'
             }
           });
+        } else if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              unitPriceError: 'Required field'
+            }
+          })
         } else {
           this.setState({
             errors: {
@@ -86,6 +94,24 @@ class AddProductForm extends Component {
               inventoryError: ''
             }
           });
+        }
+        break;
+
+      case 'productName':
+        if(!value) {
+          this.setState({
+            errors: {
+              ...errors,
+              productNameError: 'Required Field'
+            }
+          })
+        } else {
+          this.setState({
+            errors: {
+              ...errors,
+              productNameError: '',
+            }
+          })
         }
         break;
 
@@ -146,7 +172,12 @@ class AddProductForm extends Component {
       inventory,
       fileName,
       tags,
-      errors: { fileError, unitPriceError, inventoryError }
+      errors: {
+        productNameError,
+        fileError,
+        unitPriceError,
+        inventoryError
+      }
     } = this.state;
     return (
       <div className="container mt-4">
@@ -160,8 +191,15 @@ class AddProductForm extends Component {
               value={productName}
               name="productName"
               onChange={this.handleOnChange}
+              isInvalid={ !!productNameError }
               required
             />
+            <Control.Feedback
+              type='invalid'
+              className='text-danger'
+            >
+              { productNameError }
+            </Control.Feedback>
           </Group>
 
           <Group controlId="ProductDescription">
@@ -189,7 +227,14 @@ class AddProductForm extends Component {
             </Control>
           </Group>
 
-          <Group controlId='featured'>
+          <Group
+            controlId='featured'
+            style={
+              {
+                display: 'flex'
+              }
+            }
+          >
             <Label>Featured</Label>
             <Check
               type='checkbox'
@@ -219,12 +264,15 @@ class AddProductForm extends Component {
                 value={unitPrice}
                 name="unitPrice"
                 onChange={this.handleOnChange}
-                required
+                isInvalid={ !!unitPriceError }
                 style={{ WebkitAppearance: 'none' }}
               />
-              <p show={unitPriceError} className="danger">
+              <Control.Feedback
+                type='invalid'
+                className='text-danger'
+              >
                 {unitPriceError}
-              </p>
+              </Control.Feedback>
             </Group>
 
             <Group
@@ -239,10 +287,14 @@ class AddProductForm extends Component {
                 name="inventory"
                 onChange={this.handleOnChange}
                 required
+                isInvalid={ !!inventoryError }
               />
-              <p show={inventoryError} className="danger">
+              <Control.Feedback 
+                className="text-danger"
+                type='invalid'
+              >
                 {inventoryError}
-              </p>
+              </Control.Feedback>
             </Group>
 
             <Group as={Col}>
@@ -262,18 +314,23 @@ class AddProductForm extends Component {
                   className="custom-file-input"
                   id="customFile"
                   onChange={this.handleBrowse}
+                  isInvalid={ !!fileError }
                 />
+                <Control.Feedback
+                  className='text-danger'
+                  type='invalid'
+                >
+                  { fileError }
+                </Control.Feedback>
               </div>
             </Group>
-            <p show={fileError} className="danger">
-              {fileError}
-            </p>
           </Row>
 
           <Button
             disabled={
               !productName ||
               !unitPrice ||
+              productNameError ||
               fileError ||
               unitPriceError ||
               inventoryError

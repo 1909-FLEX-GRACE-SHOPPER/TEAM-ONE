@@ -25,10 +25,26 @@ class Login extends Component {
     return (
       <Fragment>
         {!logInStatus ? (
-          <Form>
-            <Form.Group>
+          <Form
+            className='mt-4'
+            style={
+              {
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }
+            }
+          >
+            <Form.Group
+              style={
+                {
+                  width: '50%'
+                }
+              }
+            >
               <Form.Label>Email Address</Form.Label>
-              <Col sm='5'>
+              <Col>
                 <Form.Control
                   name='email'
                   type='email'
@@ -37,9 +53,15 @@ class Login extends Component {
                 />
               </Col>
             </Form.Group>
-            <Form.Group>
+            <Form.Group
+              style={
+                {
+                  width: '50%'
+                }
+              }
+            >
               <Form.Label> Password</Form.Label>
-              <Col sm='5'>
+              <Col>
                 <Form.Control
                   name='password'
                   type='password'
@@ -49,9 +71,34 @@ class Login extends Component {
               </Col>
             </Form.Group>
             <div>{authError ? authError : null}</div>
-            <Nav.Link href='/signup'> Sign up </Nav.Link>
-            <Nav.Link href={"/api/github/login"}> Github Log In! </Nav.Link>
-            <Button onClick={this.onSubmit}> Log In! </Button>
+            <p>
+              Not a user?<Nav.Link href='/signup'> Sign up </Nav.Link>
+            </p>
+            <Button
+              style={
+                {
+                  margin: '1rem',
+                  backgroundColor: 'black',
+                  border: 'none',
+                  borderRadius: '0',
+                  width: '300px'
+                }
+              }
+              href={"/api/github/login"}> Github Log In! </Button>
+            <Button
+              style={
+                {
+                  margin: '1rem',
+                  backgroundColor: 'black',
+                  border: 'none',
+                  borderRadius: '0',
+                  width: '300px'
+                }
+              }
+              onClick={this.onSubmit}
+            >
+              Log In!
+            </Button>
           </Form>
         ) : (
           <h2>
