@@ -55,6 +55,8 @@ router.get('/:id', (req, res, next) => {
 //Sets falsy field in req.body.productDescription to be null.
 //Sets falsy field in req.body.inventory to 0.
 router.post('/', (req, res, next) => {
+  if (req.user.userType !== 'Admin')
+    return res.status(400).send('Access Denied');
   const {
     productName,
     productDescription,
@@ -108,6 +110,8 @@ router.post('/', (req, res, next) => {
 
 //Deletes a product based on a primary key.
 router.delete('/:id', (req, res, next) => {
+  if (req.user.userType !== 'Admin')
+    return res.status(400).send('Access Denied');
   Product.findByPk(req.params.id)
     .then(product => product.destroy())
     .then(() => res.status(202))
@@ -120,6 +124,8 @@ router.delete('/:id', (req, res, next) => {
 //Updates a product based on a primary key.
 //Falsy fields in req.body are set to the current values.
 router.put('/:id', (req, res, next) => {
+  if (req.user.userType !== 'Admin')
+    return res.status(400).send('Access Denied');
   const { productName, productDescription, unitPrice, inventory } = req.body;
 
   Product.findByPk(req.params.id)

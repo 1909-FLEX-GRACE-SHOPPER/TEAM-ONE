@@ -29,6 +29,8 @@ router.get('/session/:sessionId', (req, res, next) => {
 
 //Finds, counts and serves all users
 router.get('/', paginate(User), (req, res, next) => {
+  if (req.user.userType !== 'Admin')
+    return res.status(400).send('Access Denied');
   res
     .status(200)
     .send(res.foundModels)
@@ -156,6 +158,8 @@ router.post('/logout/:userId', (req, res, next) => {
 
 //Deletes a user based on a primary key.
 router.delete('/:id', (req, res, next) => {
+  if (req.user.userType !== 'Admin' || req.user.id !== req.params.id)
+    return res.status(400).send('Access Denied');
   User.findByPk(req.params.id)
     .then(user => user.destroy())
     .then(() => res.status(202))
@@ -168,6 +172,8 @@ router.delete('/:id', (req, res, next) => {
 //Updates a user based on a primary key.
 //Falsy fields in req.body are set to the current values.
 router.put('/:id', (req, res, next) => {
+  if (req.user.userType !== 'Admin' || req.user.id !== req.params.id)
+    return res.status(400).send('Access Denied');
   const {
     firstName,
     lastName,
@@ -214,6 +220,8 @@ router.put('/:id', (req, res, next) => {
 //Finds and serves a single user based on a primary key.
 //Eager loads associated orders.
 router.get('/:userId/orders', (req, res, next) => {
+  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
   Order.findOne({
     where: { userId: req.params.userId }
   })
@@ -226,6 +234,8 @@ router.get('/:userId/orders', (req, res, next) => {
 
 //Creates a new order for a specific User.
 router.post('/:userId/orders', (req, res, next) => {
+  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
   const orderBody = new OrderObject(req.params.userId, req.body);
   Order.create(orderBody)
     .then(() => {
@@ -270,6 +280,8 @@ router.put('/:userId/orders/:orderId', (req, res, next) => {
 });
 
 router.get('/:userId/cart', (req, res, next) => {
+  if (req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
   Cart.findOne({
     where: { userId: req.params.userId }
   })
@@ -281,6 +293,8 @@ router.get('/:userId/cart', (req, res, next) => {
 });
 
 router.get('/:userId/cart/set', (req, res, next) => {
+  if (req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
   CartList.findAll({
     where: { userId: req.params.userId },
     include: [Product]
@@ -295,6 +309,8 @@ router.get('/:userId/cart/set', (req, res, next) => {
 });
 
 router.post('/cart/add', (req, res, next) => {
+  if (req.user.id !== req.body.userId)
+    return res.status(400).send('Access Denied');
   const productId = req.body.productId;
   const productQuantity = req.body.productQuantity;
   const cartId = req.body.cartId;
@@ -317,6 +333,8 @@ router.post('/cart/add', (req, res, next) => {
 
 //edit product quantity in cart
 router.put('/cart/cartlist/update', (req, res, next) => {
+  if (req.user.id !== req.body.cartItem.userId)
+    return res.status(400).send('Access Denied');
   const { newQuantity, newSubtotal, id } = req.body.cartItem;
 
   CartList.findByPk(id)
@@ -336,6 +354,8 @@ router.put('/cart/cartlist/update', (req, res, next) => {
 });
 
 router.delete('/:userId/cart/:cartListId', async (req, res, next) => {
+  if (req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
   try {
     await CartList.destroy({
       where: { id: req.params.cartListId }
@@ -348,6 +368,8 @@ router.delete('/:userId/cart/:cartListId', async (req, res, next) => {
 });
 
 router.post(`/:userId/cart`, (req, res, next) => {
+  if (req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
   Cart.findOne({
     where: { userId: req.params.userId }
   })
@@ -373,6 +395,8 @@ router.post(`/:userId/cart`, (req, res, next) => {
 
 //edit cart for shipping and billing details
 router.put(`/:userId/cart`, (req, res, next) => {
+  if (req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
   const cartBody = new CartObject(req.body);
   Cart.findOne({
     where: { userId: req.params.userId }
@@ -390,6 +414,9 @@ router.put(`/:userId/cart`, (req, res, next) => {
 //Route for deleting a cart.
 router.delete(`/:userId/cart`, (req, res, next) => {
   CartList.findOne({
+  if (req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
+  Cart.findOne({
     where: { userId: req.params.userId }
   })
     .then(cart => cart.destroy())
@@ -402,6 +429,8 @@ router.delete(`/:userId/cart`, (req, res, next) => {
 });
 
 router.get('/:userId/wishlist', (req, res, next) => {
+  if (req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
   Wishlist.findAll({
     where: {
       userId: req.params.userId
@@ -415,6 +444,8 @@ router.get('/:userId/wishlist', (req, res, next) => {
 });
 
 router.post('/wishlist', (req, res, next) => {
+  if (req.user.id !== req.body.userId)
+    return res.status(400).send('Access Denied');
   const productId = req.body.productId;
   const userId = req.body.userId;
 
@@ -427,6 +458,8 @@ router.post('/wishlist', (req, res, next) => {
 });
 
 router.delete('/:userId/wishlist/:wishlistId', (req, res, next) => {
+  if (req.user.id !== req.params.userId)
+    return res.status(400).send('Access Denied');
   Wishlist.findByPk(req.params.wishlistId)
     .then(item => item.destroy())
     .then(() => res.status(200).send('Item deleted'))
