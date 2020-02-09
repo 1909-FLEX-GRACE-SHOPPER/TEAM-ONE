@@ -11,7 +11,8 @@ import {
   cart,
   cartList,
   statusMessage,
-  similarProducts
+  similarProducts,
+  gitHubData,
 } from './reducers';
 
 export default combineReducers({
@@ -25,5 +26,6 @@ export default combineReducers({
   cart,
   cartList,
   statusMessage,
-  similarProducts
+  similarProducts,
+  gitHubData,
 });

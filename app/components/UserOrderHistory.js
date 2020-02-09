@@ -13,20 +13,18 @@ import { fetchOrders, fetchOrderDetails } from '../redux/thunks/OrderThunks';
 class UserOrderHistory extends Component {
   componentDidMount() {
     const userId = this.props.match.params.id;
-    this.props.fetchOrders(userId);
-
+    this.props.fetchOrders(userId)
+  
   }
   render() {
     const { orders , orderDetails} = this.props;
-    return
-    // return (
-    //   // <Fragment> {
-    //   // }
-    //   // </Fragment>
-    // )
+    return (
+      <div> 
+      
+      </div>
+    )
   }
 }
-
 
 const mapStateToProps = state => {
   return {
