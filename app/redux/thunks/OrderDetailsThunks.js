@@ -7,10 +7,10 @@ import { SUCCESS, FAIL, COMMON_FAIL } from './utils';
 //TODO: delete console.logs on deployment
 
 //Thunk to fetch orderDetails from an order.
-export const fetchOrderDetails = orderId => {
+export const fetchOrderDetails = userId => {
   return dispatch => {
     return axios
-      .get(`/api/orders/${orderId}/orderDetails`)
+      .get(`/api/orders/${userId}/orderDetails`)
       .then(res => dispatch(setOrderDetails(res.data)))
       .catch(e => {
         console.log(e);
