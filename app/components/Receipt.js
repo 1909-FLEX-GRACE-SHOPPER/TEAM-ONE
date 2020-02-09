@@ -15,7 +15,7 @@ const Receipt = props => {
         //   )
         // })
       }
-      <Button href='/'>Return to the Shop</Button>
+      <Button href="/products/page/1">Return to the Shop</Button>
     </div>
   );
 };
