@@ -220,13 +220,14 @@ router.put('/:id', (req, res, next) => {
 //Finds and serves a single user based on a primary key.
 //Eager loads associated orders.
 router.get('/:userId/orders', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
-    return res.status(400).send('Access Denied');
+  if (req.user.id !== req.params.userId)
+    return res.status(401).send('Access Denied');
   Order.findOne({
     where: { userId: req.params.userId }
   })
     .then(user => res.status(200).send(user))
     .catch(e => {
+      console.log(e);
       res.status(404);
       next(e);
     });
@@ -234,8 +235,8 @@ router.get('/:userId/orders', (req, res, next) => {
 
 //Creates a new order for a specific User.
 router.post('/:userId/orders', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
-    return res.status(400).send('Access Denied');
+  if (req.user.id !== req.params.userId)
+    return res.status(401).send('Access Denied');
   const orderBody = new OrderObject(req.params.userId, req.body);
   Order.create(orderBody)
     .then(() => {
@@ -436,15 +437,23 @@ router.put(`/:userId/cart`, (req, res, next) => {
 router.delete(`/:userId/cart`, (req, res, next) => {
   if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
-  CartList.findOne({
-    where: { userId: req.params.userId }
+  CartList.findAll({
+    where: {
+      userId: req.params.userId
+    }
   })
-    .then(cart => cart.destroy())
-    .then(() => res.status(202).send({}))
+    .then(items =>
+      Promise.all(
+        items.map(item => CartList.destroy({ where: { userId: item.userId } }))
+      )
+    )
+    .then(destroyedItems =>
+      res.status(200).send('destroyed ', destroyedItems, ' items')
+    )
     .catch(e => {
       console.log(e);
-      res.status(404);
-      next(e);
+      res.status(400);
+      next();
     });
 });
 
