@@ -121,7 +121,7 @@ const mergeAndDestroyUser = async (newUser, guestUserInfo) => {
       where: { ...guestUserInfo }
     })
   ).dataValues;
-  console.log('MERGING ', guestUser, ' into ', newUser);
+
   try {
     await Order.update(
       { userId: newUser.id },

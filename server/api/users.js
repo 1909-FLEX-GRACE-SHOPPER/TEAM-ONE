@@ -331,7 +331,7 @@ router.post('/cart/add', (req, res, next) => {
     });
 });
 
-//edit product quantity in cart
+//edit cart item quantity in cart
 router.put('/cart/cartlist/update', (req, res, next) => {
   if (req.user.id !== req.body.cartItem.userId)
     return res.status(400).send('Access Denied');
@@ -353,9 +353,30 @@ router.put('/cart/cartlist/update', (req, res, next) => {
     });
 });
 
+//edit cart item quantity in product page
+router.put('/cart/cartlist/quantity/merge', (req, res, next) => {
+  console.log('calling merge api');
+  const { newQuantity, newSubtotal, productId } = req.body;
+  CartList.increment(
+    {
+      productQuantity: newQuantity,
+      subtotal: parseFloat(newSubtotal)
+    },
+    {
+      where: { productId: productId }
+    }
+  )
+    .then(updatedItem => {
+      console.log('cartlist is updated');
+      return res.status(202).send(updatedItem);
+    })
+    .catch(e => {
+      res.status(304);
+      next(e);
+    });
+});
+
 router.delete('/:userId/cart/:cartListId', async (req, res, next) => {
-  if (req.user.id !== req.params.userId)
-    return res.status(400).send('Access Denied');
   try {
     await CartList.destroy({
       where: { id: req.params.cartListId }

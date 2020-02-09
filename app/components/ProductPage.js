@@ -5,7 +5,7 @@ import {
   fetchSingleProduct,
   fetchSimilarProducts
 } from '../redux/thunks/ProductThunks';
-import { addToCart } from '../redux/thunks/CartThunks';
+import { addToCart, updateCartItemQuantity } from '../redux/thunks/CartThunks';
 import { postWishlist } from '../redux/thunks/WishlistThunks';
 import Product from './Product';
 import Button from 'react-bootstrap/Button';
@@ -14,27 +14,82 @@ class ProductPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      quantity: 0
+      quantity: 0,
+      updateCartItem: false
     };
   }
   componentDidMount() {
+    console.log('calling componentDidMount in Product Page');
     this.props.fetchSingleProduct(this.props.match.params.id);
     this.props.fetchSimilarProducts(this.props.match.params.id);
   }
-  handleAddToCart = async ({
+
+  // componentDidUpdate() {
+  //   console.log('calling componentDidUpdate in Product Page');
+  //   this.checkProductInCart();
+  // }
+
+  //TO DO: how to make updateCartItem stay true once a product is added to cartList
+  handleAddToCart = ({
     productId,
     cartId,
     productQuantity,
     userId,
     subtotal
   }) => {
-    await this.props.addToCart(
+    const { isInCart } = this.props.cartList;
+    const { updateCartItem } = this.state;
+    console.log(this.state);
+    if (updateCartItem) {
+      console.log('product exists in cart');
+      const newQuantity = productQuantity;
+      const newSubtotal = subtotal;
+      this.props.updateCartItemQuantity(
+        newQuantity,
+        newSubtotal,
+        productId,
+        userId
+      );
+    } else {
+      console.log('product doesnt exist in cart');
+      this.setState({ updateCartItem: true });
+      this.props.addToCart(
+        productId,
+        cartId,
+        productQuantity,
+        userId,
+        subtotal
+      );
+    }
+    this.setState({ quantity: 0 });
+  };
+
+  checkProductInCart = () => {
+    const { cartList, singleProduct } = this.props;
+    const {
       productId,
-      cartId,
-      productQuantity,
-      userId,
-      subtotal
-    );
+      productIdList,
+      updateCartItem,
+      selectedCartItem
+    } = this.state;
+
+    let tempProductIdList = [];
+    cartList.map(item => {
+      tempProductIdList.push(item.productId);
+    });
+
+    if (!tempProductIdList.includes(productId) && !updateCartItem) {
+      this.setState({
+        productId: singleProduct.id,
+        productIdList: tempProductIdList
+      });
+    } else if (tempProductIdList.includes(productId) && !updateCartItem) {
+      cartList.map(item => {
+        if (productId === item.productId) {
+          this.setState({ selectedCartItem, item });
+        }
+      });
+    }
   };
 
   postWishlist = async ({ productId, userId }) => {
@@ -133,13 +188,18 @@ class ProductPage extends React.Component {
   }
 }
 
-//TODO: This should fetch similar products not just all products
-//TODO: Add cart thunk
-const mapState = ({ singleProduct, user, cart, similarProducts }) => ({
+const mapState = ({
   singleProduct,
   user,
   cart,
-  similarProducts
+  similarProducts,
+  cartList
+}) => ({
+  singleProduct,
+  user,
+  cart,
+  similarProducts,
+  cartList
 });
 const mapDispatch = dispatch => {
   return {
@@ -149,7 +209,9 @@ const mapDispatch = dispatch => {
     postWishlist: (productId, userId) =>
       dispatch(postWishlist(productId, userId)),
     addToCart: (productId, cartId, productQuantity, userId, subtotal) =>
-      dispatch(addToCart(productId, cartId, productQuantity, userId, subtotal))
+      dispatch(addToCart(productId, cartId, productQuantity, userId, subtotal)),
+    updateCartItemQuantity: (productId, productQuantity, subtotal) =>
+      dispatch(updateCartItemQuantity(productId, productQuantity, subtotal))
   };
 };
 
