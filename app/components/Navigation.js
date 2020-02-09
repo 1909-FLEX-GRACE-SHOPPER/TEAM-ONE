@@ -35,6 +35,7 @@ class Navigation extends Component {
               }
             >
 							{params.firstName} {params.lastName}
+            </Nav.Link>
             <Nav.Link
               href='/wishlist'
               style={
@@ -55,6 +56,9 @@ class Navigation extends Component {
                 }
               }
             >
+              Logout
+            </Button>
+          </Nav>
 				);
         break;
 			case 'Admin':
@@ -137,7 +141,9 @@ class Navigation extends Component {
           }
         }
       >
-				</Navbar.Brand>
+				<Navbar.Brand>
+          Logo
+        </Navbar.Brand>
         <Nav
           className='mr-auto'
         >

@@ -12,7 +12,7 @@ import {
   cartList,
   statusMessage,
   similarProducts,
-  featuredProducts
+  featuredProducts,
   gitHubData,
 } from './reducers';
 

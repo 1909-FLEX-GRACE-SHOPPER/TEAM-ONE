@@ -41,7 +41,7 @@ class Product extends Component {
         {
           width: 'calc(100%/4)',
           margin: '1rem',
-          height: '350px',
+          height: '450px',
           fontFamily: 'Roboto',
           padding: '0.5rem',
           border: '2px black solid',
