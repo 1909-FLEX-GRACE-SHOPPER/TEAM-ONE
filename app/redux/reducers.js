@@ -11,7 +11,8 @@ import {
   SET_CART_LIST,
   REMOVE_ITEM_FROM_CART,
   STATUS_MESSAGE,
-  SET_SIMILAR_PRODUCTS
+  SET_SIMILAR_PRODUCTS,
+  SET_FEATURED_PRODUCTS,
 } from './constants';
 
 export const products = (state = [], action) => {
@@ -40,6 +41,15 @@ export const similarProducts = (state = [], action) => {
       return state;
   }
 };
+
+export const featuredProducts = (state = [], action) => {
+  switch (action.type) {
+    case SET_FEATURED_PRODUCTS:
+      return action.products;
+    default:
+      return state;
+  }
+}
 
 export const user = (state = {}, action) => {
   switch (action.type) {

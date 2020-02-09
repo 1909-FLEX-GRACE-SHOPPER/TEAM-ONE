@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-const { Row, Group, Label, Control, Col } = Form;
+const { Row, Group, Label, Control, Col, Check } = Form;
 
 import { connect } from 'react-redux';
 
@@ -21,6 +21,7 @@ class AddProductForm extends Component {
       file: [],
       fileName: '',
       tags: '',
+      featured: false,
       errors: {
         fileError: '',
         unitPriceError: '',
@@ -98,6 +99,10 @@ class AddProductForm extends Component {
       this.validate(name, value);
     });
   };
+
+  handleOnCheck = () => {
+    this.setState({ featured: !this.state.featured })
+  }
 
   handleBrowse = e => {
     if (e.target.files[0]) {
@@ -182,6 +187,14 @@ class AddProductForm extends Component {
               <option value="Charger">Charger</option>
               <option value="Accessory">Accessory</option>
             </Control>
+          </Group>
+
+          <Group controlId='featured'>
+            <Label>Featured</Label>
+            <Check
+              type='checkbox'
+              onChange={ this.handleOnCheck }
+            />
           </Group>
 
           <Row

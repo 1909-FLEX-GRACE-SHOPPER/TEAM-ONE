@@ -40,6 +40,20 @@ router.get('/similar/:id', (req, res, next) => {
     });
 });
 
+router.get('/featured', (req, res, next) => {
+  Product.findAll({
+    where: { featured: true },
+    limit: 4,
+  })
+  .then(products => {
+    res.status(200).send(products)
+  })
+  .catch(e => {
+    res.status(404);
+    next(e);
+  })
+})
+
 router.get('/:id', (req, res, next) => {
   Product.findByPk(req.params.id)
     .then(product => {
@@ -84,6 +98,7 @@ router.post('/', (req, res, next) => {
           unitPrice: (unitPrice * 1).toFixed(2),
           inventory: inventory * 1 || 0,
           tags,
+          featured,
           productImage: `/uploads/${imageFile.name.split(' ').join('-')}`
         });
       })

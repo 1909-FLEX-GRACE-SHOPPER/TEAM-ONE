@@ -1,6 +1,7 @@
 import {
   SET_PRODUCTS,
   SET_SIMILAR_PRODUCTS,
+  SET_FEATURED_PRODUCTS,
   SET_SINGLE_PRODUCT,
   SET_USER,
   SET_ORDERS,
@@ -34,6 +35,13 @@ export const setSimilarProducts = products => {
     products
   };
 };
+
+export const setFeaturedProducts = products => {
+  return {
+    type: SET_FEATURED_PRODUCTS,
+    products,
+  }
+}
 
 export const setUser = user => {
   return {

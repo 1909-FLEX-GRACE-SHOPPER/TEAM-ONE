@@ -37,6 +37,14 @@ class Products extends React.Component {
               onChange={e => {
                 this.filterProducts(e.target.value);
               }}
+              style={
+                {
+                  width: '10rem',
+                  margin: '1rem',
+                  border: '1px black solid',
+                  borderRadius: 'none',
+                }
+              }
             >
               <option value="">None</option>
               <option value="Accessory">Accessory</option>
@@ -51,7 +59,18 @@ class Products extends React.Component {
             history={history}
           />
         </div>
-        <div className='all-products-container'>
+        <div
+          className='all-products-container'
+          style={
+            {
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }
+          }
+        >
           {productsThisPage.length === 0
             ? 'No products'
             : productsThisPage.map(_product =>

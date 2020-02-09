@@ -10,7 +10,8 @@ const products = [
       'https://assets.juul.com/ctf/images/tc11z0kp0vll/23AlDSR8FzdEh27XPLOIBe/340def934dc9b9afe7be0b8fd8863a28/US_EN_Slate_-_Product_Page_Header_4x.png?w=860&h=860&fit=pad&bg=rgb:ffffff&fm=jpg',
     inventory: 100,
     unitPrice: 14.99,
-    tags: 'Device'
+    tags: 'Device',
+    featured: true,
   },
   {
     productName: 'Silver Juul Device',
@@ -20,7 +21,8 @@ const products = [
       'https://assets.juul.com/ctf/images/tc11z0kp0vll/774ZFJS70DstldqhYirmW4/a87b9323d445c3849a5dba568559c4a9/US_EN_Silver_-_Product_Page_Header_4x.png?w=860&h=860&fit=pad&bg=rgb:ffffff&fm=jpg',
     inventory: 100,
     unitPrice: 14.99,
-    tags: 'Device'
+    tags: 'Device',
+    featured: true,
   },
   {
     productName: 'LIMITED EDITION AQUA JUUL DEVICE',
@@ -30,7 +32,8 @@ const products = [
       'https://assets.juul.com/ctf/images/dtbhzmanuqgb/58pmW8ZOMVKIdSVaR94Sb7/3aa7de751b3bfeffb59d8852deeb56e2/US_AQUA_STANDUP.png?w=860&h=860&fit=pad&bg=rgb:ffffff&fm=jpg',
     inventory: 100,
     unitPrice: 19.99,
-    tags: 'Device'
+    tags: 'Device',
+    featured: true,
   },
   {
     productName: 'LIMITED EDITION ONYX JUUL DEVICE',
@@ -40,7 +43,8 @@ const products = [
       'https://assets.juul.com/ctf/images/dtbhzmanuqgb/1eUPlwtX5K3NveOc0Hxyzc/580ac725e7252fa74523fb7fc43babeb/US_EN_Onyx_-_Product_Page_Header_RMA_4x.png?w=860&h=860&fit=pad&bg=rgb:ffffff&fm=jpg',
     inventory: 100,
     unitPrice: 19.99,
-    tags: 'Device'
+    tags: 'Device',
+    featured: true,
   },
   {
     productName: 'VIRGINIA TOBACCO',
