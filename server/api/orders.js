@@ -20,20 +20,31 @@ router.get('/', paginate(Order), (req, res, next) => {
 router.post('/', (req, res, next) => {
   const orderBody = new OrderObject(req.body.userId, req.body.cart);
   Order.create(orderBody)
+    .then(order =>
+      Promise.all(
+        req.body.cart.map(_item =>
+          OrderDetail.create({
+            ..._item,
+            orderId: order.id,
+            productCost: _item.subtotal
+          })
+        )
+      )
+    )
     .then(order => {
       User.findByPk(req.body.userId).then(user => {
-        if(user.email) {
+        if (user.email) {
           sendEmail(
             user.email,
             'Purchase order recieved',
             'We go your order. <3 Juul'
           );
         }
-      return res.status(201).send(order);
-      })
-
+        return res.status(201).send(order);
+      });
     })
     .catch(e => {
+      console.log(e);
       res.status(400);
       next(e);
     });

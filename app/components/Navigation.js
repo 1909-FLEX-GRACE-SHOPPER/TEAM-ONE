@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, Button } from 'react-bootstrap';
-import { logoutUser } from '../redux/thunks/UserThunks';
+import { logoutUser, getGitHubData } from '../redux/thunks/UserThunks';
 import { connect } from 'react-redux';
 
 class Navigation extends Component {
-  switchNavBar = params => {
-    const { logoutUser, user } = this.props;
-    switch (params.userType) {
-      case 'Existing customer':
-        return (
-          <Nav>
-            <Nav.Link
+	componentDidMount() {
+		const { getGitHubUserData } = this.props;
+		getGitHubUserData();
+	}
+	switchNavBar = params => {
+		const { logoutUser, user, gitHubUser } = this.props;
+		switch (params.userType) {
+			case 'GitHub User':
+				return (
+					<Nav>
+						<Nav.Link href={`/user/${params.id}`}> {gitHubUser.name} </Nav.Link>
+						<Button
+							onClick={() => {
+								logoutUser(user.id);
+							}}>
+							Logout
+						</Button>
+					</Nav>
+				);
+			case 'Existing customer':
+				return (
+					<Nav>
+						<Nav.Link
               href={`/user/${params.id}`}
               style={
                 {
@@ -18,9 +34,7 @@ class Navigation extends Component {
                 }
               }
             >
-              {' '}
-              {params.firstName} {params.lastName}{' '}
-            </Nav.Link>
+							{params.firstName} {params.lastName}
             <Nav.Link
               href='/wishlist'
               style={
@@ -41,12 +55,9 @@ class Navigation extends Component {
                 }
               }
             >
-              {' '}
-              Logout{' '}
-            </Button>
-          </Nav>
-        );
-      case 'Admin':
+				);
+        break;
+			case 'Admin':
         return (
           <Nav>
             <Nav.Link 
@@ -111,10 +122,11 @@ class Navigation extends Component {
         );
     }
   };
-  render() {
-    const { user } = this.props;
-    return (
-      <Navbar
+	render() {
+		const { user, gitHubUser } = this.props;
+		console.log('this is the PROPS', this.props);
+		return (
+			<Navbar
         bg='dark'
         style={
           {
@@ -125,15 +137,7 @@ class Navigation extends Component {
           }
         }
       >
-        <Navbar.Brand
-          style={
-            {
-              color: 'white'
-            }
-          }
-        >
-          Logo
-        </Navbar.Brand>
+				</Navbar.Brand>
         <Nav
           className='mr-auto'
         >
@@ -145,7 +149,7 @@ class Navigation extends Component {
               }
             }
           >
-            Home
+					Home
           </Nav.Link>
           <Nav.Link 
             href='/about'
@@ -189,23 +193,25 @@ class Navigation extends Component {
           >
             Cart
           </Nav.Link>
-          {this.switchNavBar(user)}
+          {this.switchNavBar(user, gitHubUser)}
         </Nav>
       </Navbar>
-    );
-  }
+		);
+	}
 }
 
 const mapStateToProps = state => {
-  return {
-    user: state.user
-  };
+	return {
+		user: state.user,
+		gitHubUser: state.gitHubData
+	};
 };
 
 const mapDispatch = dispatch => {
-  return {
-    logoutUser: userId => dispatch(logoutUser(userId))
-  };
+	return {
+		logoutUser: userId => dispatch(logoutUser(userId)),
+		getGitHubUserData: () => dispatch(getGitHubData())
+	};
 };
 
 export default connect(mapStateToProps, mapDispatch)(Navigation);

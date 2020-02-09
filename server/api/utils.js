@@ -56,20 +56,10 @@ function CartObject(cart) {
   }
 }
 
-function OrderObject(id, order) {
+function OrderObject(id, cartList) {
+  this.orderCost = cartList.reduce((total, _item) => total + _item.subtotal, 0);
   this.userId = id;
   this.orderCost = 100.0;
-  this.shippingName = order.shippingName;
-  this.shippingAddress = order.shippingAddress;
-  this.shippingCity = order.shippingCity;
-  this.shippingState = order.shippingState;
-  this.shippingZip = order.shippingZip;
-  this.shippingCountry = order.shippingCountry || null;
-  this.shippingNotes = order.shippingNotes || null;
-  this.cardHolder = order.cardHolder;
-  this.cardNumber = order.cardNumber;
-  this.securityCode = order.securityCode;
-  this.expirationDate = order.expirationDate;
 }
 
 const sendEmail = (recipient, subject, body, options) => {
@@ -121,7 +111,7 @@ const mergeAndDestroyUser = async (newUser, guestUserInfo) => {
       where: { ...guestUserInfo }
     })
   ).dataValues;
-  console.log('MERGING ', guestUser, ' into ', newUser);
+
   try {
     await Order.update(
       { userId: newUser.id },

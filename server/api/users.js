@@ -220,13 +220,14 @@ router.put('/:id', (req, res, next) => {
 //Finds and serves a single user based on a primary key.
 //Eager loads associated orders.
 router.get('/:userId/orders', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
-    return res.status(400).send('Access Denied');
+  if (req.user.id !== req.params.userId)
+    return res.status(401).send('Access Denied');
   Order.findOne({
     where: { userId: req.params.userId }
   })
     .then(user => res.status(200).send(user))
     .catch(e => {
+      console.log(e);
       res.status(404);
       next(e);
     });
@@ -234,8 +235,8 @@ router.get('/:userId/orders', (req, res, next) => {
 
 //Creates a new order for a specific User.
 router.post('/:userId/orders', (req, res, next) => {
-  if (req.user.userType !== 'Admin' || req.user.id !== req.params.userId)
-    return res.status(400).send('Access Denied');
+  if (req.user.id !== req.params.userId)
+    return res.status(401).send('Access Denied');
   const orderBody = new OrderObject(req.params.userId, req.body);
   Order.create(orderBody)
     .then(() => {
@@ -311,27 +312,51 @@ router.get('/:userId/cart/set', (req, res, next) => {
 router.post('/cart/add', (req, res, next) => {
   if (req.user.id !== req.body.userId)
     return res.status(400).send('Access Denied');
+
   const productId = req.body.productId;
-  const productQuantity = req.body.productQuantity;
+  const newQuantity = req.body.productQuantity;
   const cartId = req.body.cartId;
   const userId = req.body.userId;
-  const subtotal = req.body.subtotal;
+  const newSubtotal = req.body.subtotal;
 
-  CartList.create({
-    productId: productId,
-    productQuantity: productQuantity,
-    cartId: cartId,
-    userId: userId,
-    subtotal: subtotal
+  //Check if the user has this product in cart
+
+  CartList.findOne({
+    where: {
+      userId,
+      productId
+    }
   })
-    .then(newItem => res.status(200).send(newItem))
+    .then(product => {
+      if (!product) {
+        return CartList.create({
+          productId: productId,
+          productQuantity: newQuantity,
+          cartId: cartId,
+          userId: userId,
+          subtotal: newSubtotal
+        });
+      } else {
+        return CartList.increment(
+          {
+            productQuantity: newQuantity,
+            subtotal: parseFloat(newSubtotal)
+          },
+          {
+            where: { productId, userId }
+          }
+        );
+      }
+    })
+    .then(updatedList => res.status(200).send({ updatedList }))
     .catch(err => {
+      console.log('ERROR ADDING TO CAR ', err);
       res.status(400);
-      next(err);
+      next();
     });
 });
 
-//edit product quantity in cart
+//edit cart item quantity in cart
 router.put('/cart/cartlist/update', (req, res, next) => {
   if (req.user.id !== req.body.cartItem.userId)
     return res.status(400).send('Access Denied');
@@ -353,9 +378,30 @@ router.put('/cart/cartlist/update', (req, res, next) => {
     });
 });
 
+//edit cart item quantity in product page
+router.put('/cart/cartlist/quantity/merge', (req, res, next) => {
+  console.log('calling merge api');
+  const { newQuantity, newSubtotal, productId } = req.body;
+  CartList.increment(
+    {
+      productQuantity: newQuantity,
+      subtotal: parseFloat(newSubtotal)
+    },
+    {
+      where: { productId: productId }
+    }
+  )
+    .then(updatedItem => {
+      console.log('cartlist is updated');
+      return res.status(202).send(updatedItem);
+    })
+    .catch(e => {
+      res.status(304);
+      next(e);
+    });
+});
+
 router.delete('/:userId/cart/:cartListId', async (req, res, next) => {
-  if (req.user.id !== req.params.userId)
-    return res.status(400).send('Access Denied');
   try {
     await CartList.destroy({
       where: { id: req.params.cartListId }
@@ -415,15 +461,23 @@ router.put(`/:userId/cart`, (req, res, next) => {
 router.delete(`/:userId/cart`, (req, res, next) => {
   if (req.user.id !== req.params.userId)
     return res.status(400).send('Access Denied');
-  CartList.findOne({
-    where: { userId: req.params.userId }
+  CartList.findAll({
+    where: {
+      userId: req.params.userId
+    }
   })
-    .then(cart => cart.destroy())
-    .then(() => res.status(202).send({}))
+    .then(items =>
+      Promise.all(
+        items.map(item => CartList.destroy({ where: { userId: item.userId } }))
+      )
+    )
+    .then(destroyedItems =>
+      res.status(200).send('destroyed ', destroyedItems, ' items')
+    )
     .catch(e => {
       console.log(e);
-      res.status(404);
-      next(e);
+      res.status(400);
+      next();
     });
 });
 
