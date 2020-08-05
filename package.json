@@ -39,7 +39,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "express": "^4.14.0",
-    "express-fileupload": "^1.1.6",
+    "express-fileupload": "^1.1.9",
     "moment": "^2.24.0",
     "node-emoji": "^1.10.0",
     "pg": "^7.4.3",
